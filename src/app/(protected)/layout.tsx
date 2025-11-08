@@ -4,6 +4,8 @@ import { useEffect, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { LOGIN_PATH } from "@/constants/auth";
+import { Sidebar } from "@/components/layout/sidebar";
+import { Header } from "@/components/layout/header";
 
 const buildRedirectUrl = (pathname: string) => {
   const redirectUrl = new URL(LOGIN_PATH, window.location.origin);
@@ -30,5 +32,15 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <Header />
+        <main className="flex-1 overflow-y-auto bg-background p-8">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
 }
