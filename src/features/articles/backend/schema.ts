@@ -166,3 +166,24 @@ export const GenerateArticleResponseSchema = z.object({
 });
 
 export type GenerateArticleResponse = z.infer<typeof GenerateArticleResponseSchema>;
+
+// List Articles Query Schema
+export const ListArticlesQuerySchema = z.object({
+  limit: z.coerce.number().min(1).max(100).default(10),
+  offset: z.coerce.number().min(0).default(0),
+  status: ArticleStatusSchema.or(z.literal('all')).default('all'),
+  sortBy: z.enum(['created_at', 'updated_at', 'title']).default('created_at'),
+  sortOrder: z.enum(['asc', 'desc']).default('desc'),
+});
+
+export type ListArticlesQuery = z.infer<typeof ListArticlesQuerySchema>;
+
+// List Articles Response Schema
+export const ListArticlesResponseSchema = z.object({
+  articles: z.array(ArticleResponseSchema),
+  total: z.number(),
+  limit: z.number(),
+  offset: z.number(),
+});
+
+export type ListArticlesResponse = z.infer<typeof ListArticlesResponseSchema>;
