@@ -23,9 +23,9 @@ import { NextResponse } from "next/server";
  * - Includes: /sign-in, /sign-up, /auth/after, static assets
  *
  * ONBOARDING STATUS CHECK:
- * - Uses sessionClaims.metadata.onboardingCompleted (boolean)
+ * - Uses sessionClaims.publicMetadata.onboardingCompleted (boolean)
  * - No database calls (metadata-based for performance)
- * - Set during onboarding completion via updateUserMetadata()
+ * - Set during onboarding completion via updateUser()
  */
 
 const isProtectedRoute = createRouteMatcher([
@@ -51,7 +51,7 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     // Reverse redirect: If onboarding already completed, redirect to dashboard
-    const onboardingCompleted = sessionClaims?.metadata?.onboardingCompleted === true;
+    const onboardingCompleted = sessionClaims?.publicMetadata?.onboardingCompleted === true;
     if (onboardingCompleted) {
       const dashboardUrl = new URL("/dashboard", req.url);
       return NextResponse.redirect(dashboardUrl);
@@ -69,7 +69,7 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     // STAGE 2b: Require completed onboarding
-    const onboardingCompleted = sessionClaims?.metadata?.onboardingCompleted === true;
+    const onboardingCompleted = sessionClaims?.publicMetadata?.onboardingCompleted === true;
 
     if (!onboardingCompleted) {
       const onboardingUrl = new URL("/auth/onboarding", req.url);
