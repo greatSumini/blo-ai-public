@@ -10,7 +10,7 @@ import {
   type AppEnv,
 } from '@/backend/hono/context';
 import { CreateStyleGuideRequestSchema } from '@/features/onboarding/backend/schema';
-import { upsertStyleGuide, getStyleGuide, markOnboardingCompleted } from './service';
+import { upsertStyleGuide, getStyleGuide, updateStyleGuide, deleteStyleGuide, markOnboardingCompleted } from './service';
 import {
   styleGuideErrorCodes,
   type StyleGuideServiceError,
@@ -131,7 +131,122 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
       return respond(c, result);
     }
 
-    logger.info('Style guide retrieved successfully', { userId: targetUserId });
+    logger.info('Style guide retrieved successfully', { userId: targetUserId, result });
+    return respond(c, result);
+  });
+
+  /**
+   * PATCH /api/style-guides/:id
+   * Updates a style guide for a user
+   *
+   * URL params: id (style guide ID)
+   * Request body: OnboardingFormData
+   * Headers: x-clerk-user-id (required)
+   */
+  app.patch('/api/style-guides/:id', async (c) => {
+    const userId = c.req.header('x-clerk-user-id');
+    const guideId = c.req.param('id');
+
+    if (!userId) {
+      return respond(
+        c,
+        failure(
+          401,
+          styleGuideErrorCodes.unauthorized,
+          'User ID is required. Please provide x-clerk-user-id header.',
+        ),
+      );
+    }
+
+    if (!guideId) {
+      return respond(
+        c,
+        failure(
+          400,
+          styleGuideErrorCodes.validationError,
+          'Style guide ID is required.',
+        ),
+      );
+    }
+
+    // Parse and validate request body
+    const body = await c.req.json();
+    const parsedBody = CreateStyleGuideRequestSchema.safeParse(body);
+
+    if (!parsedBody.success) {
+      return respond(
+        c,
+        failure(
+          400,
+          styleGuideErrorCodes.validationError,
+          'Invalid request body. Please check your input.',
+          parsedBody.error.format(),
+        ),
+      );
+    }
+
+    const supabase = getSupabase(c);
+    const logger = getLogger(c);
+
+    // Update style guide
+    const result = await updateStyleGuide(supabase, guideId, userId, parsedBody.data);
+
+    if (!result.ok) {
+      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
+      logger.error('Failed to update style guide', errorResult.error.message);
+      return respond(c, result);
+    }
+
+    logger.info('Style guide updated successfully', { userId, guideId });
+    return respond(c, result);
+  });
+
+  /**
+   * DELETE /api/style-guides/:id
+   * Deletes a style guide for a user
+   *
+   * URL params: id (style guide ID)
+   * Headers: x-clerk-user-id (required)
+   */
+  app.delete('/api/style-guides/:id', async (c) => {
+    const userId = c.req.header('x-clerk-user-id');
+    const guideId = c.req.param('id');
+
+    if (!userId) {
+      return respond(
+        c,
+        failure(
+          401,
+          styleGuideErrorCodes.unauthorized,
+          'User ID is required. Please provide x-clerk-user-id header.',
+        ),
+      );
+    }
+
+    if (!guideId) {
+      return respond(
+        c,
+        failure(
+          400,
+          styleGuideErrorCodes.validationError,
+          'Style guide ID is required.',
+        ),
+      );
+    }
+
+    const supabase = getSupabase(c);
+    const logger = getLogger(c);
+
+    // Delete style guide
+    const result = await deleteStyleGuide(supabase, guideId, userId);
+
+    if (!result.ok) {
+      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
+      logger.error('Failed to delete style guide', errorResult.error.message);
+      return respond(c, result);
+    }
+
+    logger.info('Style guide deleted successfully', { userId, guideId });
     return respond(c, result);
   });
 

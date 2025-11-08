@@ -193,6 +193,130 @@ export const getStyleGuide = async (
 };
 
 /**
+ * Updates a style guide for a user
+ * Used when user edits their style guide after initial creation
+ */
+export const updateStyleGuide = async (
+  client: SupabaseClient,
+  guideId: string,
+  clerkUserId: string,
+  data: CreateStyleGuideRequest,
+): Promise<HandlerResult<StyleGuideResponse, StyleGuideServiceError, unknown>> => {
+  // Map camelCase TypeScript to snake_case database columns
+  const dbRecord = {
+    brand_name: data.brandName,
+    brand_description: data.brandDescription,
+    personality: data.personality,
+    formality: data.formality,
+    target_audience: data.targetAudience,
+    pain_points: data.painPoints,
+    language: data.language,
+    tone: data.tone,
+    content_length: data.contentLength,
+    reading_level: data.readingLevel,
+    notes: data.notes || null,
+  };
+
+  const { data: updatedData, error } = await client
+    .from(STYLE_GUIDES_TABLE)
+    .update(dbRecord)
+    .eq('id', guideId)
+    .eq('clerk_user_id', clerkUserId)
+    .select('*')
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+    }
+    return failure(
+      500,
+      styleGuideErrorCodes.upsertError,
+      `Failed to update style guide: ${error.message}`,
+    );
+  }
+
+  if (!updatedData) {
+    return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+  }
+
+  // Validate the database row
+  const rowParse = StyleGuideTableRowSchema.safeParse(updatedData);
+
+  if (!rowParse.success) {
+    return failure(
+      500,
+      styleGuideErrorCodes.validationError,
+      'Style guide row failed validation.',
+      rowParse.error.format(),
+    );
+  }
+
+  // Map snake_case database columns to camelCase response
+  const mapped = {
+    id: rowParse.data.id,
+    clerkUserId: rowParse.data.clerk_user_id,
+    brandName: rowParse.data.brand_name,
+    brandDescription: rowParse.data.brand_description,
+    personality: rowParse.data.personality,
+    formality: rowParse.data.formality,
+    targetAudience: rowParse.data.target_audience,
+    painPoints: rowParse.data.pain_points,
+    language: rowParse.data.language,
+    tone: rowParse.data.tone,
+    contentLength: rowParse.data.content_length,
+    readingLevel: rowParse.data.reading_level,
+    notes: rowParse.data.notes,
+    isDefault: rowParse.data.is_default,
+    createdAt: rowParse.data.created_at,
+    updatedAt: rowParse.data.updated_at,
+  } satisfies StyleGuideResponse;
+
+  // Validate the response
+  const parsed = StyleGuideResponseSchema.safeParse(mapped);
+
+  if (!parsed.success) {
+    return failure(
+      500,
+      styleGuideErrorCodes.validationError,
+      'Style guide response failed validation.',
+      parsed.error.format(),
+    );
+  }
+
+  return success(parsed.data, 200);
+};
+
+/**
+ * Deletes a style guide
+ * Only the owner can delete their guide
+ */
+export const deleteStyleGuide = async (
+  client: SupabaseClient,
+  guideId: string,
+  clerkUserId: string,
+): Promise<HandlerResult<{ success: boolean }, StyleGuideServiceError, unknown>> => {
+  const { error } = await client
+    .from(STYLE_GUIDES_TABLE)
+    .delete()
+    .eq('id', guideId)
+    .eq('clerk_user_id', clerkUserId);
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+    }
+    return failure(
+      500,
+      styleGuideErrorCodes.upsertError,
+      `Failed to delete style guide: ${error.message}`,
+    );
+  }
+
+  return success({ success: true }, 200);
+};
+
+/**
  * Marks the onboarding as completed for a user
  * Updates the onboarding_completed flag in the style_guides table
  */

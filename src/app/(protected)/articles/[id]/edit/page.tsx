@@ -9,13 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Eye, Edit, List, X } from 'lucide-react';
+import { ArrowLeft, Eye, Edit, List, X, Download, Copy, Check } from 'lucide-react';
 import { useArticle } from '@/features/articles/hooks/useArticle';
 import { useAutoSave } from '@/features/articles/hooks/useAutoSave';
 import { AutoSaveIndicator } from '@/features/articles/components/auto-save-indicator';
 import { MarkdownPreview } from '@/features/articles/components/markdown-preview';
 import { TableOfContents } from '@/features/articles/components/table-of-contents';
-import { extractHeadings } from '@/features/articles/lib/markdown-utils';
+import { extractHeadings, downloadMarkdown, copyToClipboard } from '@/features/articles/lib/markdown-utils';
 
 // 동적 임포트 (SSR 방지)
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
@@ -38,6 +38,7 @@ export default function EditorPage({ params }: EditorPageProps) {
   const [description, setDescription] = useState('');
   const [keywords, setKeywords] = useState('');
   const [showToc, setShowToc] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // 초기 데이터 로드
   useEffect(() => {
@@ -65,6 +66,32 @@ export default function EditorPage({ params }: EditorPageProps) {
 
   // 헤딩 추출
   const headings = extractHeadings(content);
+
+  const handleDownloadMarkdown = () => {
+    downloadMarkdown(title || 'article', content);
+    toast({
+      title: '다운로드 완료',
+      description: '마크다운 파일이 다운로드되었습니다.',
+    });
+  };
+
+  const handleCopyMarkdown = async () => {
+    try {
+      await copyToClipboard(content);
+      setCopySuccess(true);
+      toast({
+        title: '복사 완료',
+        description: '마크다운이 클립보드에 복사되었습니다.',
+      });
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (error) {
+      toast({
+        title: '복사 실패',
+        description: '마크다운을 복사하는 중 오류가 발생했습니다.',
+        variant: 'destructive',
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -185,6 +212,38 @@ export default function EditorPage({ params }: EditorPageProps) {
                   preview="edit"
                 />
               </div>
+              {/* 내보내기 버튼 */}
+              <div className="flex gap-2 mt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDownloadMarkdown}
+                  className="flex-1"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  다운로드
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCopyMarkdown}
+                  className="flex-1"
+                >
+                  {copySuccess ? (
+                    <>
+                      <Check className="mr-2 h-4 w-4" />
+                      복사됨
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-4 w-4" />
+                      복사
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </Card>
 
@@ -264,6 +323,38 @@ export default function EditorPage({ params }: EditorPageProps) {
                       onChange={(val) => setContent(val || '')}
                       height={400}
                     />
+                  </div>
+                  {/* 내보내기 버튼 */}
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleDownloadMarkdown}
+                      className="flex-1"
+                    >
+                      <Download className="mr-2 h-3 w-3" />
+                      다운로드
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCopyMarkdown}
+                      className="flex-1"
+                    >
+                      {copySuccess ? (
+                        <>
+                          <Check className="mr-2 h-3 w-3" />
+                          복사됨
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="mr-2 h-3 w-3" />
+                          복사
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </div>
               </Card>

@@ -39,7 +39,7 @@ export async function createArticleDraft(data: CreateArticleRequest) {
     }
 
     const result = await response.json();
-    return result.data;
+    return result;
   } catch (error) {
     console.error("Error creating article draft:", error);
     throw new Error(
@@ -80,7 +80,7 @@ export async function updateArticleDraft(
     }
 
     const result = await response.json();
-    return result.data;
+    return result;
   } catch (error) {
     console.error("Error updating article draft:", error);
     throw new Error(
@@ -117,7 +117,7 @@ export async function getArticle(articleId: string) {
     }
 
     const result = await response.json();
-    return result.data;
+    return result;
   } catch (error) {
     console.error("Error getting article:", error);
     throw new Error(
@@ -150,6 +150,12 @@ export async function getUserStyleGuide() {
       }
     );
 
+
+    // Handle 404 - return null if not found
+    if (response.status === 404) {
+      return null;
+    }
+
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       console.error("Failed to get style guide:", errorData);
@@ -159,7 +165,8 @@ export async function getUserStyleGuide() {
     }
 
     const result = await response.json();
-    return result.data;
+
+    return result;
   } catch (error) {
     console.error("Error getting style guide:", error);
     throw new Error(
@@ -171,7 +178,8 @@ export async function getUserStyleGuide() {
 }
 
 /**
- * Generate article using AI
+ * Generate article using AI via Next.js API route
+ * This client-side action calls the native Next.js API route at /api/articles/generate
  */
 export async function generateArticleAction(
   data: GenerateArticleRequest
@@ -187,7 +195,6 @@ export async function generateArticleAction(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-clerk-user-id": userId,
       },
       body: JSON.stringify(data),
     });
@@ -209,13 +216,100 @@ export async function generateArticleAction(
     }
 
     const result = await response.json();
-    return result.data;
+    return result;
   } catch (error) {
     console.error("Error generating article:", error);
     throw new Error(
       error instanceof Error
         ? error.message
         : "AI 글 생성 중 오류가 발생했습니다"
+    );
+  }
+}
+
+/**
+ * Update a style guide
+ */
+export async function updateStyleGuideAction(
+  guideId: string,
+  data: Record<string, any>
+) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const response = await fetch(
+      `${API_BASE_URL}/api/style-guides/${guideId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-clerk-user-id": userId,
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Failed to update style guide:", errorData);
+      throw new Error(
+        errorData.error?.message || "스타일 가이드 업데이트에 실패했습니다"
+      );
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error updating style guide:", error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "스타일 가이드 업데이트 중 오류가 발생했습니다"
+    );
+  }
+}
+
+/**
+ * Delete a style guide
+ */
+export async function deleteStyleGuideAction(guideId: string) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const response = await fetch(
+      `${API_BASE_URL}/api/style-guides/${guideId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "x-clerk-user-id": userId,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Failed to delete style guide:", errorData);
+      throw new Error(
+        errorData.error?.message || "스타일 가이드 삭제에 실패했습니다"
+      );
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error deleting style guide:", error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "스타일 가이드 삭제 중 오류가 발생했습니다"
     );
   }
 }
