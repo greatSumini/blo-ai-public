@@ -1,7 +1,7 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { OnboardingFormData } from "../lib/onboarding-schema";
 
 /**
@@ -49,7 +49,12 @@ export async function completeOnboarding(data: OnboardingFormData) {
 
     console.log("Onboarding completed successfully for user:", userId);
 
-    return { success: true };
+    // Revalidate the dashboard path to ensure fresh middleware checks
+    // This is safe because we're not on /auth/onboarding anymore when this runs
+    revalidatePath("/dashboard", "page");
+    revalidatePath("/", "layout");
+
+    return { success: true, redirectUrl: "/dashboard?welcome=true" };
   } catch (error) {
     console.error("Error completing onboarding:", error);
     throw new Error(

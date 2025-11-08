@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Save, Eye, Search, ArrowLeft } from "lucide-react";
+import { Save, Eye, Search, ArrowLeft, Sparkles } from "lucide-react";
 import { ArticleForm } from "@/features/articles/components/article-form";
 import { ArticlePreview } from "@/features/articles/components/article-preview";
 import { SeoPanel } from "@/features/articles/components/seo-panel";
+import { GenerationProgress } from "@/features/articles/components/generation-progress";
 import { useCreateArticle } from "@/features/articles/hooks/useCreateArticle";
+import { useGenerateArticle } from "@/features/articles/hooks/useGenerateArticle";
 import { useStyleGuide } from "@/features/articles/hooks/useStyleGuide";
 import {
   ArticleFormSchema,
@@ -31,6 +33,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
 
   const form = useForm<ArticleFormData>({
     resolver: zodResolver(ArticleFormSchema),
@@ -39,6 +42,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   });
 
   const createArticleMutation = useCreateArticle();
+  const generateArticleMutation = useGenerateArticle();
   const { data: styleGuideData, isLoading: isLoadingStyleGuide } =
     useStyleGuide();
 
@@ -78,6 +82,71 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
       if (!confirmed) return;
     }
     router.back();
+  };
+
+  const handleGenerateAI = async () => {
+    // AI 생성을 위한 최소 요구사항: 스타일 가이드 ID만 필요
+    const styleGuideId = form.getValues("styleGuideId");
+
+    if (!styleGuideId) {
+      toast({
+        title: "스타일 가이드 필요",
+        description: "AI 글 생성을 위해서는 스타일 가이드를 선택해주세요.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // 주제 입력 받기
+    const topic = window.prompt(
+      "어떤 주제로 글을 작성할까요?\n\n예시: Next.js에서 Server Actions 사용하기, React Query로 서버 상태 관리하기"
+    );
+
+    if (!topic || !topic.trim()) {
+      return;
+    }
+
+    setIsGeneratingAI(true);
+
+    try {
+      const result = await generateArticleMutation.mutateAsync({
+        topic: topic.trim(),
+        styleGuideId,
+        keywords: form.getValues("keywords") || [],
+        additionalInstructions: undefined,
+      });
+
+      // 생성된 콘텐츠로 폼 필드 자동 채우기
+      const generatedContent = result.generatedContent;
+
+      form.setValue("title", generatedContent.title);
+      form.setValue("content", generatedContent.content);
+      form.setValue("description", generatedContent.metaDescription);
+      form.setValue("keywords", generatedContent.keywords);
+      form.setValue("metaTitle", generatedContent.title);
+      form.setValue("metaDescription", generatedContent.metaDescription);
+
+      toast({
+        title: "AI 글 생성 완료",
+        description: `글이 성공적으로 생성되었습니다. 남은 생성 횟수: ${result.quotaRemaining}회`,
+      });
+
+      setIsGeneratingAI(false);
+    } catch (error) {
+      console.error("Failed to generate article:", error);
+      // Error는 GenerationProgress 컴포넌트에서 처리
+      setIsGeneratingAI(false);
+    }
+  };
+
+  const handleCancelGeneration = () => {
+    setIsGeneratingAI(false);
+    generateArticleMutation.reset();
+  };
+
+  const handleRetryGeneration = () => {
+    generateArticleMutation.reset();
+    handleGenerateAI();
   };
 
   // Style guide data for dropdown

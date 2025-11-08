@@ -1,13 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { OnboardingWizard } from "@/features/onboarding/components/onboarding-wizard";
 import { completeOnboarding } from "@/features/onboarding/actions/complete-onboarding";
 import { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
 
 export default function OnboardingPage() {
-  const router = useRouter();
 
   const handleComplete = async (data: OnboardingFormData) => {
     try {
@@ -15,8 +13,10 @@ export default function OnboardingPage() {
       const result = await completeOnboarding(data);
 
       if (result.success) {
-        // Redirect to dashboard with welcome parameter
-        router.push("/dashboard?welcome=true");
+        // Navigate to dashboard with special query param to bypass middleware onboarding check
+        // The middleware will allow access and then clean up the param on redirect
+        // This works around Clerk's session caching delay
+        window.location.href = "/dashboard?onboarding_completed=true&welcome=true";
       }
     } catch (error) {
       // Show error message

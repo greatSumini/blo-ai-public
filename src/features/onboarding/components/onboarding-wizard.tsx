@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
@@ -64,7 +64,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
   };
 
   // Validate current step before proceeding
-  const validateCurrentStep = async () => {
+  const validateCurrentStep = useCallback(async () => {
     const stepSchema = getStepSchema(currentStep);
     const values = form.getValues();
 
@@ -76,10 +76,11 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
       await form.trigger();
       return false;
     }
-  };
+  }, [currentStep, form]);
 
-  const handleNext = async () => {
+  const handleNext = useCallback(async () => {
     const isValid = await validateCurrentStep();
+
     if (isValid && currentStep < TOTAL_STEPS) {
       setCurrentStep((prev) => prev + 1);
       // Focus on the top of the form
@@ -89,9 +90,9 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
       const announcement = `Step ${currentStep + 1} of ${TOTAL_STEPS}`;
       announceToScreenReader(announcement);
     }
-  };
+  }, [currentStep, validateCurrentStep]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (currentStep > 1) {
       setCurrentStep((prev) => prev - 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -100,7 +101,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
       const announcement = `Step ${currentStep - 1} of ${TOTAL_STEPS}`;
       announceToScreenReader(announcement);
     }
-  };
+  }, [currentStep]);
 
   // Helper function to announce to screen readers
   const announceToScreenReader = (message: string) => {
@@ -152,7 +153,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentStep]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentStep, handleNext, handlePrevious]);
 
   // Render current step component
   const renderStep = () => {
@@ -199,7 +200,21 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <form
+            onSubmit={(e) => {
+              // Prevent default form submission - we handle it manually
+              e.preventDefault();
+            }}
+            onKeyDown={(e) => {
+              // Prevent Enter key from submitting the form
+              if (e.key === "Enter" && e.target instanceof HTMLElement) {
+                // Allow Enter in textarea for new lines
+                if (e.target.tagName !== "TEXTAREA") {
+                  e.preventDefault();
+                }
+              }
+            }}
+          >
             {/* Desktop: 2-column layout */}
             <div className="hidden lg:grid lg:grid-cols-[1fr,400px] lg:gap-8">
               {/* Left: Form */}
@@ -245,7 +260,14 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                     </Button>
                   ) : (
                     <Button
-                      type="submit"
+                      type="button"
+                      onClick={async () => {
+                        const isValid = await validateCurrentStep();
+                        if (isValid) {
+                          const formData = form.getValues();
+                          await handleSubmit(formData);
+                        }
+                      }}
                       disabled={isSubmitting}
                       className="h-10"
                       style={{
@@ -331,7 +353,14 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                     </Button>
                   ) : (
                     <Button
-                      type="submit"
+                      type="button"
+                      onClick={async () => {
+                        const isValid = await validateCurrentStep();
+                        if (isValid) {
+                          const formData = form.getValues();
+                          await handleSubmit(formData);
+                        }
+                      }}
                       disabled={isSubmitting}
                       className="ml-4 h-12 flex-1 sm:h-10 sm:flex-initial"
                       style={{

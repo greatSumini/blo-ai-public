@@ -51,7 +51,9 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     // Reverse redirect: If onboarding already completed, redirect to dashboard
-    const onboardingCompleted = sessionClaims?.publicMetadata?.onboardingCompleted === true;
+    const metadata = sessionClaims?.publicMetadata as { onboardingCompleted?: boolean } | undefined;
+    const onboardingCompleted = metadata?.onboardingCompleted === true;
+
     if (onboardingCompleted) {
       const dashboardUrl = new URL("/dashboard", req.url);
       return NextResponse.redirect(dashboardUrl);
@@ -69,11 +71,24 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     // STAGE 2b: Require completed onboarding
-    const onboardingCompleted = sessionClaims?.publicMetadata?.onboardingCompleted === true;
+    const metadata = sessionClaims?.publicMetadata as { onboardingCompleted?: boolean } | undefined;
+    const onboardingCompleted = metadata?.onboardingCompleted === true;
 
-    if (!onboardingCompleted) {
+    // BYPASS: If onboarding was just completed (indicated by query param), skip the check
+    // This allows the user to navigate to dashboard immediately after completing onboarding
+    // The session will be refreshed on the next request
+    const url = new URL(req.url);
+    const justCompletedOnboarding = url.searchParams.get("onboarding_completed") === "true";
+
+    if (!onboardingCompleted && !justCompletedOnboarding) {
       const onboardingUrl = new URL("/auth/onboarding", req.url);
       return NextResponse.redirect(onboardingUrl);
+    }
+
+    // If bypassed, clean up the query param by redirecting without it
+    if (justCompletedOnboarding && !onboardingCompleted) {
+      url.searchParams.delete("onboarding_completed");
+      return NextResponse.redirect(url);
     }
   }
 

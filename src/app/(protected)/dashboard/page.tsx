@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { WelcomeHeader } from "@/components/dashboard/welcome-header";
@@ -15,8 +15,7 @@ type DashboardPageProps = {
 
 const WELCOME_SHOWN_KEY = "onboarding_welcome_shown";
 
-export default function DashboardPage({ params }: DashboardPageProps) {
-  void params;
+function DashboardContent() {
   const { user } = useCurrentUser();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -61,5 +60,15 @@ export default function DashboardPage({ params }: DashboardPageProps) {
       <ActivityChart />
       <RecentArticlesList />
     </div>
+  );
+}
+
+export default function DashboardPage({ params }: DashboardPageProps) {
+  void params;
+
+  return (
+    <Suspense fallback={<div className="flex flex-col gap-8">Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
