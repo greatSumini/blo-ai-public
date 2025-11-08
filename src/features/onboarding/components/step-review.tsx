@@ -258,7 +258,7 @@ export function StepReview({ form }: StepReviewProps) {
           준비 완료!
         </p>
         <p className="mt-2 text-sm" style={{ color: "#374151" }}>
-          모든 설정이 완료되었습니다. "완료" 버튼을 클릭하면 대시보드로
+          모든 설정이 완료되었습니다. &ldquo;완료&rdquo; 버튼을 클릭하면 대시보드로
           이동하여 콘텐츠 생성을 시작할 수 있습니다.
         </p>
       </div>
