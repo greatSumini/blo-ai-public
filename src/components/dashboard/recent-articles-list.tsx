@@ -16,9 +16,11 @@ import { useI18n } from "@/lib/i18n/client";
 import { useListArticles } from "@/features/articles/hooks/useListArticles";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 
 export function RecentArticlesList() {
   const t = useI18n();
+  const router = useRouter();
   const { data, isLoading, error } = useListArticles({
     query: {
       limit: 5,
@@ -58,6 +60,15 @@ export function RecentArticlesList() {
   }
 
   const articles = data?.data?.articles || [];
+
+  const handleView = (articleId: string) => {
+    // TODO: Implement article view page
+    router.push(`/articles/${articleId}`);
+  };
+
+  const handleEdit = (articleId: string) => {
+    router.push(`/articles/${articleId}/edit`);
+  };
 
   if (articles.length === 0) {
     return (
@@ -107,10 +118,20 @@ export function RecentArticlesList() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleView(article.id)}
+                      title={t("dashboard.recent.actions.view") || "보기"}
+                    >
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleEdit(article.id)}
+                      title={t("dashboard.recent.actions.edit") || "수정"}
+                    >
                       <Pencil className="h-4 w-4" />
                     </Button>
                   </div>
