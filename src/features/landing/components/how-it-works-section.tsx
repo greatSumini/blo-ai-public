@@ -32,14 +32,14 @@ const steps: Step[] = [
 
 export function HowItWorksSection() {
   return (
-    <section className="w-full bg-white py-20 px-4">
+    <section id="how-it-works" className="w-full bg-white py-16 md:py-20 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111827] mb-3 md:mb-4 px-4">
             3단계로 완성하는 블로그 글
           </h2>
-          <p className="text-lg text-[#6B7280] max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#6B7280] max-w-2xl mx-auto px-4">
             복잡한 과정 없이 간단한 3단계만으로 전문적인 블로그 글을 완성할 수 있습니다
           </p>
         </div>

@@ -33,14 +33,14 @@ const features: Feature[] = [
 
 export function FeaturesSection() {
   return (
-    <section className="w-full bg-[#FCFCFD] py-20 px-4">
+    <section id="features" className="w-full bg-[#FCFCFD] py-16 md:py-20 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111827] mb-3 md:mb-4 px-4">
             강력한 기능으로 콘텐츠 생성을 간편하게
           </h2>
-          <p className="text-lg text-[#6B7280] max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#6B7280] max-w-2xl mx-auto px-4">
             AI 기반 자동 생성부터 SEO 최적화까지, 블로그 글 작성에 필요한 모든 기능을 제공합니다
           </p>
         </div>

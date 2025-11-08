@@ -33,14 +33,14 @@ const useCases: UseCase[] = [
 
 export function UseCasesSection() {
   return (
-    <section className="w-full bg-[#FCFCFD] py-20 px-4">
+    <section id="use-cases" className="w-full bg-[#FCFCFD] py-16 md:py-20 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111827] mb-3 md:mb-4 px-4">
             다양한 상황에서 활용하세요
           </h2>
-          <p className="text-lg text-[#6B7280] max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#6B7280] max-w-2xl mx-auto px-4">
             제품 런칭부터 SEO 마케팅까지, 모든 블로그 작성 시나리오를 지원합니다
           </p>
         </div>

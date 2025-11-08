@@ -36,11 +36,11 @@ export function HeroSection({
   };
 
   return (
-    <section className="relative min-h-[90vh] w-full flex items-center justify-center overflow-hidden bg-[#FCFCFD]">
+    <section className="relative min-h-[calc(100vh-4rem)] w-full flex items-center justify-center overflow-hidden bg-[#FCFCFD]">
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(30,42,56,0.03),transparent_50%)]" />
 
-      <div className="relative z-10 container mx-auto px-4 md:px-6 max-w-4xl py-20">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 max-w-4xl py-12 md:py-20">
         <div className="text-center">
           {/* Badge */}
           <motion.div
@@ -48,7 +48,7 @@ export function HeroSection({
             variants={fadeUpVariants}
             initial="hidden"
             animate="visible"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#E1E5EA] bg-[#F5F7FA]/50 mb-8"
+            className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-full border border-[#E1E5EA] bg-[#F5F7FA]/50 mb-6 md:mb-8"
           >
             <span className="text-xs font-medium text-[#374151]">
               {badge}
@@ -62,7 +62,7 @@ export function HeroSection({
             initial="hidden"
             animate="visible"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-[#111827] leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 tracking-tight text-[#111827] leading-tight px-2">
               {heading}
             </h1>
           </motion.div>
@@ -74,7 +74,7 @@ export function HeroSection({
             initial="hidden"
             animate="visible"
           >
-            <p className="text-base sm:text-lg md:text-xl text-[#6B7280] mb-10 max-w-2xl mx-auto font-normal leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#6B7280] mb-8 md:mb-10 max-w-2xl mx-auto font-normal leading-relaxed px-2">
               {subheading}
             </p>
           </motion.div>

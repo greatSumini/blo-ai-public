@@ -54,14 +54,14 @@ const plans: PricingPlan[] = [
 
 export function PricingSection() {
   return (
-    <section className="w-full bg-white py-20 px-4">
+    <section id="pricing" className="w-full bg-white py-16 md:py-20 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111827] mb-3 md:mb-4 px-4">
             간단하고 투명한 가격
           </h2>
-          <p className="text-lg text-[#6B7280] max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#6B7280] max-w-2xl mx-auto px-4">
             무료로 시작해서 필요할 때 업그레이드하세요. 숨겨진 비용은 없습니다
           </p>
         </div>
@@ -71,16 +71,16 @@ export function PricingSection() {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative p-8 rounded-xl border ${
+              className={`relative p-6 md:p-8 rounded-xl border ${
                 plan.highlighted
-                  ? "border-[#3BA2F8] shadow-xl scale-105"
+                  ? "border-[#3BA2F8] shadow-xl md:scale-105"
                   : "border-[#E1E5EA]"
               } bg-white transition-all duration-300`}
             >
               {/* Highlighted Badge */}
               {plan.highlighted && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="px-4 py-1.5 rounded-full bg-[#3BA2F8] text-white text-sm font-medium">
+                <div className="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2">
+                  <div className="px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-[#3BA2F8] text-white text-xs md:text-sm font-medium">
                     추천
                   </div>
                 </div>
@@ -89,7 +89,7 @@ export function PricingSection() {
               <div className="space-y-6">
                 {/* Plan Name */}
                 <div>
-                  <h3 className="text-2xl font-bold text-[#111827]">
+                  <h3 className="text-xl md:text-2xl font-bold text-[#111827]">
                     {plan.name}
                   </h3>
                   <p className="text-sm text-[#6B7280] mt-2">
@@ -99,10 +99,10 @@ export function PricingSection() {
 
                 {/* Price */}
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-bold text-[#111827]">
+                  <span className="text-4xl md:text-5xl font-bold text-[#111827]">
                     {plan.price}
                   </span>
-                  <span className="text-lg text-[#6B7280]">
+                  <span className="text-base md:text-lg text-[#6B7280]">
                     / {plan.period}
                   </span>
                 </div>
