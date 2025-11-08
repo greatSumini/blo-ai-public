@@ -4,8 +4,6 @@ import { auth } from "@clerk/nextjs/server";
 import type {
   CreateArticleRequest,
   UpdateArticleRequest,
-  GenerateArticleRequest,
-  GenerateArticleResponse,
 } from "../lib/dto";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -177,55 +175,6 @@ export async function getUserStyleGuide() {
   }
 }
 
-/**
- * Generate article using AI via Next.js API route
- * This client-side action calls the native Next.js API route at /api/articles/generate
- */
-export async function generateArticleAction(
-  data: GenerateArticleRequest
-): Promise<GenerateArticleResponse> {
-  try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      throw new Error("Unauthorized");
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/articles/generate`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error("Failed to generate article:", errorData);
-
-      // Handle specific error codes
-      if (errorData.error?.code === "QUOTA_EXCEEDED") {
-        throw new Error(
-          `생성 횟수 제한에 도달했습니다. (${errorData.error.details?.currentCount}/${errorData.error.details?.limit})`
-        );
-      }
-
-      throw new Error(
-        errorData.error?.message || "AI 글 생성에 실패했습니다"
-      );
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error("Error generating article:", error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : "AI 글 생성 중 오류가 발생했습니다"
-    );
-  }
-}
 
 /**
  * Update a style guide

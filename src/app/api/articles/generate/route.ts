@@ -1,22 +1,12 @@
 import { auth } from '@clerk/nextjs/server';
-import { generateObject, streamObject } from 'ai';
+import { streamText } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
-import {
-  AIGeneratedContentSchema,
-  type AIGeneratedContent,
-  type GenerateArticleRequest,
-} from '@/features/articles/backend/schema';
-import {
-  createArticle,
-} from '@/features/articles/backend/service';
+import type { GenerateArticleRequest } from '@/features/articles/backend/schema';
 import {
   checkQuota,
-  incrementQuota,
 } from '@/features/articles/backend/quota-service';
-import { generateUniqueSlug } from '@/lib/slug';
 import { articleErrorCodes } from '@/features/articles/backend/error';
 
 type StyleGuideResponse = {
@@ -197,41 +187,36 @@ ${additionalInstructions ? `**Additional Instructions**: ${additionalInstruction
   return promptTemplate;
 };
 
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
     // Authenticate user
     const { userId } = await auth();
 
     if (!userId) {
-      return NextResponse.json(
-        {
+      return new Response(
+        JSON.stringify({
           error: {
             code: articleErrorCodes.unauthorized,
             message: 'Unauthorized',
           },
-        },
-        { status: 401 }
+        }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Parse request body
-    const body = await request.json();
-    const {
-      topic,
-      styleGuideId,
-      keywords = [],
-      additionalInstructions,
-    } = body as GenerateArticleRequest;
+    // Parse request body - expects direct GenerateArticleRequest
+    const body = await req.json();
+    const { topic, styleGuideId, keywords = [], additionalInstructions } = body as GenerateArticleRequest;
 
     if (!topic) {
-      return NextResponse.json(
-        {
+      return new Response(
+        JSON.stringify({
           error: {
             code: articleErrorCodes.validationError,
             message: 'Topic is required',
           },
-        },
-        { status: 400 }
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -240,14 +225,14 @@ export async function POST(request: NextRequest) {
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json(
-        {
+      return new Response(
+        JSON.stringify({
           error: {
             code: articleErrorCodes.aiGenerationFailed,
             message: 'Server configuration error',
           },
-        },
-        { status: 500 }
+        }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -257,22 +242,21 @@ export async function POST(request: NextRequest) {
     const quotaCheckResult = await checkQuota(supabase, userId);
 
     if (!quotaCheckResult.ok) {
-      const errorData = quotaCheckResult as any;
-      return NextResponse.json(
-        {
+      return new Response(
+        JSON.stringify({
           error: {
-            code: errorData.error?.code || articleErrorCodes.quotaCheckFailed,
-            message: errorData.error?.message || 'Quota check failed',
-            details: errorData.error?.details,
+            code: (quotaCheckResult as any).error?.code || articleErrorCodes.quotaCheckFailed,
+            message: (quotaCheckResult as any).error?.message || 'Quota check failed',
+            details: (quotaCheckResult as any).error?.details,
           },
-        },
-        { status: 500 }
+        }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (!quotaCheckResult.data.allowed) {
-      return NextResponse.json(
-        {
+      return new Response(
+        JSON.stringify({
           error: {
             code: articleErrorCodes.quotaExceeded,
             message: `Generation quota exceeded. You have used ${quotaCheckResult.data.currentCount}/${quotaCheckResult.data.limit} generations.`,
@@ -282,8 +266,8 @@ export async function POST(request: NextRequest) {
               limit: quotaCheckResult.data.limit,
             },
           },
-        },
-        { status: 429 }
+        }),
+        { status: 429, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -291,99 +275,62 @@ export async function POST(request: NextRequest) {
     const styleGuide = await getStyleGuide(supabase, userId, styleGuideId);
 
     if (styleGuideId && !styleGuide) {
-      return NextResponse.json(
-        {
+      return new Response(
+        JSON.stringify({
           error: {
             code: articleErrorCodes.styleGuideNotFound,
             message: 'Style guide not found',
           },
-        },
-        { status: 404 }
+        }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     // Build prompt
-    const prompt = buildPrompt(topic, styleGuide, keywords || [], additionalInstructions);
+    const systemPrompt = buildPrompt(topic, styleGuide, keywords || [], additionalInstructions);
 
-    // Generate content using Gemini
+    // Get API key
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json(
-        {
+      return new Response(
+        JSON.stringify({
           error: {
             code: articleErrorCodes.aiGenerationFailed,
             message: 'Server configuration error',
           },
-        },
-        { status: 500 }
+        }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     const google = createGoogleGenerativeAI({ apiKey });
 
-    const { object: generatedContent } = await generateObject({
-      model: google('gemini-2.0-flash-exp'),
-      schema: AIGeneratedContentSchema,
-      prompt,
+    // Stream text generation with simple prompt
+    const result = streamText({
+      model: google('gemini-2.5-flash'),
+      system: systemPrompt,
+      messages: [
+        {
+          role: 'user',
+          content: '위의 조건에 따라 블로그 글을 작성해주세요.',
+        },
+      ],
     });
 
-    // Create article in database
-    const slug = generateUniqueSlug(generatedContent.title);
-
-    const createArticleData = {
-      title: generatedContent.title,
-      slug,
-      keywords: generatedContent.keywords,
-      description: generatedContent.metaDescription,
-      content: generatedContent.content,
-      styleGuideId,
-      metaTitle: generatedContent.title,
-      metaDescription: generatedContent.metaDescription,
-    };
-
-    const articleResult = await createArticle(supabase, userId, createArticleData);
-
-    if (!articleResult.ok) {
-      const articleErrorData = articleResult as any;
-      return NextResponse.json(
-        {
-          error: {
-            code: articleErrorData.error?.code || articleErrorCodes.aiGenerationFailed,
-            message: articleErrorData.error?.message || 'Failed to create article',
-          },
-        },
-        { status: 500 }
-      );
-    }
-
-    // Increment quota
-    const incrementResult = await incrementQuota(supabase, userId);
-
-    const quotaRemaining = incrementResult.ok
-      ? incrementResult.data.remaining
-      : quotaCheckResult.data.remaining - 1;
-
-    // Return response
-    return NextResponse.json(
-      {
-        article: articleResult.data,
-        generatedContent,
-        quotaRemaining,
-      },
-      { status: 201 }
-    );
+    // Return stream response
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error('Error generating article:', error);
 
-    return NextResponse.json(
-      {
+    return new Response(
+      JSON.stringify({
         error: {
           code: articleErrorCodes.aiGenerationFailed,
           message: error instanceof Error ? error.message : 'AI generation failed',
         },
-      },
-      { status: 500 }
+      }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }

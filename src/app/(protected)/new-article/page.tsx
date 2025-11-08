@@ -9,7 +9,7 @@ import { GenerationForm } from "@/features/articles/components/generation-form";
 import { GenerationProgress } from "@/features/articles/components/generation-progress";
 import { useGenerateArticle } from "@/features/articles/hooks/useGenerateArticle";
 import { useStyleGuide } from "@/features/articles/hooks/useStyleGuide";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { GenerationFormData } from "@/features/articles/components/generation-form";
 
 type NewArticlePageProps = {
@@ -23,7 +23,13 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const generateArticleMutation = useGenerateArticle();
+  const {
+    generateArticle,
+    isLoading,
+    error,
+    completion,
+  } = useGenerateArticle();
+
   const { data: styleGuideData, isLoading: isLoadingStyleGuide } =
     useStyleGuide();
 
@@ -48,20 +54,12 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
         ? data.keywords.split(",").map((k) => k.trim())
         : [];
 
-      const result = await generateArticleMutation.mutateAsync({
+      await generateArticle({
         topic: data.topic,
         styleGuideId: data.styleGuideId,
         keywords,
         additionalInstructions: undefined,
       });
-
-      toast({
-        title: "AI 글 생성 완료",
-        description: `글이 성공적으로 생성되었습니다. 남은 생성 횟수: ${result.quotaRemaining}회`,
-      });
-
-      // 에디터로 리다이렉트
-      router.push(`/articles/${result.article.id}/edit`);
     } catch (error) {
       console.error("Failed to generate article:", error);
       toast({
@@ -72,12 +70,39 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
             : "AI 글 생성 중 오류가 발생했습니다.",
         variant: "destructive",
       });
-    } finally {
       setIsGenerating(false);
     }
   };
 
-  const error = generateArticleMutation.error;
+  // Monitor completion for article generation
+  useEffect(() => {
+    if (!isLoading && completion) {
+      try {
+        // Try to parse as JSON (structured content)
+        const parsed = JSON.parse(completion);
+
+        // If it looks like generated article content with title and content
+        if (parsed.title && parsed.content) {
+          // Extract title from the first line if it exists
+          const titleMatch = parsed.content.match(/^#\s+(.+)\n/);
+          const title = titleMatch ? titleMatch[1] : parsed.title;
+
+          toast({
+            title: "AI 글 생성 완료",
+            description: `"${title}" 글이 생성되었습니다.`,
+          });
+
+          // For now, redirect to editor with the content in state
+          // In a real app, you'd save to DB first
+          router.push(`/articles/new/content`);
+        }
+      } catch {
+        // Not JSON, might be plain text response
+      }
+
+      setIsGenerating(false);
+    }
+  }, [completion, isLoading, router, toast]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FCFCFD" }}>
@@ -103,16 +128,14 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
             borderRadius: "12px",
           }}
         >
-          {isGenerating || generateArticleMutation.isPending ? (
+          {isGenerating || isLoading ? (
             <GenerationProgress
               isGenerating={true}
               error={error}
               onCancel={() => {
                 setIsGenerating(false);
-                generateArticleMutation.reset();
               }}
               onRetry={() => {
-                generateArticleMutation.reset();
                 setIsGenerating(false);
               }}
             />
