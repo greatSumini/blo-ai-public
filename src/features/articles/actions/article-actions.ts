@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import type {
   CreateArticleRequest,
   UpdateArticleRequest,
+  ListArticlesQuery,
 } from "../lib/dto";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -83,6 +84,56 @@ export async function updateArticleDraft(
     console.error("Error updating article draft:", error);
     throw new Error(
       error instanceof Error ? error.message : "글 수정 중 오류가 발생했습니다"
+    );
+  }
+}
+
+/**
+ * List articles with optional filtering and pagination
+ */
+export async function listArticles(query?: Partial<ListArticlesQuery>) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    // Build query string
+    const params = new URLSearchParams();
+    if (query?.limit !== undefined) params.append("limit", String(query.limit));
+    if (query?.offset !== undefined) params.append("offset", String(query.offset));
+    if (query?.status) params.append("status", query.status);
+    if (query?.sortBy) params.append("sortBy", query.sortBy);
+    if (query?.sortOrder) params.append("sortOrder", query.sortOrder);
+
+    const queryString = params.toString();
+    const url = `${API_BASE_URL}/api/articles${queryString ? `?${queryString}` : ""}`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "x-clerk-user-id": userId,
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Failed to list articles:", errorData);
+      throw new Error(
+        errorData.error?.message || "글 목록을 불러오는데 실패했습니다"
+      );
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error listing articles:", error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "글 목록을 불러오는 중 오류가 발생했습니다"
     );
   }
 }

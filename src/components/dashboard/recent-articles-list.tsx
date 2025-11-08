@@ -11,45 +11,69 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, Pencil } from "lucide-react";
+import { Eye, Pencil, Loader2 } from "lucide-react";
 import { useI18n } from "@/lib/i18n/client";
-
-type Article = {
-  id: string;
-  title: string;
-  status: "done" | "draft";
-  createdAt: string;
-};
-
-const dummyArticles: Article[] = [
-  {
-    id: "1",
-    title: "Next.js 15의 새로운 기능 살펴보기",
-    status: "done",
-    createdAt: "2025-11-05",
-  },
-  {
-    id: "2",
-    title: "AI를 활용한 콘텐츠 마케팅 전략",
-    status: "done",
-    createdAt: "2025-11-03",
-  },
-  {
-    id: "3",
-    title: "인디해커를 위한 SEO 최적화 가이드",
-    status: "done",
-    createdAt: "2025-11-01",
-  },
-  {
-    id: "4",
-    title: "SaaS 제품의 성장 해킹 전략",
-    status: "draft",
-    createdAt: "2025-10-28",
-  },
-];
+import { useListArticles } from "@/features/articles/hooks/useListArticles";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 export function RecentArticlesList() {
   const t = useI18n();
+  const { data, isLoading, error } = useListArticles({
+    query: {
+      limit: 5,
+      sortBy: "created_at",
+      sortOrder: "desc",
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("dashboard.recent.title")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("dashboard.recent.title")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-muted-foreground">
+            {t("dashboard.recent.error") || "글 목록을 불러오는 중 오류가 발생했습니다"}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const articles = data?.data?.articles || [];
+
+  if (articles.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("dashboard.recent.title")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-muted-foreground">
+            {t("dashboard.recent.empty") || "아직 작성한 글이 없습니다"}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -66,19 +90,21 @@ export function RecentArticlesList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {dummyArticles.map((article) => (
+            {articles.map((article) => (
               <TableRow key={article.id}>
                 <TableCell>
                   <Badge
                     variant={
-                      article.status === "done" ? "default" : "secondary"
+                      article.status === "published" ? "default" : "secondary"
                     }
                   >
-                    {article.status === "done" ? t("dashboard.status.done") : t("dashboard.status.draft")}
+                    {article.status === "published" ? t("dashboard.status.done") : t("dashboard.status.draft")}
                   </Badge>
                 </TableCell>
                 <TableCell className="font-medium">{article.title}</TableCell>
-                <TableCell>{article.createdAt}</TableCell>
+                <TableCell>
+                  {format(new Date(article.createdAt), "yyyy-MM-dd", { locale: ko })}
+                </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Button variant="ghost" size="icon">
