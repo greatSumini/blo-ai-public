@@ -1,9 +1,9 @@
-# ContentCraft AI 정보 아키텍처 (IA)
+# Searchify 정보 아키텍처 (IA)
 
 ## 1. 사이트맵 (사이트맵)
 
 ```
-ContentCraft AI
+Searchify
 ├── / (홈페이지)
 ├── /auth
 │   ├── /auth/login (로그인)
@@ -65,7 +65,7 @@ ContentCraft AI
 
 ### **글로벌 네비게이션 바 (GNB)**
 - **위치**: 상단 고정 (64px 높이)
-- **좌측**: ContentCraft AI 로고 (홈페이지 링크)
+- **좌측**: Searchify 로고 (홈페이지 링크)
 - **우측**: 사용자 아바타 드롭다운 메뉴
   - 내 계정(/account/profile)
   - 결제 관리(/account/billing)

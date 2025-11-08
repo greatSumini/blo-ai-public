@@ -21,7 +21,7 @@ type TierType = 'free' | 'pro';
 
 interface QuotaRow {
   id: string;
-  clerk_user_id: string;
+  profile_id: string;
   tier: TierType;
   generation_count: number;
   last_reset_at: string;
@@ -42,13 +42,13 @@ interface QuotaCheckResult {
  */
 const getOrCreateQuotaRecord = async (
   client: SupabaseClient,
-  clerkUserId: string,
+  profileId: string,
 ): Promise<QuotaRow | null> => {
   // Try to get existing record
   const { data: existing } = await client
     .from(GENERATION_QUOTA_TABLE)
     .select('*')
-    .eq('clerk_user_id', clerkUserId)
+    .eq('profile_id', profileId)
     .single();
 
   if (existing) {
@@ -59,7 +59,7 @@ const getOrCreateQuotaRecord = async (
   const { data: newRecord, error } = await client
     .from(GENERATION_QUOTA_TABLE)
     .insert({
-      clerk_user_id: clerkUserId,
+      profile_id: profileId,
       tier: 'free',
       generation_count: 0,
     })
@@ -82,7 +82,13 @@ export const checkQuota = async (
   clerkUserId: string,
 ): Promise<HandlerResult<QuotaCheckResult, ArticleServiceError, unknown>> => {
   try {
-    const quota = await getOrCreateQuotaRecord(client, clerkUserId);
+    // Resolve profile id
+    const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
+    const profileId = await getProfileIdByClerkId(client, clerkUserId);
+    if (!profileId) {
+      return failure(404, articleErrorCodes.quotaCheckFailed, 'Profile not found');
+    }
+    const quota = await getOrCreateQuotaRecord(client, profileId);
 
     if (!quota) {
       return failure(
@@ -128,7 +134,12 @@ export const incrementQuota = async (
 ): Promise<HandlerResult<{ newCount: number; remaining: number }, ArticleServiceError, unknown>> => {
   try {
     // Get current quota to determine tier
-    const quota = await getOrCreateQuotaRecord(client, clerkUserId);
+    const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
+    const profileId = await getProfileIdByClerkId(client, clerkUserId);
+    if (!profileId) {
+      return failure(404, articleErrorCodes.quotaIncrementFailed, 'Profile not found');
+    }
+    const quota = await getOrCreateQuotaRecord(client, profileId);
 
     if (!quota) {
       return failure(
@@ -147,7 +158,7 @@ export const incrementQuota = async (
       .update({
         generation_count: quota.generation_count + 1,
       })
-      .eq('clerk_user_id', clerkUserId)
+      .eq('profile_id', profileId)
       .eq('generation_count', quota.generation_count) // Ensure no race condition
       .select('generation_count')
       .single();
@@ -182,10 +193,12 @@ export const getQuotaStatus = async (
   clerkUserId: string,
 ): Promise<HandlerResult<QuotaCheckResult, ArticleServiceError, unknown>> => {
   try {
+    const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
+    const profileId = await getProfileIdByClerkId(client, clerkUserId);
     const { data: quota } = await client
       .from(GENERATION_QUOTA_TABLE)
       .select('*')
-      .eq('clerk_user_id', clerkUserId)
+      .eq('profile_id', profileId ?? '')
       .single();
 
     if (!quota) {

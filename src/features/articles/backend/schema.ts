@@ -85,7 +85,7 @@ export type UpdateArticleRequest = z.infer<typeof UpdateArticleRequestSchema>;
 // Database row schema (snake_case to match database columns)
 export const ArticleTableRowSchema = z.object({
   id: z.string().uuid(),
-  clerk_user_id: z.string(),
+  profile_id: z.string().uuid(),
   title: z.string(),
   slug: z.string(),
   keywords: z.array(z.string()),
@@ -108,7 +108,7 @@ export type ArticleRow = z.infer<typeof ArticleTableRowSchema>;
 // Response schema (camelCase for API responses)
 export const ArticleResponseSchema = z.object({
   id: z.string().uuid(),
-  clerkUserId: z.string(),
+  profileId: z.string().uuid(),
   title: z.string(),
   slug: z.string(),
   keywords: z.array(z.string()),

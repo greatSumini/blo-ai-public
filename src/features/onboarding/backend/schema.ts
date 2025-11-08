@@ -9,7 +9,7 @@ export type CreateStyleGuideRequest = z.infer<typeof CreateStyleGuideRequestSche
 // Database row schema (snake_case to match database columns)
 export const StyleGuideTableRowSchema = z.object({
   id: z.string().uuid(),
-  clerk_user_id: z.string(),
+  profile_id: z.string().uuid(),
   brand_name: z.string(),
   brand_description: z.string(),
   personality: z.array(z.string()),
@@ -31,7 +31,7 @@ export type StyleGuideRow = z.infer<typeof StyleGuideTableRowSchema>;
 // Response schema (camelCase for API responses)
 export const StyleGuideResponseSchema = z.object({
   id: z.string().uuid(),
-  clerkUserId: z.string(),
+  profileId: z.string().uuid(),
   brandName: z.string(),
   brandDescription: z.string(),
   personality: z.array(z.string()),

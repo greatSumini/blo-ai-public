@@ -1,0 +1,15 @@
+{
+  "title": "Style Guide",
+  "subtitle": "Manage your blog's style guide for AI writing.",
+  "create_new": "Create New Guide",
+  "empty": "No style guides created yet.",
+  "create": "Create Style Guide",
+  "loading": "Loading...",
+  "error.load": "Failed to load the style guide.",
+  "retry": "Retry",
+  "delete.confirm": "Delete this style guide? This action cannot be undone.",
+  "delete.success.title": "Deleted",
+  "delete.success.desc": "The style guide has been deleted.",
+  "delete.error.title": "Error",
+  "delete.error.desc": "Failed to delete the style guide."
+}

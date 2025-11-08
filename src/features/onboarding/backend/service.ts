@@ -16,6 +16,7 @@ import {
 } from '@/features/onboarding/backend/error';
 
 const STYLE_GUIDES_TABLE = 'style_guides';
+import { ensureProfile, getProfileIdByClerkId } from '@/features/profiles/backend/service';
 
 /**
  * Creates or updates a style guide for a user
@@ -26,9 +27,19 @@ export const upsertStyleGuide = async (
   clerkUserId: string,
   data: CreateStyleGuideRequest,
 ): Promise<HandlerResult<StyleGuideResponse, StyleGuideServiceError, unknown>> => {
+  // Resolve profile_id for this Clerk user (create minimal profile if absent)
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
+  if (!profileId) {
+    return failure(
+      500,
+      styleGuideErrorCodes.upsertError,
+      'Failed to resolve or create user profile.',
+    );
+  }
   // Map camelCase TypeScript to snake_case database columns
   const dbRecord = {
-    clerk_user_id: clerkUserId,
+    profile_id: profileId,
     brand_name: data.brandName,
     brand_description: data.brandDescription,
     personality: data.personality,
@@ -47,7 +58,7 @@ export const upsertStyleGuide = async (
   const { data: savedData, error } = await client
     .from(STYLE_GUIDES_TABLE)
     .upsert(dbRecord, {
-      onConflict: 'clerk_user_id', // Update if user already exists
+      onConflict: 'profile_id', // Update if user already exists
       ignoreDuplicates: false,
     })
     .select('*')
@@ -84,7 +95,7 @@ export const upsertStyleGuide = async (
   // Map snake_case database columns to camelCase response
   const mapped = {
     id: rowParse.data.id,
-    clerkUserId: rowParse.data.clerk_user_id,
+    profileId: rowParse.data.profile_id,
     brandName: rowParse.data.brand_name,
     brandDescription: rowParse.data.brand_description,
     personality: rowParse.data.personality,
@@ -124,10 +135,14 @@ export const getStyleGuide = async (
   client: SupabaseClient,
   clerkUserId: string,
 ): Promise<HandlerResult<StyleGuideResponse, StyleGuideServiceError, unknown>> => {
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) {
+    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+  }
   const { data, error } = await client
     .from(STYLE_GUIDES_TABLE)
     .select('*')
-    .eq('clerk_user_id', clerkUserId)
+    .eq('profile_id', profileId)
     .single();
 
   if (error) {
@@ -160,7 +175,7 @@ export const getStyleGuide = async (
   // Map snake_case database columns to camelCase response
   const mapped = {
     id: rowParse.data.id,
-    clerkUserId: rowParse.data.clerk_user_id,
+    profileId: rowParse.data.profile_id,
     brandName: rowParse.data.brand_name,
     brandDescription: rowParse.data.brand_description,
     personality: rowParse.data.personality,
@@ -217,11 +232,15 @@ export const updateStyleGuide = async (
     notes: data.notes || null,
   };
 
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) {
+    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+  }
   const { data: updatedData, error } = await client
     .from(STYLE_GUIDES_TABLE)
     .update(dbRecord)
     .eq('id', guideId)
-    .eq('clerk_user_id', clerkUserId)
+    .eq('profile_id', profileId)
     .select('*')
     .single();
 
@@ -255,7 +274,7 @@ export const updateStyleGuide = async (
   // Map snake_case database columns to camelCase response
   const mapped = {
     id: rowParse.data.id,
-    clerkUserId: rowParse.data.clerk_user_id,
+    profileId: rowParse.data.profile_id,
     brandName: rowParse.data.brand_name,
     brandDescription: rowParse.data.brand_description,
     personality: rowParse.data.personality,
@@ -296,11 +315,15 @@ export const deleteStyleGuide = async (
   guideId: string,
   clerkUserId: string,
 ): Promise<HandlerResult<{ success: boolean }, StyleGuideServiceError, unknown>> => {
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) {
+    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+  }
   const { error } = await client
     .from(STYLE_GUIDES_TABLE)
     .delete()
     .eq('id', guideId)
-    .eq('clerk_user_id', clerkUserId);
+    .eq('profile_id', profileId);
 
   if (error) {
     if (error.code === 'PGRST116') {
@@ -324,10 +347,14 @@ export const markOnboardingCompleted = async (
   client: SupabaseClient,
   clerkUserId: string,
 ): Promise<HandlerResult<{ success: boolean }, StyleGuideServiceError, unknown>> => {
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) {
+    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+  }
   const { error } = await client
     .from(STYLE_GUIDES_TABLE)
     .update({ onboarding_completed: true })
-    .eq('clerk_user_id', clerkUserId);
+    .eq('profile_id', profileId);
 
   if (error) {
     return failure(

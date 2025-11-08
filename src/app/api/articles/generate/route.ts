@@ -11,7 +11,7 @@ import { articleErrorCodes } from '@/features/articles/backend/error';
 
 type StyleGuideResponse = {
   id: string;
-  clerkUserId: string;
+  profileId: string;
   brandName: string;
   brandDescription: string;
   personality: string[];
@@ -38,7 +38,10 @@ const getStyleGuide = async (
   clerkUserId: string,
   styleGuideId?: string,
 ): Promise<StyleGuideResponse | null> => {
-  let query = client.from(STYLE_GUIDES_TABLE).select('*').eq('clerk_user_id', clerkUserId);
+  const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) return null;
+  let query = client.from(STYLE_GUIDES_TABLE).select('*').eq('profile_id', profileId);
 
   if (styleGuideId) {
     query = query.eq('id', styleGuideId);
@@ -55,7 +58,7 @@ const getStyleGuide = async (
   // Map snake_case to camelCase
   return {
     id: data.id,
-    clerkUserId: data.clerk_user_id,
+    profileId: data.profile_id,
     brandName: data.brand_name,
     brandDescription: data.brand_description,
     personality: data.personality,

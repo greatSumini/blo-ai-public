@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import type { GenerateArticleRequest } from '../lib/dto';
+import { extractApiErrorMessage } from '@/lib/remote/api-client';
 
 export const useGenerateArticle = () => {
   const queryClient = useQueryClient();
@@ -73,7 +74,8 @@ export const useGenerateArticle = () => {
         // Invalidate queries
         queryClient.invalidateQueries({ queryKey: ['articles'] });
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Unknown error');
+        const message = extractApiErrorMessage(err, 'Failed to generate article');
+        const error = err instanceof Error ? new Error(message) : new Error(message);
         setError(error);
         throw error;
       } finally {

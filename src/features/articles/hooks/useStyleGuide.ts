@@ -5,7 +5,7 @@ import { getUserStyleGuide } from "../actions/article-actions";
 
 export interface StyleGuideData {
   id: string;
-  clerkUserId: string;
+  profileId: string;
   brandName: string;
   brandDescription: string;
   personality: string[];

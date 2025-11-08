@@ -35,7 +35,7 @@ export function Header() {
             href="/"
             className="text-xl font-bold text-[#111827] hover:text-[#3BA2F8] transition-colors"
           >
-            IndieBlog
+            Searchify
           </Link>
 
           {/* Desktop Navigation */}

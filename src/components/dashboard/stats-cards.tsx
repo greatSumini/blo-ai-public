@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FileText, Clock } from "lucide-react";
+import { useI18n } from "@/lib/i18n/client";
 
 type StatsCardsProps = {
   monthlyArticles?: number;
@@ -21,33 +22,34 @@ export function StatsCards({
   savedHours = 8,
 }: StatsCardsProps) {
   const achievementRate = Math.round((monthlyArticles / monthlyGoal) * 100);
+  const t = useI18n();
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">월간 완성 글 수</CardTitle>
+          <CardTitle className="text-sm font-medium">{t("dashboard.stats.monthly_articles_title")}</CardTitle>
           <FileText className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            {monthlyArticles} / {monthlyGoal}편
+            {monthlyArticles} / {monthlyGoal}{t("dashboard.stats.monthly_articles_suffix")}
           </div>
           <CardDescription className="mt-1">
-            목표의 {achievementRate}%를 달성했어요!
+            {t("dashboard.stats.goal_achievement", { rate: achievementRate })}
           </CardDescription>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">누적 절약 시간</CardTitle>
+          <CardTitle className="text-sm font-medium">{t("dashboard.stats.saved_time_title")}</CardTitle>
           <Clock className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{savedHours} 시간</div>
+          <div className="text-2xl font-bold">{savedHours} {t("dashboard.stats.saved_time_suffix")}</div>
           <CardDescription className="mt-1">
-            이번 달에 절약한 시간
+            {t("dashboard.stats.saved_time_desc")}
           </CardDescription>
         </CardContent>
       </Card>

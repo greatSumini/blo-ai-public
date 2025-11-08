@@ -1,8 +1,8 @@
-# ContentCraft AI Design Guide
+# Searchify Design Guide
 
 ## 1. Overall Mood (전체적인 무드)
 
-ContentCraft AI는 **신뢰할 수 있고 전문적인(Trustworthy & Professional)** 무드를 지향합니다. 인디해커와 솔로 창업자들이 콘텐츠 생성에 집중할 수 있도록 깔끔하고 직관적인 인터페이스를 제공합니다. 
+Searchify는 **신뢰할 수 있고 전문적인(Trustworthy & Professional)** 무드를 지향합니다. 인디해커와 솔로 창업자들이 콘텐츠 생성에 집중할 수 있도록 깔끔하고 직관적인 인터페이스를 제공합니다. 
 
 핵심 디자인 철학:
 - **미니멀리즘**: 불필요한 요소를 제거하고 콘텐츠에 집중

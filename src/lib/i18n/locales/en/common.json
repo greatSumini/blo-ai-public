@@ -2,5 +2,11 @@
   "account_management": "Account Management",
   "coming_soon": "This page will be implemented soon.",
   "login": "Log in",
-  "brand_name": "Searchify"
+  "brand_name": "Searchify",
+  "back": "Back",
+  "back_go": "Go back",
+  "retry": "Retry",
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success"
 }

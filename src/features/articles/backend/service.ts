@@ -15,6 +15,7 @@ import {
   articleErrorCodes,
   type ArticleServiceError,
 } from '@/features/articles/backend/error';
+import { ensureProfile, getProfileIdByClerkId } from '@/features/profiles/backend/service';
 
 const ARTICLES_TABLE = 'articles';
 
@@ -32,7 +33,7 @@ const mapArticleRowToResponse = (row: unknown): ArticleResponse => {
   // Map snake_case to camelCase
   const mapped = {
     id: rowParse.data.id,
-    clerkUserId: rowParse.data.clerk_user_id,
+    profileId: rowParse.data.profile_id,
     title: rowParse.data.title,
     slug: rowParse.data.slug,
     keywords: rowParse.data.keywords,
@@ -68,9 +69,15 @@ export const createArticle = async (
   clerkUserId: string,
   data: CreateArticleRequest,
 ): Promise<HandlerResult<ArticleResponse, ArticleServiceError, unknown>> => {
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
+  if (!profileId) {
+    return failure(500, articleErrorCodes.createError, 'Failed to resolve or create user profile');
+  }
   // Map camelCase TypeScript to snake_case database columns
   const dbRecord = {
-    clerk_user_id: clerkUserId,
+    profile_id: profileId,
     title: data.title,
     slug: data.slug,
     keywords: data.keywords,
@@ -129,11 +136,15 @@ export const getArticleById = async (
   clerkUserId: string,
   articleId: string,
 ): Promise<HandlerResult<ArticleResponse, ArticleServiceError, unknown>> => {
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) {
+    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+  }
   const { data, error } = await client
     .from(ARTICLES_TABLE)
     .select('*')
     .eq('id', articleId)
-    .eq('clerk_user_id', clerkUserId)
+    .eq('profile_id', profileId)
     .single();
 
   if (error) {
@@ -202,11 +213,15 @@ export const updateArticle = async (
     }
   }
 
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) {
+    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+  }
   const { data: updatedData, error } = await client
     .from(ARTICLES_TABLE)
     .update(updateData)
     .eq('id', articleId)
-    .eq('clerk_user_id', clerkUserId)
+    .eq('profile_id', profileId)
     .select('*')
     .single();
 
@@ -251,11 +266,15 @@ export const deleteArticle = async (
   clerkUserId: string,
   articleId: string,
 ): Promise<HandlerResult<{ id: string }, ArticleServiceError, unknown>> => {
+  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  if (!profileId) {
+    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+  }
   const { error } = await client
     .from(ARTICLES_TABLE)
     .delete()
     .eq('id', articleId)
-    .eq('clerk_user_id', clerkUserId);
+    .eq('profile_id', profileId);
 
   if (error) {
     return failure(

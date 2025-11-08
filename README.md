@@ -90,3 +90,29 @@ easynext sentry
 # Google Adsense
 easynext adsense
 ```
+
+## Profiles + Clerk Webhook
+
+- 이 템플릿은 Clerk 사용자 식별자를 직접 테이블에 저장하지 않고, `profiles` 테이블의 `id`를 모든 테이블이 참조합니다.
+- Supabase 마이그레이션 `supabase/migrations/0006_create_profiles_and_migrate_refs.sql`를 실행하면 다음이 수행됩니다.
+  - `profiles` 테이블 생성 및 `style_guides`, `articles`, `generation_quota`에 `profile_id` 도입/백필/제약(FK + CASCADE)
+  - 기존 `clerk_user_id` 컬럼과 관련 인덱스 제거 (idempotent)
+
+### Clerk Webhook 설정
+
+- 엔드포인트: `/api/webhooks/clerk`
+- 이벤트: `user.created`, `user.deleted`
+- 서명 검증: 환경변수 `CLERK_WEBHOOK_SECRET`를 설정하면 Svix를 사용해 서명 검증을 수행합니다. 미설정 시 로컬 개발 편의를 위해 검증 없이 처리합니다.
+
+### 환경 변수
+
+`.env.local` 예시
+
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_URL=...
+SUPABASE_SERVICE_ROLE_KEY=...
+GOOGLE_GENERATIVE_AI_API_KEY=...
+CLERK_WEBHOOK_SECRET=...
+```

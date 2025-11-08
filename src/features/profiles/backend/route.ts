@@ -1,0 +1,109 @@
+import type { Hono } from 'hono';
+import { getLogger, getSupabase, type AppEnv } from '@/backend/hono/context';
+import { respond, success, failure, type ErrorResult } from '@/backend/http/response';
+import { upsertProfile, deleteProfileByClerkId } from './service';
+
+// Minimal Clerk webhook payload types we care about
+type ClerkWebhook = {
+  type: string; // e.g. 'user.created' | 'user.deleted'
+  data?: any;
+};
+
+const extractClerkUser = (payload: ClerkWebhook) => {
+  const d = payload.data ?? {};
+  const id: string | undefined = d.id;
+  if (!id) return null;
+  const emailAddresses: Array<{ id: string; email_address: string } | any> = d.email_addresses ?? [];
+  const primaryEmailId: string | undefined = d.primary_email_address_id;
+  const primaryEmail = emailAddresses.find((e) => e.id === primaryEmailId)?.email_address ?? emailAddresses[0]?.email_address ?? null;
+  const fullName: string | null = d.first_name || d.last_name ? `${d.first_name || ''} ${d.last_name || ''}`.trim() : d.username || null;
+  const imageUrl: string | null = d.image_url ?? null;
+  return { clerkUserId: id, email: primaryEmail, fullName, imageUrl } as const;
+};
+
+export const registerProfilesRoutes = (app: Hono<AppEnv>) => {
+  // POST /api/webhooks/clerk
+  app.post('/api/webhooks/clerk', async (c) => {
+    const supabase = getSupabase(c);
+    const logger = getLogger(c);
+
+    // Optional Svix signature verification (if secret exists)
+    try {
+      const secret = process.env.CLERK_WEBHOOK_SECRET;
+      if (secret) {
+        const { Webhook } = await import('svix');
+        const headers = c.req.header();
+        const svixId = headers['svix-id'];
+        const svixTimestamp = headers['svix-timestamp'];
+        const svixSignature = headers['svix-signature'];
+
+        if (!svixId || !svixTimestamp || !svixSignature) {
+          return respond(c, failure(400, 'invalid_signature', 'Missing Svix headers'));
+        }
+
+        const payload = await c.req.text();
+        const wh = new Webhook(secret);
+        try {
+          wh.verify(payload, {
+            'svix-id': svixId,
+            'svix-timestamp': svixTimestamp,
+            'svix-signature': svixSignature,
+          } as any);
+          // Re-parse verified JSON
+          const event = JSON.parse(payload) as ClerkWebhook;
+          const type = event.type;
+
+          if (type === 'user.created') {
+            const user = extractClerkUser(event);
+            if (!user) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+            const result = await upsertProfile(supabase, user);
+            if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+            logger.info('[Webhook] user.created processed', { clerkUserId: user.clerkUserId });
+            return respond(c, success({ ok: true }, 200));
+          }
+
+          if (type === 'user.deleted') {
+            const id: string | undefined = (event as any).data?.id;
+            if (!id) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+            const result = await deleteProfileByClerkId(supabase, id);
+            if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+            logger.info('[Webhook] user.deleted processed', { clerkUserId: id });
+            return respond(c, success({ ok: true }, 200));
+          }
+
+          logger.info('[Webhook] Unhandled event', { type });
+          return respond(c, success({ ok: true }, 200));
+        } catch (err) {
+          logger.warn('[Webhook] signature verification failed', err as any);
+          return respond(c, failure(400, 'invalid_signature', 'Verification failed'));
+        }
+      }
+    } catch (e) {
+      // If verification setup fails, continue without verification (best-effort)
+      getLogger(c).warn('[Webhook] Svix verification not performed', e as any);
+    }
+
+    // Fallback: process without verification (for local/dev)
+    const body = await c.req.json<ClerkWebhook>();
+    const type = body.type;
+    if (type === 'user.created') {
+      const user = extractClerkUser(body);
+      if (!user) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+      const result = await upsertProfile(supabase, user);
+      if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+      logger.info('[Webhook] user.created processed (no verify)', { clerkUserId: user.clerkUserId });
+      return respond(c, success({ ok: true }, 200));
+    }
+    if (type === 'user.deleted') {
+      const id: string | undefined = (body as any).data?.id;
+      if (!id) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+      const result = await deleteProfileByClerkId(supabase, id);
+      if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+      logger.info('[Webhook] user.deleted processed (no verify)', { clerkUserId: id });
+      return respond(c, success({ ok: true }, 200));
+    }
+
+    logger.info('[Webhook] Unhandled event (no verify)', { type });
+    return respond(c, success({ ok: true }, 200));
+  });
+};
