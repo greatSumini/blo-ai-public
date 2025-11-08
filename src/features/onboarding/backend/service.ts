@@ -191,3 +191,27 @@ export const getStyleGuide = async (
 
   return success(parsed.data, 200);
 };
+
+/**
+ * Marks the onboarding as completed for a user
+ * Updates the onboarding_completed flag in the style_guides table
+ */
+export const markOnboardingCompleted = async (
+  client: SupabaseClient,
+  clerkUserId: string,
+): Promise<HandlerResult<{ success: boolean }, StyleGuideServiceError, unknown>> => {
+  const { error } = await client
+    .from(STYLE_GUIDES_TABLE)
+    .update({ onboarding_completed: true })
+    .eq('clerk_user_id', clerkUserId);
+
+  if (error) {
+    return failure(
+      500,
+      styleGuideErrorCodes.upsertError,
+      `Failed to update onboarding status: ${error.message}`,
+    );
+  }
+
+  return success({ success: true }, 200);
+};

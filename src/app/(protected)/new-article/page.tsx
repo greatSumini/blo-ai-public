@@ -58,7 +58,8 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
         description: "글이 성공적으로 저장되었습니다.",
       });
 
-      router.push(`/dashboard`);
+      // 에디터로 리다이렉트
+      router.push(`/articles/${result.id}/edit`);
     } catch (error) {
       console.error("Failed to save draft:", error);
       toast({
@@ -132,6 +133,9 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
       });
 
       setIsGeneratingAI(false);
+
+      // 에디터로 리다이렉트
+      router.push(`/articles/${result.article.id}/edit`);
     } catch (error) {
       console.error("Failed to generate article:", error);
       // Error는 GenerationProgress 컴포넌트에서 처리

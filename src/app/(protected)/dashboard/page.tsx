@@ -21,23 +21,43 @@ function DashboardContent() {
   const router = useRouter();
   const [showWelcomeBanner, setShowWelcomeBanner] = useState(false);
 
+  console.log("[DASHBOARD] Component mounted, user:", user?.email);
+  console.log("[DASHBOARD] Current URL:", window.location.href);
+  console.log("[DASHBOARD] searchParams:", {
+    welcome: searchParams.get("welcome"),
+    onboarding_completed: searchParams.get("onboarding_completed"),
+  });
+
   useEffect(() => {
     // Check if welcome parameter is present
     const welcomeParam = searchParams.get("welcome");
+    const onboardingParam = searchParams.get("onboarding_completed");
+
+    console.log("[DASHBOARD] useEffect triggered");
+    console.log("[DASHBOARD] welcomeParam:", welcomeParam);
+    console.log("[DASHBOARD] onboardingParam:", onboardingParam);
 
     if (welcomeParam === "true") {
+      console.log("[DASHBOARD] Welcome param detected");
+
       // Check if banner has already been shown in this session
       const hasShownWelcome = sessionStorage.getItem(WELCOME_SHOWN_KEY);
 
+      console.log("[DASHBOARD] hasShownWelcome:", hasShownWelcome);
+
       if (!hasShownWelcome) {
         // Show banner and mark as shown
+        console.log("[DASHBOARD] Showing welcome banner");
         setShowWelcomeBanner(true);
         sessionStorage.setItem(WELCOME_SHOWN_KEY, "true");
       }
 
       // Clean URL by removing welcome parameter
       const newUrl = window.location.pathname;
+      console.log("[DASHBOARD] Cleaning URL to:", newUrl);
       router.replace(newUrl);
+    } else {
+      console.log("[DASHBOARD] No welcome param, skipping cleanup");
     }
   }, [searchParams, router]);
 

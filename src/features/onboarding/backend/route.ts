@@ -10,7 +10,7 @@ import {
   type AppEnv,
 } from '@/backend/hono/context';
 import { CreateStyleGuideRequestSchema } from '@/features/onboarding/backend/schema';
-import { upsertStyleGuide, getStyleGuide } from './service';
+import { upsertStyleGuide, getStyleGuide, markOnboardingCompleted } from './service';
 import {
   styleGuideErrorCodes,
   type StyleGuideServiceError,
@@ -132,6 +132,44 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     }
 
     logger.info('Style guide retrieved successfully', { userId: targetUserId });
+    return respond(c, result);
+  });
+
+  /**
+   * PATCH /api/onboarding/complete
+   * Marks onboarding as completed for a user
+   * This ensures the middleware can check completion status from DB
+   *
+   * Headers: x-clerk-user-id (required)
+   */
+  app.patch('/api/onboarding/complete', async (c) => {
+    // Get userId from header (passed from server action)
+    const userId = c.req.header('x-clerk-user-id');
+
+    if (!userId) {
+      return respond(
+        c,
+        failure(
+          401,
+          styleGuideErrorCodes.unauthorized,
+          'User ID is required. Please provide x-clerk-user-id header.',
+        ),
+      );
+    }
+
+    const supabase = getSupabase(c);
+    const logger = getLogger(c);
+
+    // Update the onboarding_completed flag
+    const result = await markOnboardingCompleted(supabase, userId);
+
+    if (!result.ok) {
+      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
+      logger.error('Failed to mark onboarding completed', errorResult.error.message);
+      return respond(c, result);
+    }
+
+    logger.info('Onboarding marked as completed', { userId });
     return respond(c, result);
   });
 };
