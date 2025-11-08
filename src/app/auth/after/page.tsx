@@ -1,20 +1,22 @@
-"use client";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+export default async function AfterAuthPage() {
+  const { userId, sessionClaims } = await auth();
 
-export default function AfterAuthPage() {
-  const router = useRouter();
+  // 인증되지 않은 경우 로그인 페이지로 리디렉트
+  if (!userId) {
+    redirect("/sign-in");
+  }
 
-  useEffect(() => {
-    // 온보딩 완료 여부를 확인하고, 미완료 시 온보딩으로 리디렉트
-    // 현재는 임시로 대시보드로 리디렉트
-    router.replace("/dashboard");
-  }, [router]);
+  // 온보딩 완료 여부 확인
+  const onboardingCompleted = sessionClaims?.metadata?.onboardingCompleted === true;
 
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <p className="text-muted-foreground">리디렉트 중...</p>
-    </div>
-  );
+  if (onboardingCompleted) {
+    // 온보딩 완료 시 대시보드로 리디렉트
+    redirect("/dashboard");
+  } else {
+    // 온보딩 미완료 시 온보딩 페이지로 리디렉트
+    redirect("/auth/onboarding");
+  }
 }

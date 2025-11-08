@@ -1,37 +1,24 @@
-"use client";
-
-import { useEffect, type ReactNode } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { LOGIN_PATH } from "@/constants/auth";
+import { type ReactNode } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
-
-const buildRedirectUrl = (pathname: string) => {
-  const redirectUrl = new URL(LOGIN_PATH, window.location.origin);
-  redirectUrl.searchParams.set("redirectedFrom", pathname);
-  return redirectUrl.toString();
-};
 
 type ProtectedLayoutProps = {
   children: ReactNode;
 };
 
+/**
+ * Protected Layout
+ *
+ * Authentication and onboarding guards are handled by middleware.ts
+ * This layout simply provides the UI structure for authenticated, onboarded users.
+ *
+ * Middleware ensures:
+ * - User is authenticated
+ * - User has completed onboarding
+ * - Unauthenticated users are redirected to /sign-in
+ * - Users without onboarding are redirected to /auth/onboarding
+ */
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
-  const { isAuthenticated, isLoading } = useCurrentUser();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.replace(buildRedirectUrl(pathname));
-    }
-  }, [isAuthenticated, isLoading, pathname, router]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar />

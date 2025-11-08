@@ -1,25 +1,20 @@
 import "server-only";
 
-import type { User } from "@supabase/supabase-js";
-import { createSupabaseServerClient } from "@/lib/supabase/server-client";
+import { currentUser } from "@clerk/nextjs/server";
 import type { CurrentUserSnapshot } from "../types";
 
-const mapUser = (user: User) => ({
-  id: user.id,
-  email: user.email,
-  appMetadata: user.app_metadata ?? {},
-  userMetadata: user.user_metadata ?? {},
-});
-
 export const loadCurrentUser = async (): Promise<CurrentUserSnapshot> => {
-  const supabase = await createSupabaseServerClient();
-  const result = await supabase.auth.getUser();
-  const user = result.data.user;
+  const user = await currentUser();
 
   if (user) {
     return {
       status: "authenticated",
-      user: mapUser(user),
+      user: {
+        id: user.id,
+        email: user.emailAddresses[0]?.emailAddress ?? null,
+        appMetadata: {},
+        userMetadata: {},
+      },
     };
   }
 

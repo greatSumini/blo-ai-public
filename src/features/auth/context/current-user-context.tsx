@@ -9,8 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { match, P } from "ts-pattern";
-import { getSupabaseBrowserClient } from "@/lib/supabase/browser-client";
+import { useUser } from "@clerk/nextjs";
 import type {
   CurrentUserContextValue,
   CurrentUserSnapshot,
@@ -28,47 +27,50 @@ export const CurrentUserProvider = ({
   initialState,
 }: CurrentUserProviderProps) => {
   const queryClient = useQueryClient();
+  const { user: clerkUser, isLoaded } = useUser();
   const [snapshot, setSnapshot] = useState<CurrentUserSnapshot>(initialState);
 
   const refresh = useCallback(async () => {
-    setSnapshot((prev) => ({ status: "loading", user: prev.user }));
-    const supabase = getSupabaseBrowserClient();
+    if (!isLoaded) return;
 
-    try {
-      const result = await supabase.auth.getUser();
-
-      const nextSnapshot = match(result)
-        .with({ data: { user: P.nonNullable } }, ({ data }) => ({
-          status: "authenticated" as const,
+    const nextSnapshot: CurrentUserSnapshot = clerkUser
+      ? {
+          status: "authenticated",
           user: {
-            id: data.user.id,
-            email: data.user.email,
-            appMetadata: data.user.app_metadata ?? {},
-            userMetadata: data.user.user_metadata ?? {},
+            id: clerkUser.id,
+            email: clerkUser.emailAddresses[0]?.emailAddress ?? null,
+            appMetadata: {},
+            userMetadata: {},
           },
-        }))
-        .otherwise(() => ({ status: "unauthenticated" as const, user: null }));
+        }
+      : { status: "unauthenticated", user: null };
 
-      setSnapshot(nextSnapshot);
-      queryClient.setQueryData(["currentUser"], nextSnapshot);
-    } catch (error) {
-      const fallbackSnapshot: CurrentUserSnapshot = {
-        status: "unauthenticated",
-        user: null,
-      };
-      setSnapshot(fallbackSnapshot);
-      queryClient.setQueryData(["currentUser"], fallbackSnapshot);
-    }
-  }, [queryClient]);
+    setSnapshot(nextSnapshot);
+    queryClient.setQueryData(["currentUser"], nextSnapshot);
+  }, [clerkUser, isLoaded, queryClient]);
 
   const value = useMemo<CurrentUserContextValue>(() => {
+    const currentSnapshot: CurrentUserSnapshot = clerkUser
+      ? {
+          status: "authenticated",
+          user: {
+            id: clerkUser.id,
+            email: clerkUser.emailAddresses[0]?.emailAddress ?? null,
+            appMetadata: {},
+            userMetadata: {},
+          },
+        }
+      : isLoaded
+        ? { status: "unauthenticated", user: null }
+        : snapshot;
+
     return {
-      ...snapshot,
+      ...currentSnapshot,
       refresh,
-      isAuthenticated: snapshot.status === "authenticated",
-      isLoading: snapshot.status === "loading",
+      isAuthenticated: currentSnapshot.status === "authenticated",
+      isLoading: !isLoaded,
     };
-  }, [refresh, snapshot]);
+  }, [clerkUser, isLoaded, refresh, snapshot]);
 
   return (
     <CurrentUserContext.Provider value={value}>
