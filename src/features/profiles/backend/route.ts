@@ -2,24 +2,7 @@ import type { Hono } from 'hono';
 import { getLogger, getSupabase, type AppEnv } from '@/backend/hono/context';
 import { respond, success, failure, type ErrorResult } from '@/backend/http/response';
 import { upsertProfile, deleteProfileByClerkId } from './service';
-
-// Minimal Clerk webhook payload types we care about
-type ClerkWebhook = {
-  type: string; // e.g. 'user.created' | 'user.deleted'
-  data?: any;
-};
-
-const extractClerkUser = (payload: ClerkWebhook) => {
-  const d = payload.data ?? {};
-  const id: string | undefined = d.id;
-  if (!id) return null;
-  const emailAddresses: Array<{ id: string; email_address: string } | any> = d.email_addresses ?? [];
-  const primaryEmailId: string | undefined = d.primary_email_address_id;
-  const primaryEmail = emailAddresses.find((e) => e.id === primaryEmailId)?.email_address ?? emailAddresses[0]?.email_address ?? null;
-  const fullName: string | null = d.first_name || d.last_name ? `${d.first_name || ''} ${d.last_name || ''}`.trim() : d.username || null;
-  const imageUrl: string | null = d.image_url ?? null;
-  return { clerkUserId: id, email: primaryEmail, fullName, imageUrl } as const;
-};
+import { extractClerkUser, type ClerkWebhook } from './utils';
 
 export const registerProfilesRoutes = (app: Hono<AppEnv>) => {
   // POST /api/webhooks/clerk
