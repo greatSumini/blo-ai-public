@@ -2,6 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/backend/supabase/client";
 import { createI18nMiddleware } from "@/lib/i18n/middleware";
+import { getOnboardingCompletedFromDb } from "@/features/onboarding/backend/onboarding-status";
 
 /**
  * Authentication and Onboarding Guard Middleware
@@ -25,10 +26,35 @@ import { createI18nMiddleware } from "@/lib/i18n/middleware";
  * - Includes: /sign-in, /sign-up, /auth/after, static assets
  *
  * ONBOARDING STATUS CHECK:
- * - Uses sessionClaims.publicMetadata.onboardingCompleted (boolean)
- * - No database calls (metadata-based for performance)
- * - Set during onboarding completion via updateUser()
+ * - Supabase style_guides.onboarding_completed 플래그만을 단일 소스로 사용
+ * - Supabase 조회가 실패하거나 설정이 없으면 "온보딩 미완료(false)" 로 간주
  */
+
+const resolveOnboardingCompleted = async (userId: string): Promise<boolean> => {
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseServiceRoleKey) {
+    console.error(
+      "[MIDDLEWARE] Missing Supabase credentials for onboarding check",
+    );
+    return false;
+  }
+
+  try {
+    const supabase = createServiceClient({
+      url: supabaseUrl,
+      serviceRoleKey: supabaseServiceRoleKey,
+    });
+
+    const completed = await getOnboardingCompletedFromDb(supabase, userId);
+    console.log("[MIDDLEWARE] DB check: onboarding_completed =", completed);
+    return completed;
+  } catch (error) {
+    console.error("[MIDDLEWARE] Error checking onboarding status:", error);
+    return false;
+  }
+};
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
@@ -70,8 +96,7 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
     }
 
     // Reverse redirect: If onboarding already completed, redirect to dashboard
-    const metadata = sessionClaims?.publicMetadata as { onboardingCompleted?: boolean } | undefined;
-    const onboardingCompleted = metadata?.onboardingCompleted === true;
+    const onboardingCompleted = await resolveOnboardingCompleted(userId);
 
     console.log("[MIDDLEWARE] onboardingCompleted:", onboardingCompleted);
 
@@ -100,64 +125,11 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
     // Check from database instead of Clerk metadata to avoid session cache delays
     console.log("[MIDDLEWARE] STAGE 2b: Onboarding Check (from Supabase)");
 
-    let onboardingCompleted = false;
-
-    try {
-      // Create Supabase service client to query database
-      const supabaseUrl = process.env.SUPABASE_URL;
-      const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-      if (!supabaseUrl || !supabaseServiceRoleKey) {
-        console.warn("[MIDDLEWARE] Missing Supabase credentials, falling back to Clerk metadata");
-        const metadata = sessionClaims?.publicMetadata as { onboardingCompleted?: boolean } | undefined;
-        onboardingCompleted = metadata?.onboardingCompleted === true;
-      } else {
-        const supabase = createServiceClient({
-          url: supabaseUrl,
-          serviceRoleKey: supabaseServiceRoleKey,
-        });
-
-        // Query style_guides table to check if user has completed onboarding
-        // Resolve profile by Clerk ID first
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('clerk_user_id', userId)
-          .single();
-
-        if (!profile) {
-          console.warn("[MIDDLEWARE] No profile found for Clerk user, falling back to metadata");
-          const metadata = sessionClaims?.publicMetadata as { onboardingCompleted?: boolean } | undefined;
-          onboardingCompleted = metadata?.onboardingCompleted === true;
-        } else {
-          const { data, error } = await supabase
-            .from("style_guides")
-            .select("onboarding_completed")
-            .eq("profile_id", profile.id)
-            .single();
-
-          if (error) {
-            console.warn("[MIDDLEWARE] Failed to query style_guides:", error);
-            const metadata = sessionClaims?.publicMetadata as { onboardingCompleted?: boolean } | undefined;
-            onboardingCompleted = metadata?.onboardingCompleted === true;
-          } else if (data) {
-            onboardingCompleted = data.onboarding_completed === true;
-            console.log("[MIDDLEWARE] DB check: onboarding_completed =", onboardingCompleted);
-          }
-        }
-
-        // Done
-      }
-    } catch (error) {
-      console.error("[MIDDLEWARE] Error checking onboarding status:", error);
-      // Fall back to Clerk metadata if any error occurs
-      const metadata = sessionClaims?.publicMetadata as { onboardingCompleted?: boolean } | undefined;
-      onboardingCompleted = metadata?.onboardingCompleted === true;
-    }
+    const onboardingCompleted = await resolveOnboardingCompleted(userId);
 
     const justCompletedOnboarding = new URL(req.url).searchParams.get("onboarding_completed") === "true";
 
-    console.log("[MIDDLEWARE] onboardingCompleted (from DB):", onboardingCompleted);
+    console.log("[MIDDLEWARE] onboardingCompleted (resolved):", onboardingCompleted);
     console.log("[MIDDLEWARE] justCompletedOnboarding (query param):", justCompletedOnboarding);
 
     if (!onboardingCompleted && !justCompletedOnboarding) {
