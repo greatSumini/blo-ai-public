@@ -322,7 +322,7 @@ export async function POST(req: Request) {
     });
 
     // Return stream response
-    return result.toTextStreamResponse();
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('Error generating article:', error);
 

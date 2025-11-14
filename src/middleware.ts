@@ -34,6 +34,7 @@ const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
   "/new-article(.*)",
   "/style-guide(.*)",
+  "/articles(.*)",
   "/account(.*)",
   "/editor(.*)",
   "/settings(.*)",
