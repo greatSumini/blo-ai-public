@@ -18,6 +18,7 @@ import type {
   KeywordSuggestionsResponse,
   SuggestionItem,
 } from "./schema";
+import { d4seo } from "../lib/dataforseo";
 
 // ===== 목록 조회 (Full-Text Search 지원) =====
 export async function listKeywords(
@@ -298,6 +299,19 @@ export async function fetchKeywordSuggestions(
       err
     );
   }
+}
+
+export async function fetchLongTailSuggestions(input: KeywordSuggestionsInput) {
+  const { keyword } = input;
+
+  const relatedKeywords = await d4seo.requestSuggestions(keyword);
+
+  // 현재는 일반 연관 검색어와 동일한 처리
+  return success({
+    suggestions: relatedKeywords,
+    cached: false,
+    cacheExpiresAt: null,
+  });
 }
 
 function buildSuggestionsPrompt(keyword: string, context?: string): string {

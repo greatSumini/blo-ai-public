@@ -2,19 +2,20 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft } from "lucide-react";
 import { GenerationForm } from "@/features/articles/components/generation-form";
-import { GenerationProgress } from "@/features/articles/components/generation-progress";
 import { useStyleGuide } from "@/features/articles/hooks/useStyleGuide";
 import type { GenerationFormData } from "@/features/articles/components/generation-form";
 import { useI18n } from "@/lib/i18n/client";
 import { useCompletion } from "@ai-sdk/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { parseGeneratedText, parseStreamingTextToJson, type ParsedAIArticle } from "@/features/articles/lib/ai-parse";
+import {
+  parseGeneratedText,
+  parseStreamingTextToJson,
+  type ParsedAIArticle,
+} from "@/features/articles/lib/ai-parse";
 import { generateUniqueSlug } from "@/lib/slug";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import {
@@ -26,6 +27,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PageLayout } from "@/components/layout/page-layout";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { Card } from "@/components/ui/card";
 
 type NewArticlePageProps = {
   params: Promise<Record<string, never>>;
@@ -86,7 +95,9 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
     } catch (error) {
       console.error("Failed to generate article:", error);
       const message =
-        error instanceof Error ? error.message : t("newArticle.toast.error.desc");
+        error instanceof Error
+          ? error.message
+          : t("newArticle.toast.error.desc");
       setLocalError(new Error(message));
       toast({
         title: t("newArticle.toast.error.title"),
@@ -113,7 +124,9 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
           setMode("complete");
           toast({
             title: t("newArticle.toast.success.title"),
-            description: t("newArticle.toast.success.desc", { title: p.title || "AI 생성 글" }),
+            description: t("newArticle.toast.success.desc", {
+              title: p.title || "AI 생성 글",
+            }),
           });
         } catch {
           setMode("complete");
@@ -161,166 +174,186 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
       }
 
       const article = await res.json();
-      toast({ title: "저장 완료", description: `"${article.title}" 초안이 저장되었습니다.` });
+      toast({
+        title: "저장 완료",
+        description: `"${article.title}" 초안이 저장되었습니다.`,
+      });
       router.push(`/articles/${article.id}/edit`);
     } catch (e) {
-      const message = e instanceof Error ? e.message : "글 저장 중 오류가 발생했습니다";
-      toast({ title: "저장 실패", description: message, variant: "destructive" });
+      const message =
+        e instanceof Error ? e.message : "글 저장 중 오류가 발생했습니다";
+      toast({
+        title: "저장 실패",
+        description: message,
+        variant: "destructive",
+      });
     }
   };
 
   const generatingPreview = useMemo(() => completion, [completion]);
-  const generatingParsed = useMemo(() => parseStreamingTextToJson(generatingPreview || ""), [generatingPreview]);
+  const generatingParsed = useMemo(
+    () => parseStreamingTextToJson(generatingPreview || ""),
+    [generatingPreview]
+  );
 
   return (
     <PageLayout
       title="새 글 생성"
       description="AI를 활용해 블로그 글 초안을 빠르게 만들어보세요."
-      maxWidthClassName="max-w-2xl"
+      actions={
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="h-10">
+              시스템 프롬프트
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>기본 시스템 프롬프트</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 text-sm">
+              <p>
+                아래 원칙에 따라 블로그 글을 생성합니다. 사용자의
+                <strong> 추가 요구사항</strong>은 모든 규칙보다
+                <strong> 가장 높은 우선순위</strong>로 적용됩니다.
+              </p>
+              <ol className="list-decimal pl-5 space-y-1">
+                <li>SEO에 최적화된 제목 작성</li>
+                <li>본문은 Markdown 형식 (제목/소제목/목록/강조)</li>
+                <li>서론-본론-결론의 자연스러운 구조</li>
+                <li>실용적이고 실행 가능한 정보 제공</li>
+                <li>독자의 고민 해결에 집중</li>
+                <li>메타 설명은 160자 이내</li>
+                <li>주요 키워드를 자연스럽게 본문에 포함</li>
+                <li>소제목은 명확하고 구조적으로 구성</li>
+              </ol>
+              <p className="text-muted-foreground">
+                선택한 스타일 가이드(톤/길이/난이도/언어)와 키워드를 반영해
+                작성합니다.
+              </p>
+            </div>
+          </DialogContent>
+        </Dialog>
+      }
     >
-      <div className="mb-6">
-        <Button
-          variant="ghost"
-          onClick={handleBack}
-          className="-ml-2"
-          style={{ color: "#6B7280" }}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          {t("newArticle.back")}
-        </Button>
-      </div>
-
-      <Card
-        className="p-8"
-        style={{
-          borderColor: "#E1E5EA",
-          borderRadius: "12px",
-        }}
-      >
-        {mode === "form" && (
+      {mode === "form" && (
+        <Card className="p-8">
           <GenerationForm
             styleGuides={styleGuides}
             onSubmit={handleGenerateSubmit}
             isLoading={isLoadingStyleGuide}
           />
-        )}
+        </Card>
+      )}
 
-        {mode === "generating" && (
-          <div className="space-y-6">
-            <div
-              className="rounded-lg border p-4"
-              style={{ borderColor: "#E1E5EA" }}
-            >
-              <p className="mb-3 text-sm" style={{ color: "#6B7280" }}>
-                AI가 글을 작성하고 있습니다. 잠시만 기다려주세요.
+      {mode === "generating" && (
+        <div className="space-y-6">
+          <div
+            className="rounded-lg border p-4"
+            style={{ borderColor: "#E1E5EA" }}
+          >
+            <p className="mb-3 text-sm" style={{ color: "#6B7280" }}>
+              AI가 글을 작성하고 있습니다. 잠시만 기다려주세요.
+            </p>
+            <div className="max-h-96 overflow-y-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-32">항목</TableHead>
+                    <TableHead>값</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>제목</TableCell>
+                    <TableCell>
+                      {generatingParsed.title || "(분석 중...)"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>메타 설명</TableCell>
+                    <TableCell>
+                      {(generatingParsed.metaDescription || "").slice(0, 160) ||
+                        "(분석 중...)"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>키워드</TableCell>
+                    <TableCell>
+                      {generatingParsed.keywords &&
+                      generatingParsed.keywords.length > 0
+                        ? generatingParsed.keywords.slice(0, 10).join(", ")
+                        : "(분석 중...)"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>소제목</TableCell>
+                    <TableCell>
+                      {generatingParsed.headings &&
+                      generatingParsed.headings.length > 0
+                        ? generatingParsed.headings.slice(0, 5).join(" / ")
+                        : "(분석 중...)"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>본문 미리보기</TableCell>
+                    <TableCell>
+                      <div className="whitespace-pre-wrap">
+                        {(
+                          generatingParsed.content ||
+                          generatingPreview ||
+                          ""
+                        ).slice(0, 300)}
+                        {((generatingParsed.content || generatingPreview || "")
+                          .length ?? 0) > 300
+                          ? "..."
+                          : ""}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mode === "complete" && parsed && (
+        <div className="space-y-6">
+          <div>
+            <h2 className="mb-2 text-2xl font-bold">{parsed.title}</h2>
+            {parsed.metaDescription && (
+              <p className="text-sm" style={{ color: "#6B7280" }}>
+                {parsed.metaDescription}
               </p>
-              <div className="max-h-96 overflow-y-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-32">항목</TableHead>
-                      <TableHead>값</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>제목</TableCell>
-                      <TableCell>
-                        {generatingParsed.title || "(분석 중...)"}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>메타 설명</TableCell>
-                      <TableCell>
-                        {(generatingParsed.metaDescription || "").slice(
-                          0,
-                          160,
-                        ) || "(분석 중...)"}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>키워드</TableCell>
-                      <TableCell>
-                        {generatingParsed.keywords &&
-                        generatingParsed.keywords.length > 0
-                          ? generatingParsed.keywords
-                              .slice(0, 10)
-                              .join(", ")
-                          : "(분석 중...)"}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>소제목</TableCell>
-                      <TableCell>
-                        {generatingParsed.headings &&
-                        generatingParsed.headings.length > 0
-                          ? generatingParsed.headings
-                              .slice(0, 5)
-                              .join(" / ")
-                          : "(분석 중...)"}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>본문 미리보기</TableCell>
-                      <TableCell>
-                        <div className="whitespace-pre-wrap">
-                          {(
-                            generatingParsed.content ||
-                            generatingPreview ||
-                            ""
-                          ).slice(0, 300)}
-                          {((generatingParsed.content ||
-                            generatingPreview ||
-                            "").length ?? 0) > 300
-                            ? "..."
-                            : ""}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
+            )}
           </div>
-        )}
-
-        {mode === "complete" && parsed && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="mb-2 text-2xl font-bold">{parsed.title}</h2>
-              {parsed.metaDescription && (
-                <p className="text-sm" style={{ color: "#6B7280" }}>
-                  {parsed.metaDescription}
-                </p>
-              )}
-            </div>
-            <div className="prose prose-neutral max-w-none">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {parsed.content}
-              </ReactMarkdown>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setMode("form");
-                  setParsed(null);
-                }}
-                style={{ borderRadius: "8px" }}
-              >
-                다시하기
-              </Button>
-              <Button
-                onClick={handleSave}
-                className="px-6"
-                style={{ backgroundColor: "#3BA2F8", borderRadius: "8px" }}
-              >
-                저장하기
-              </Button>
-            </div>
+          <div className="prose prose-neutral max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {parsed.content}
+            </ReactMarkdown>
           </div>
-        )}
-      </Card>
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setMode("form");
+                setParsed(null);
+              }}
+              style={{ borderRadius: "8px" }}
+            >
+              다시하기
+            </Button>
+            <Button
+              onClick={handleSave}
+              className="px-6"
+              style={{ backgroundColor: "#3BA2F8", borderRadius: "8px" }}
+            >
+              저장하기
+            </Button>
+          </div>
+        </div>
+      )}
     </PageLayout>
   );
 }

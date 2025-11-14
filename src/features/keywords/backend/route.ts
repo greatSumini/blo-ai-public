@@ -1,30 +1,44 @@
-import type { Hono } from 'hono';
-import { failure, respond } from '@/backend/http/response';
-import { getLogger, getSupabase, getConfig, type AppEnv } from '@/backend/hono/context';
+import type { Hono } from "hono";
+import { failure, respond } from "@/backend/http/response";
+import {
+  getLogger,
+  getSupabase,
+  getConfig,
+  type AppEnv,
+} from "@/backend/hono/context";
 import {
   ListKeywordsSchema,
   CreateKeywordSchema,
   BulkCreateKeywordsSchema,
   KeywordSuggestionsSchema,
-} from './schema';
+} from "./schema";
 import {
   listKeywords,
   createKeyword,
   bulkCreateKeywords,
   fetchKeywordSuggestions,
-} from './service';
+  fetchLongTailSuggestions,
+} from "./service";
 
 export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
   // GET /api/keywords
-  app.get('/api/keywords', async (c) => {
+  app.get("/api/keywords", async (c) => {
     const parsedQuery = ListKeywordsSchema.safeParse({
-      query: c.req.query('query'),
-      page: c.req.query('page'),
-      limit: c.req.query('limit'),
+      query: c.req.query("query"),
+      page: c.req.query("page"),
+      limit: c.req.query("limit"),
     });
 
     if (!parsedQuery.success) {
-      return respond(c, failure(400, 'INVALID_QUERY_PARAMS', 'Invalid query parameters', parsedQuery.error.format()));
+      return respond(
+        c,
+        failure(
+          400,
+          "INVALID_QUERY_PARAMS",
+          "Invalid query parameters",
+          parsedQuery.error.format()
+        )
+      );
     }
 
     const supabase = getSupabase(c);
@@ -33,12 +47,20 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
   });
 
   // POST /api/keywords
-  app.post('/api/keywords', async (c) => {
+  app.post("/api/keywords", async (c) => {
     const body = await c.req.json();
     const parsedBody = CreateKeywordSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(c, failure(400, 'INVALID_REQUEST_BODY', 'Invalid request body', parsedBody.error.format()));
+      return respond(
+        c,
+        failure(
+          400,
+          "INVALID_REQUEST_BODY",
+          "Invalid request body",
+          parsedBody.error.format()
+        )
+      );
     }
 
     const supabase = getSupabase(c);
@@ -47,12 +69,20 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
   });
 
   // POST /api/keywords/bulk
-  app.post('/api/keywords/bulk', async (c) => {
+  app.post("/api/keywords/bulk", async (c) => {
     const body = await c.req.json();
     const parsedBody = BulkCreateKeywordsSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(c, failure(400, 'INVALID_REQUEST_BODY', 'Invalid request body', parsedBody.error.format()));
+      return respond(
+        c,
+        failure(
+          400,
+          "INVALID_REQUEST_BODY",
+          "Invalid request body",
+          parsedBody.error.format()
+        )
+      );
     }
 
     const supabase = getSupabase(c);
@@ -62,18 +92,51 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
   });
 
   // POST /api/keywords/suggestions
-  app.post('/api/keywords/suggestions', async (c) => {
+  app.post("/api/keywords/suggestions", async (c) => {
     const body = await c.req.json();
     const parsedBody = KeywordSuggestionsSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(c, failure(400, 'INVALID_REQUEST_BODY', 'Invalid request body', parsedBody.error.format()));
+      return respond(
+        c,
+        failure(
+          400,
+          "INVALID_REQUEST_BODY",
+          "Invalid request body",
+          parsedBody.error.format()
+        )
+      );
     }
 
     const supabase = getSupabase(c);
     const logger = getLogger(c);
     const config = getConfig(c);
-    const result = await fetchKeywordSuggestions(supabase, logger, config, parsedBody.data);
+    const result = await fetchKeywordSuggestions(
+      supabase,
+      logger,
+      config,
+      parsedBody.data
+    );
+    return respond(c, result);
+  });
+
+  app.post("/api/keywords/long-tails", async (c) => {
+    const body = await c.req.json();
+    const parsedBody = KeywordSuggestionsSchema.safeParse(body);
+
+    if (!parsedBody.success) {
+      return respond(
+        c,
+        failure(
+          400,
+          "INVALID_REQUEST_BODY",
+          "Invalid request body",
+          parsedBody.error.format()
+        )
+      );
+    }
+
+    const result = await fetchLongTailSuggestions(parsedBody.data);
     return respond(c, result);
   });
 };

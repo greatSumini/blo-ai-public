@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useI18n } from "@/lib/i18n/client";
+import Image from "next/image";
 
 function SidebarContent() {
   const pathname = usePathname();
@@ -21,7 +22,13 @@ function SidebarContent() {
 
   return (
     <div className="flex h-full flex-col gap-4 p-4">
-      <div className="mb-4">
+      <div className="mb-4 flex items-center gap-2 px-2">
+        <Image
+          src="/images/icon.svg"
+          alt={t("common.brand_name")}
+          width={32}
+          height={32}
+        />
         <h1 className="text-2xl font-bold text-primary">{t("common.brand_name")}</h1>
       </div>
       <nav className="flex flex-col gap-2">
