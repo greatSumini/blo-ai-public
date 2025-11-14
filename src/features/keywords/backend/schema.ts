@@ -20,11 +20,8 @@ export const BulkCreateKeywordsSchema = z.object({
 });
 
 export const KeywordSuggestionsSchema = z.object({
-  seeds: z.array(z.string().min(1)).min(1).max(5),
-  languageName: z.string().default('Korean'),
-  locationCode: z.number().int().default(2410),
-  limit: z.number().int().min(1).max(100).default(25),
-  forceRefresh: z.boolean().default(false),
+  keyword: z.string().min(1).max(100),
+  context: z.string().max(1000).optional(),
 });
 
 // ===== 응답 스키마 =====
@@ -33,8 +30,6 @@ export const KeywordSchema = z.object({
   phrase: z.string(),
   normalized: z.string(),
   source: z.enum(['manual', 'dataforseo']),
-  searchVolume: z.number().int().nullable(),
-  cpc: z.number().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -49,8 +44,6 @@ export const KeywordListResponseSchema = z.object({
 
 export const SuggestionItemSchema = z.object({
   keyword: z.string(),
-  searchVolume: z.number().int().nullable(),
-  cpc: z.number().nullable(),
   competition: z.string().nullable(),
 });
 

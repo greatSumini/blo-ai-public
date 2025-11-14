@@ -82,43 +82,46 @@ describe('BulkCreateKeywordsSchema', () => {
 });
 
 describe('KeywordSuggestionsSchema', () => {
-  it('should apply defaults', () => {
-    const result = KeywordSuggestionsSchema.safeParse({ seeds: ['React'] });
+  it('should accept valid keyword without context', () => {
+    const result = KeywordSuggestionsSchema.safeParse({ keyword: 'React' });
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.languageName).toBe('Korean');
-      expect(result.data.locationCode).toBe(2410);
-      expect(result.data.limit).toBe(25);
-      expect(result.data.forceRefresh).toBe(false);
+      expect(result.data.keyword).toBe('React');
+      expect(result.data.context).toBeUndefined();
     }
   });
 
-  it('should reject empty seeds array', () => {
-    const result = KeywordSuggestionsSchema.safeParse({ seeds: [] });
+  it('should accept keyword with context', () => {
+    const result = KeywordSuggestionsSchema.safeParse({
+      keyword: 'React',
+      context: '프론트엔드 개발자 대상 블로그 글',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.keyword).toBe('React');
+      expect(result.data.context).toBe(
+        '프론트엔드 개발자 대상 블로그 글',
+      );
+    }
+  });
+
+  it('should reject empty keyword', () => {
+    const result = KeywordSuggestionsSchema.safeParse({ keyword: '' });
     expect(result.success).toBe(false);
   });
 
-  it('should reject over 5 seeds', () => {
+  it('should reject too long keyword', () => {
     const result = KeywordSuggestionsSchema.safeParse({
-      seeds: ['a', 'b', 'c', 'd', 'e', 'f'],
+      keyword: 'a'.repeat(101),
     });
     expect(result.success).toBe(false);
   });
 
-  it('should accept custom parameters', () => {
+  it('should reject too long context', () => {
     const result = KeywordSuggestionsSchema.safeParse({
-      seeds: ['React', 'Vue'],
-      languageName: 'English',
-      locationCode: 2840,
-      limit: 50,
-      forceRefresh: true,
+      keyword: 'React',
+      context: 'a'.repeat(1001),
     });
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.languageName).toBe('English');
-      expect(result.data.locationCode).toBe(2840);
-      expect(result.data.limit).toBe(50);
-      expect(result.data.forceRefresh).toBe(true);
-    }
+    expect(result.success).toBe(false);
   });
 });

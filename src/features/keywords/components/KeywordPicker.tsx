@@ -125,14 +125,6 @@ export function KeywordPicker({
                       />
                       <div className="flex-1">
                         <p>{keyword.phrase}</p>
-                        <div className="flex gap-2 text-xs text-gray-500">
-                          {keyword.searchVolume !== null && (
-                            <span>검색량: {keyword.searchVolume.toLocaleString()}</span>
-                          )}
-                          {keyword.cpc !== null && (
-                            <span>CPC: ${keyword.cpc.toFixed(2)}</span>
-                          )}
-                        </div>
                       </div>
                     </CommandItem>
                   ))}

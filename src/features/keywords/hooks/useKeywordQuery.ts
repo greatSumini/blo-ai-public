@@ -42,11 +42,8 @@ export function useCreateKeyword() {
 export function useKeywordSuggestions() {
   return useMutation({
     mutationFn: async (params: {
-      seeds: string[];
-      languageName?: string;
-      locationCode?: number;
-      limit?: number;
-      forceRefresh?: boolean;
+      keyword: string;
+      context?: string;
     }) => {
       const response = await apiClient.post('/api/keywords/suggestions', params);
       return response.data as KeywordSuggestionsResponse;

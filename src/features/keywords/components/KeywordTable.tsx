@@ -69,8 +69,6 @@ export function KeywordTable() {
             <TableRow>
               <TableHead>키워드</TableHead>
               <TableHead>출처</TableHead>
-              <TableHead>검색량</TableHead>
-              <TableHead>CPC</TableHead>
               <TableHead>생성일</TableHead>
               <TableHead className="text-right">작업</TableHead>
             </TableRow>
@@ -78,19 +76,19 @@ export function KeywordTable() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8">
+                <TableCell colSpan={4} className="text-center py-8">
                   로딩 중...
                 </TableCell>
               </TableRow>
             ) : error ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-red-500">
+                <TableCell colSpan={4} className="text-center py-8 text-red-500">
                   데이터를 불러오는데 실패했습니다
                 </TableCell>
               </TableRow>
             ) : !data || data.items.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                <TableCell colSpan={4} className="text-center py-8 text-gray-500">
                   검색 결과가 없습니다
                 </TableCell>
               </TableRow>
@@ -102,16 +100,8 @@ export function KeywordTable() {
                     <Badge
                       variant={keyword.source === "manual" ? "default" : "secondary"}
                     >
-                      {keyword.source === "manual" ? "직접 입력" : "DataForSEO"}
+                      {keyword.source === "manual" ? "직접 입력" : "AI 추천"}
                     </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {keyword.searchVolume !== null
-                      ? keyword.searchVolume.toLocaleString()
-                      : "-"}
-                  </TableCell>
-                  <TableCell>
-                    {keyword.cpc !== null ? `$${keyword.cpc.toFixed(2)}` : "-"}
                   </TableCell>
                   <TableCell>
                     {format(new Date(keyword.createdAt), "yyyy-MM-dd")}
