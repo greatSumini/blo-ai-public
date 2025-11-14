@@ -111,6 +111,8 @@ const buildPrompt = (
     ? `
 당신은 전문 블로그 콘텐츠 작가입니다. 다음 조건에 맞춰 고품질 블로그 글을 작성해주세요.
 
+중요: 아래의 "추가 지시사항"이 제공된 경우, 본 문서의 모든 규칙보다 가장 높은 우선순위로 무조건 준수하세요. 충돌 시 추가 지시사항을 우선합니다.
+
 **주제**: ${topic}
 
 **브랜드 정보**:
@@ -128,7 +130,7 @@ ${styleGuide ? `- 브랜드명: ${styleGuide.brandName}
 
 **키워드**: ${keywords.length > 0 ? keywords.join(', ') : '주제와 관련된 키워드를 자연스럽게 포함'}
 
-${additionalInstructions ? `**추가 지시사항**: ${additionalInstructions}` : ''}
+${additionalInstructions ? `**추가 지시사항(최우선 적용)**: ${additionalInstructions}` : ''}
 
 **작성 요구사항**:
 1. 제목은 SEO에 최적화되고 클릭을 유도할 수 있도록 작성
@@ -150,6 +152,8 @@ ${additionalInstructions ? `**추가 지시사항**: ${additionalInstructions}` 
     : `
 You are a professional blog content writer. Create a high-quality blog post according to the following requirements.
 
+Important: If "Additional Instructions" are provided, you MUST prioritize them above all other rules in this prompt. In case of any conflict, follow the additional instructions first.
+
 **Topic**: ${topic}
 
 **Brand Information**:
@@ -167,7 +171,7 @@ ${styleGuide ? `- Brand Name: ${styleGuide.brandName}
 
 **Keywords**: ${keywords.length > 0 ? keywords.join(', ') : 'Naturally include relevant keywords'}
 
-${additionalInstructions ? `**Additional Instructions**: ${additionalInstructions}` : ''}
+${additionalInstructions ? `**Additional Instructions (Highest Priority)**: ${additionalInstructions}` : ''}
 
 **Writing Requirements**:
 1. Create an SEO-optimized title that encourages clicks

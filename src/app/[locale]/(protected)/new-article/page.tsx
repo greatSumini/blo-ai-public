@@ -79,7 +79,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
           topic: data.topic,
           styleGuideId: data.styleGuideId,
           keywords: data.keywords || [],
-          additionalInstructions: undefined,
+          additionalInstructions: data.additionalInstructions || undefined,
         },
       });
     } catch (error) {
