@@ -16,7 +16,7 @@ export function Footer() {
               href="/"
               className="text-xl font-bold text-[#111827] hover:text-[#3BA2F8] transition-colors inline-block"
             >
-              Searchify
+              SEO24
             </Link>
             <p className="text-sm text-[#6B7280] leading-relaxed">
               인디해커와 솔로 창업자를 위한 AI 블로그 작성 도구. 5분 안에 SEO 최적화된 블로그 글을 완성하세요.
@@ -120,7 +120,7 @@ export function Footer() {
                   <Twitter className="h-5 w-5" />
                 </a>
                 <a
-                  href="mailto:contact@searchify.blog"
+                  href="mailto:contact@seo24.blog"
                   className="text-[#6B7280] hover:text-[#111827] transition-colors"
                   aria-label="이메일"
                 >
@@ -135,7 +135,7 @@ export function Footer() {
         <div className="mt-10 md:mt-12 pt-6 md:pt-8 border-t border-[#E1E5EA]">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
             <p className="text-xs md:text-sm text-[#6B7280] text-center md:text-left">
-              © {currentYear} Searchify. All rights reserved.
+              © {currentYear} SEO24. All rights reserved.
             </p>
             <div className="flex items-center gap-4 md:gap-6">
               <Link

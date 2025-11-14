@@ -44,7 +44,7 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
             <FormLabel>브랜드 이름</FormLabel>
             <FormControl>
               <Input
-                placeholder="예: Searchify"
+                placeholder="예: SEO24"
                 {...field}
                 className="h-10"
                 style={{

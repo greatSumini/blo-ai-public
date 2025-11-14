@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -33,9 +34,16 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="text-xl font-bold text-[#111827] hover:text-[#3BA2F8] transition-colors"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
-            Searchify
+            <Image
+              src="/images/icon.svg"
+              alt="SEO24 Logo"
+              width={32}
+              height={32}
+              className="h-8 w-8"
+            />
+            <span className="text-xl font-bold text-[#111827]">SEO24</span>
           </Link>
 
           {/* Desktop Navigation */}
