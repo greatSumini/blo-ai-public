@@ -1,12 +1,12 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import {
-  failure,
-  success,
-  type HandlerResult,
-} from '@/backend/http/response';
+  domainFailure,
+  domainSuccess,
+  type DomainResult,
+} from '@/backend/domain/result';
 import {
   articleErrorCodes,
-  type ArticleServiceError,
+  type ArticleDomainError,
 } from '@/features/articles/backend/error';
 
 const GENERATION_QUOTA_TABLE = 'generation_quota';
@@ -80,22 +80,21 @@ const getOrCreateQuotaRecord = async (
 export const checkQuota = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<HandlerResult<QuotaCheckResult, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<QuotaCheckResult, ArticleDomainError>> => {
   try {
     // Resolve profile id
     const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
     const profileId = await getProfileIdByClerkId(client, clerkUserId);
     if (!profileId) {
-      return failure(404, articleErrorCodes.quotaCheckFailed, 'Profile not found');
+      return domainFailure({ code: articleErrorCodes.quotaCheckFailed, message: 'Profile not found' });
     }
     const quota = await getOrCreateQuotaRecord(client, profileId);
 
     if (!quota) {
-      return failure(
-        500,
-        articleErrorCodes.quotaCheckFailed,
-        'Failed to retrieve or create quota record',
-      );
+      return domainFailure({
+        code: articleErrorCodes.quotaCheckFailed,
+        message: 'Failed to retrieve or create quota record',
+      });
     }
 
     const tier = quota.tier as TierType;
@@ -104,23 +103,19 @@ export const checkQuota = async (
     const remaining = Math.max(0, limit - currentCount);
     const allowed = currentCount < limit;
 
-    return success(
-      {
-        allowed,
-        tier,
-        currentCount,
-        limit,
-        remaining,
-      },
-      200,
-    );
+    return domainSuccess({
+      allowed,
+      tier,
+      currentCount,
+      limit,
+      remaining,
+    });
   } catch (error) {
-    return failure(
-      500,
-      articleErrorCodes.quotaCheckFailed,
-      `Quota check failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      error,
-    );
+    return domainFailure({
+      code: articleErrorCodes.quotaCheckFailed,
+      message: `Quota check failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      details: error,
+    });
   }
 };
 
@@ -131,22 +126,21 @@ export const checkQuota = async (
 export const incrementQuota = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<HandlerResult<{ newCount: number; remaining: number }, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<{ newCount: number; remaining: number }, ArticleDomainError>> => {
   try {
     // Get current quota to determine tier
     const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
     const profileId = await getProfileIdByClerkId(client, clerkUserId);
     if (!profileId) {
-      return failure(404, articleErrorCodes.quotaIncrementFailed, 'Profile not found');
+      return domainFailure({ code: articleErrorCodes.quotaIncrementFailed, message: 'Profile not found' });
     }
     const quota = await getOrCreateQuotaRecord(client, profileId);
 
     if (!quota) {
-      return failure(
-        500,
-        articleErrorCodes.quotaIncrementFailed,
-        'Failed to retrieve quota record',
-      );
+      return domainFailure({
+        code: articleErrorCodes.quotaIncrementFailed,
+        message: 'Failed to retrieve quota record',
+      });
     }
 
     const tier = quota.tier as TierType;
@@ -164,24 +158,22 @@ export const incrementQuota = async (
       .single();
 
     if (error || !data) {
-      return failure(
-        500,
-        articleErrorCodes.quotaIncrementFailed,
-        `Failed to increment quota: ${error?.message || 'Unknown error'}`,
-      );
+      return domainFailure({
+        code: articleErrorCodes.quotaIncrementFailed,
+        message: `Failed to increment quota: ${error?.message || 'Unknown error'}`,
+      });
     }
 
     const newCount = data.generation_count;
     const remaining = Math.max(0, limit - newCount);
 
-    return success({ newCount, remaining }, 200);
+    return domainSuccess({ newCount, remaining });
   } catch (error) {
-    return failure(
-      500,
-      articleErrorCodes.quotaIncrementFailed,
-      `Quota increment failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      error,
-    );
+    return domainFailure({
+      code: articleErrorCodes.quotaIncrementFailed,
+      message: `Quota increment failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      details: error,
+    });
   }
 };
 
@@ -191,7 +183,7 @@ export const incrementQuota = async (
 export const getQuotaStatus = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<HandlerResult<QuotaCheckResult, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<QuotaCheckResult, ArticleDomainError>> => {
   try {
     const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
     const profileId = await getProfileIdByClerkId(client, clerkUserId);
@@ -203,16 +195,13 @@ export const getQuotaStatus = async (
 
     if (!quota) {
       // Return default free tier status
-      return success(
-        {
-          allowed: true,
-          tier: 'free',
-          currentCount: 0,
-          limit: QUOTA_LIMITS.free,
-          remaining: QUOTA_LIMITS.free,
-        },
-        200,
-      );
+      return domainSuccess({
+        allowed: true,
+        tier: 'free',
+        currentCount: 0,
+        limit: QUOTA_LIMITS.free,
+        remaining: QUOTA_LIMITS.free,
+      });
     }
 
     const tier = quota.tier as TierType;
@@ -221,22 +210,18 @@ export const getQuotaStatus = async (
     const remaining = Math.max(0, limit - currentCount);
     const allowed = currentCount < limit;
 
-    return success(
-      {
-        allowed,
-        tier,
-        currentCount,
-        limit,
-        remaining,
-      },
-      200,
-    );
+    return domainSuccess({
+      allowed,
+      tier,
+      currentCount,
+      limit,
+      remaining,
+    });
   } catch (error) {
-    return failure(
-      500,
-      articleErrorCodes.quotaCheckFailed,
-      `Failed to get quota status: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      error,
-    );
+    return domainFailure({
+      code: articleErrorCodes.quotaCheckFailed,
+      message: `Failed to get quota status: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      details: error,
+    });
   }
 };

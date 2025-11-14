@@ -1,9 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import {
-  failure,
-  success,
-  type HandlerResult,
-} from '@/backend/http/response';
+  domainFailure,
+  domainSuccess,
+  type DomainResult,
+} from '@/backend/domain/result';
 import {
   ArticleTableRowSchema,
   ArticleResponseSchema,
@@ -16,7 +16,7 @@ import {
 } from '@/features/articles/backend/schema';
 import {
   articleErrorCodes,
-  type ArticleServiceError,
+  type ArticleDomainError,
 } from '@/features/articles/backend/error';
 import { ensureProfile, getProfileIdByClerkId } from '@/features/profiles/backend/service';
 
@@ -71,12 +71,12 @@ export const createArticle = async (
   client: SupabaseClient,
   clerkUserId: string,
   data: CreateArticleRequest,
-): Promise<HandlerResult<ArticleResponse, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<ArticleResponse, ArticleDomainError>> => {
   // Ensure profile exists and get id
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
-    return failure(500, articleErrorCodes.createError, 'Failed to resolve or create user profile');
+    return domainFailure({ code: articleErrorCodes.createError, message: 'Failed to resolve or create user profile' });
   }
   // Map camelCase TypeScript to snake_case database columns
   const dbRecord = {
@@ -102,31 +102,28 @@ export const createArticle = async (
     .single();
 
   if (error) {
-    return failure(
-      500,
-      articleErrorCodes.createError,
-      `Failed to create article: ${error.message}`,
-    );
+    return domainFailure({
+      code: articleErrorCodes.createError,
+      message: `Failed to create article: ${error.message}`,
+    });
   }
 
   if (!savedData) {
-    return failure(
-      500,
-      articleErrorCodes.createError,
-      'Article was created but no data was returned',
-    );
+    return domainFailure({
+      code: articleErrorCodes.createError,
+      message: 'Article was created but no data was returned',
+    });
   }
 
   try {
     const mapped = mapArticleRowToResponse(savedData);
-    return success(mapped, 201);
+    return domainSuccess(mapped);
   } catch (err) {
-    return failure(
-      500,
-      articleErrorCodes.validationError,
-      'Article row failed validation.',
-      err,
-    );
+    return domainFailure({
+      code: articleErrorCodes.validationError,
+      message: 'Article row failed validation.',
+      details: err,
+    });
   }
 };
 
@@ -138,10 +135,10 @@ export const getArticleById = async (
   client: SupabaseClient,
   clerkUserId: string,
   articleId: string,
-): Promise<HandlerResult<ArticleResponse, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<ArticleResponse, ArticleDomainError>> => {
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
   }
   const { data, error } = await client
     .from(ARTICLES_TABLE)
@@ -152,29 +149,27 @@ export const getArticleById = async (
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return failure(404, articleErrorCodes.notFound, 'Article not found');
+      return domainFailure({ code: articleErrorCodes.notFound, message: 'Article not found' });
     }
-    return failure(
-      500,
-      articleErrorCodes.fetchError,
-      `Failed to fetch article: ${error.message}`,
-    );
+    return domainFailure({
+      code: articleErrorCodes.fetchError,
+      message: `Failed to fetch article: ${error.message}`,
+    });
   }
 
   if (!data) {
-    return failure(404, articleErrorCodes.notFound, 'Article not found');
+    return domainFailure({ code: articleErrorCodes.notFound, message: 'Article not found' });
   }
 
   try {
     const mapped = mapArticleRowToResponse(data);
-    return success(mapped, 200);
+    return domainSuccess(mapped);
   } catch (err) {
-    return failure(
-      500,
-      articleErrorCodes.validationError,
-      'Article row failed validation.',
-      err,
-    );
+    return domainFailure({
+      code: articleErrorCodes.validationError,
+      message: 'Article row failed validation.',
+      details: err,
+    });
   }
 };
 
@@ -187,7 +182,7 @@ export const updateArticle = async (
   clerkUserId: string,
   articleId: string,
   data: UpdateArticleRequest,
-): Promise<HandlerResult<ArticleResponse, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<ArticleResponse, ArticleDomainError>> => {
   // Map camelCase TypeScript to snake_case database columns
   const updateData: Record<string, unknown> = {};
 
@@ -218,7 +213,7 @@ export const updateArticle = async (
 
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
   }
   const { data: updatedData, error } = await client
     .from(ARTICLES_TABLE)
@@ -230,33 +225,30 @@ export const updateArticle = async (
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return failure(404, articleErrorCodes.notFound, 'Article not found');
+      return domainFailure({ code: articleErrorCodes.notFound, message: 'Article not found' });
     }
-    return failure(
-      500,
-      articleErrorCodes.updateError,
-      `Failed to update article: ${error.message}`,
-    );
+    return domainFailure({
+      code: articleErrorCodes.updateError,
+      message: `Failed to update article: ${error.message}`,
+    });
   }
 
   if (!updatedData) {
-    return failure(
-      500,
-      articleErrorCodes.updateError,
-      'Article was updated but no data was returned',
-    );
+    return domainFailure({
+      code: articleErrorCodes.updateError,
+      message: 'Article was updated but no data was returned',
+    });
   }
 
   try {
     const mapped = mapArticleRowToResponse(updatedData);
-    return success(mapped, 200);
+    return domainSuccess(mapped);
   } catch (err) {
-    return failure(
-      500,
-      articleErrorCodes.validationError,
-      'Article row failed validation.',
-      err,
-    );
+    return domainFailure({
+      code: articleErrorCodes.validationError,
+      message: 'Article row failed validation.',
+      details: err,
+    });
   }
 };
 
@@ -268,10 +260,10 @@ export const deleteArticle = async (
   client: SupabaseClient,
   clerkUserId: string,
   articleId: string,
-): Promise<HandlerResult<{ id: string }, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<{ id: string }, ArticleDomainError>> => {
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
   }
   const { error } = await client
     .from(ARTICLES_TABLE)
@@ -280,14 +272,13 @@ export const deleteArticle = async (
     .eq('profile_id', profileId);
 
   if (error) {
-    return failure(
-      500,
-      articleErrorCodes.deleteError,
-      `Failed to delete article: ${error.message}`,
-    );
+    return domainFailure({
+      code: articleErrorCodes.deleteError,
+      message: `Failed to delete article: ${error.message}`,
+    });
   }
 
-  return success({ id: articleId }, 200);
+  return domainSuccess({ id: articleId });
 };
 
 /**
@@ -297,10 +288,10 @@ export const listArticles = async (
   client: SupabaseClient,
   clerkUserId: string,
   query: ListArticlesQuery,
-): Promise<HandlerResult<ListArticlesResponse, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<ListArticlesResponse, ArticleDomainError>> => {
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
   }
 
   // Build the base query
@@ -327,37 +318,35 @@ export const listArticles = async (
   const { data, error, count } = await dbQuery;
 
   if (error) {
-    return failure(
-      500,
-      articleErrorCodes.fetchError,
-      `Failed to fetch articles: ${error.message}`,
-    );
+    return domainFailure({
+      code: articleErrorCodes.fetchError,
+      message: `Failed to fetch articles: ${error.message}`,
+    });
   }
 
   if (!data) {
-    return success({
+    return domainSuccess({
       articles: [],
       total: 0,
       limit: query.limit,
       offset: query.offset,
-    }, 200);
+    });
   }
 
   try {
     const articles = data.map((row) => mapArticleRowToResponse(row));
-    return success({
+    return domainSuccess({
       articles,
       total: count ?? 0,
       limit: query.limit,
       offset: query.offset,
-    }, 200);
+    });
   } catch (err) {
-    return failure(
-      500,
-      articleErrorCodes.validationError,
-      'One or more article rows failed validation.',
-      err,
-    );
+    return domainFailure({
+      code: articleErrorCodes.validationError,
+      message: 'One or more article rows failed validation.',
+      details: err,
+    });
   }
 };
 
@@ -367,10 +356,10 @@ export const listArticles = async (
 export const getDashboardStats = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<HandlerResult<DashboardStatsResponse, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<DashboardStatsResponse, ArticleDomainError>> => {
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, articleErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
   }
 
   // Get all articles for the user
@@ -380,11 +369,10 @@ export const getDashboardStats = async (
     .eq('profile_id', profileId);
 
   if (error) {
-    return failure(
-      500,
-      articleErrorCodes.fetchError,
-      `Failed to fetch dashboard stats: ${error.message}`,
-    );
+    return domainFailure({
+      code: articleErrorCodes.fetchError,
+      message: `Failed to fetch dashboard stats: ${error.message}`,
+    });
   }
 
   const articles = data || [];
@@ -409,11 +397,11 @@ export const getDashboardStats = async (
   // Estimate saved hours (assuming each article saves 2 hours on average)
   const savedHours = totalArticles * 2;
 
-  return success({
+  return domainSuccess({
     monthlyArticles,
     totalArticles,
     publishedArticles,
     draftArticles,
     savedHours,
-  }, 200);
+  });
 };

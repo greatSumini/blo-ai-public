@@ -1,5 +1,6 @@
 import type { Hono } from "hono";
-import { failure, respond } from "@/backend/http/response";
+import { failure } from "@/backend/http/response";
+import { respondWithDomain, respondCreated } from "@/backend/http/mapper";
 import {
   getLogger,
   getSupabase,
@@ -30,20 +31,20 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
     });
 
     if (!parsedQuery.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           "INVALID_QUERY_PARAMS",
           "Invalid query parameters",
           parsedQuery.error.format()
-        )
+        ),
+        400
       );
     }
 
     const supabase = getSupabase(c);
     const result = await listKeywords(supabase, parsedQuery.data);
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   // POST /api/keywords
@@ -52,20 +53,20 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = CreateKeywordSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           "INVALID_REQUEST_BODY",
           "Invalid request body",
           parsedBody.error.format()
-        )
+        ),
+        400
       );
     }
 
     const supabase = getSupabase(c);
     const result = await createKeyword(supabase, parsedBody.data);
-    return respond(c, result);
+    return respondCreated(c, result);
   });
 
   // POST /api/keywords/bulk
@@ -74,21 +75,21 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = BulkCreateKeywordsSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           "INVALID_REQUEST_BODY",
           "Invalid request body",
           parsedBody.error.format()
-        )
+        ),
+        400
       );
     }
 
     const supabase = getSupabase(c);
     const logger = getLogger(c);
     const result = await bulkCreateKeywords(supabase, logger, parsedBody.data);
-    return respond(c, result);
+    return respondCreated(c, result);
   });
 
   // POST /api/keywords/suggestions
@@ -97,14 +98,14 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = KeywordSuggestionsSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           "INVALID_REQUEST_BODY",
           "Invalid request body",
           parsedBody.error.format()
-        )
+        ),
+        400
       );
     }
 
@@ -117,7 +118,7 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
       config,
       parsedBody.data
     );
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   app.post("/api/keywords/long-tails", async (c) => {
@@ -125,18 +126,18 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = KeywordSuggestionsSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           "INVALID_REQUEST_BODY",
           "Invalid request body",
           parsedBody.error.format()
-        )
+        ),
+        400
       );
     }
 
     const result = await fetchLongTailSuggestions(parsedBody.data);
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 };

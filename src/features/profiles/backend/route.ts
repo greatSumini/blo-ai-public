@@ -1,6 +1,7 @@
 import type { Hono } from 'hono';
 import { getLogger, getSupabase, type AppEnv } from '@/backend/hono/context';
-import { respond, success, failure, type ErrorResult } from '@/backend/http/response';
+import { failure } from '@/backend/http/response';
+import { respondWithDomain } from '@/backend/http/mapper';
 import { upsertProfile, deleteProfileByClerkId } from './service';
 import { extractClerkUser, type ClerkWebhook } from './utils';
 
@@ -21,7 +22,7 @@ export const registerProfilesRoutes = (app: Hono<AppEnv>) => {
         const svixSignature = headers['svix-signature'];
 
         if (!svixId || !svixTimestamp || !svixSignature) {
-          return respond(c, failure(400, 'invalid_signature', 'Missing Svix headers'));
+          return c.json(failure(400, 'invalid_signature', 'Missing Svix headers'), 400);
         }
 
         const payload = await c.req.text();
@@ -38,27 +39,27 @@ export const registerProfilesRoutes = (app: Hono<AppEnv>) => {
 
           if (type === 'user.created') {
             const user = extractClerkUser(event);
-            if (!user) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+            if (!user) return c.json(failure(400, 'invalid_payload', 'Missing user id'), 400);
             const result = await upsertProfile(supabase, user);
-            if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+            if (!result.ok) return respondWithDomain(c, result);
             logger.info('[Webhook] user.created processed', { clerkUserId: user.clerkUserId });
-            return respond(c, success({ ok: true }, 200));
+            return c.json({ ok: true }, 200);
           }
 
           if (type === 'user.deleted') {
             const id: string | undefined = (event as any).data?.id;
-            if (!id) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+            if (!id) return c.json(failure(400, 'invalid_payload', 'Missing user id'), 400);
             const result = await deleteProfileByClerkId(supabase, id);
-            if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+            if (!result.ok) return respondWithDomain(c, result);
             logger.info('[Webhook] user.deleted processed', { clerkUserId: id });
-            return respond(c, success({ ok: true }, 200));
+            return c.json({ ok: true }, 200);
           }
 
           logger.info('[Webhook] Unhandled event', { type });
-          return respond(c, success({ ok: true }, 200));
+          return c.json({ ok: true }, 200);
         } catch (err) {
           logger.warn('[Webhook] signature verification failed', err as any);
-          return respond(c, failure(400, 'invalid_signature', 'Verification failed'));
+          return c.json(failure(400, 'invalid_signature', 'Verification failed'), 400);
         }
       }
     } catch (e) {
@@ -71,22 +72,22 @@ export const registerProfilesRoutes = (app: Hono<AppEnv>) => {
     const type = body.type;
     if (type === 'user.created') {
       const user = extractClerkUser(body);
-      if (!user) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+      if (!user) return c.json(failure(400, 'invalid_payload', 'Missing user id'), 400);
       const result = await upsertProfile(supabase, user);
-      if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+      if (!result.ok) return respondWithDomain(c, result);
       logger.info('[Webhook] user.created processed (no verify)', { clerkUserId: user.clerkUserId });
-      return respond(c, success({ ok: true }, 200));
+      return c.json({ ok: true }, 200);
     }
     if (type === 'user.deleted') {
       const id: string | undefined = (body as any).data?.id;
-      if (!id) return respond(c, failure(400, 'invalid_payload', 'Missing user id'));
+      if (!id) return c.json(failure(400, 'invalid_payload', 'Missing user id'), 400);
       const result = await deleteProfileByClerkId(supabase, id);
-      if (!result.ok) return respond(c, result as ErrorResult<any, unknown>);
+      if (!result.ok) return respondWithDomain(c, result);
       logger.info('[Webhook] user.deleted processed (no verify)', { clerkUserId: id });
-      return respond(c, success({ ok: true }, 200));
+      return c.json({ ok: true }, 200);
     }
 
     logger.info('[Webhook] Unhandled event (no verify)', { type });
-    return respond(c, success({ ok: true }, 200));
+    return c.json({ ok: true }, 200);
   });
 };

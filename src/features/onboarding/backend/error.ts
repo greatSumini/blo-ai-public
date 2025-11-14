@@ -1,3 +1,5 @@
+import type { DomainError } from '@/backend/domain/result';
+
 export const styleGuideErrorCodes = {
   unauthorized: 'STYLE_GUIDE_UNAUTHORIZED',
   notFound: 'STYLE_GUIDE_NOT_FOUND',
@@ -7,6 +9,6 @@ export const styleGuideErrorCodes = {
   fetchError: 'STYLE_GUIDE_FETCH_ERROR',
 } as const;
 
-type StyleGuideErrorValue = (typeof styleGuideErrorCodes)[keyof typeof styleGuideErrorCodes];
-
-export type StyleGuideServiceError = StyleGuideErrorValue;
+export type StyleGuideDomainError = DomainError & {
+  code: (typeof styleGuideErrorCodes)[keyof typeof styleGuideErrorCodes];
+};

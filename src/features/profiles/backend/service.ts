@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { failure, success, type HandlerResult } from '@/backend/http/response';
+import { domainFailure, domainSuccess, type DomainResult } from '@/backend/domain/result';
+import { profileErrorCodes, type ProfileDomainError } from './error';
 
 export type ProfileRow = {
   id: string;
@@ -69,7 +70,7 @@ export type UpsertProfilePayload = {
 export const upsertProfile = async (
   client: SupabaseClient,
   payload: UpsertProfilePayload,
-): Promise<HandlerResult<ProfileRow, string, unknown>> => {
+): Promise<DomainResult<ProfileRow, ProfileDomainError>> => {
   const { clerkUserId, email = null, fullName = null, imageUrl = null } = payload;
 
   const { data, error } = await client
@@ -87,21 +88,21 @@ export const upsertProfile = async (
     .single();
 
   if (error || !data) {
-    return failure(500, 'profile_upsert_failed', error?.message ?? 'Unknown error');
+    return domainFailure({ code: profileErrorCodes.upsertFailed, message: error?.message ?? 'Unknown error' });
   }
 
-  return success(data as ProfileRow, 200);
+  return domainSuccess(data as ProfileRow);
 };
 
 export const deleteProfileByClerkId = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<HandlerResult<{ success: boolean }, string, unknown>> => {
+): Promise<DomainResult<{ success: boolean }, ProfileDomainError>> => {
   const { error } = await client
     .from(PROFILES_TABLE)
     .delete()
     .eq('clerk_user_id', clerkUserId);
 
-  if (error) return failure(500, 'profile_delete_failed', error.message);
-  return success({ success: true }, 200);
+  if (error) return domainFailure({ code: profileErrorCodes.deleteFailed, message: error.message });
+  return domainSuccess({ success: true });
 };

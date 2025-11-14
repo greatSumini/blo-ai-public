@@ -1,9 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import {
-  failure,
-  success,
-  type HandlerResult,
-} from '@/backend/http/response';
+  domainFailure,
+  domainSuccess,
+  type DomainResult,
+} from '@/backend/domain/result';
 import {
   StyleGuideTableRowSchema,
   StyleGuideResponseSchema,
@@ -12,7 +12,7 @@ import {
 } from '@/features/onboarding/backend/schema';
 import {
   styleGuideErrorCodes,
-  type StyleGuideServiceError,
+  type StyleGuideDomainError,
 } from '@/features/onboarding/backend/error';
 
 const STYLE_GUIDES_TABLE = 'style_guides';
@@ -26,16 +26,15 @@ export const upsertStyleGuide = async (
   client: SupabaseClient,
   clerkUserId: string,
   data: CreateStyleGuideRequest,
-): Promise<HandlerResult<StyleGuideResponse, StyleGuideServiceError, unknown>> => {
+): Promise<DomainResult<StyleGuideResponse, StyleGuideDomainError>> => {
   // Resolve profile_id for this Clerk user (create minimal profile if absent)
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
-    return failure(
-      500,
-      styleGuideErrorCodes.upsertError,
-      'Failed to resolve or create user profile.',
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.upsertError,
+      message: 'Failed to resolve or create user profile.',
+    });
   }
   // Map camelCase TypeScript to snake_case database columns
   const dbRecord = {
@@ -65,31 +64,28 @@ export const upsertStyleGuide = async (
     .single();
 
   if (error) {
-    return failure(
-      500,
-      styleGuideErrorCodes.upsertError,
-      `Failed to save style guide: ${error.message}`,
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.upsertError,
+      message: `Failed to save style guide: ${error.message}`,
+    });
   }
 
   if (!savedData) {
-    return failure(
-      500,
-      styleGuideErrorCodes.upsertError,
-      'Style guide was saved but no data was returned',
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.upsertError,
+      message: 'Style guide was saved but no data was returned',
+    });
   }
 
   // Validate the database row
   const rowParse = StyleGuideTableRowSchema.safeParse(savedData);
 
   if (!rowParse.success) {
-    return failure(
-      500,
-      styleGuideErrorCodes.validationError,
-      'Style guide row failed validation.',
-      rowParse.error.format(),
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.validationError,
+      message: 'Style guide row failed validation.',
+      details: rowParse.error.format(),
+    });
   }
 
   // Map snake_case database columns to camelCase response
@@ -116,15 +112,14 @@ export const upsertStyleGuide = async (
   const parsed = StyleGuideResponseSchema.safeParse(mapped);
 
   if (!parsed.success) {
-    return failure(
-      500,
-      styleGuideErrorCodes.validationError,
-      'Style guide response failed validation.',
-      parsed.error.format(),
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.validationError,
+      message: 'Style guide response failed validation.',
+      details: parsed.error.format(),
+    });
   }
 
-  return success(parsed.data, 201);
+  return domainSuccess(parsed.data);
 };
 
 /**
@@ -134,10 +129,10 @@ export const upsertStyleGuide = async (
 export const getStyleGuide = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<HandlerResult<StyleGuideResponse, StyleGuideServiceError, unknown>> => {
+): Promise<DomainResult<StyleGuideResponse, StyleGuideDomainError>> => {
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
   }
   const { data, error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -147,29 +142,27 @@ export const getStyleGuide = async (
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+      return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
     }
-    return failure(
-      500,
-      styleGuideErrorCodes.fetchError,
-      `Failed to fetch style guide: ${error.message}`,
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.fetchError,
+      message: `Failed to fetch style guide: ${error.message}`,
+    });
   }
 
   if (!data) {
-    return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
   }
 
   // Validate the database row
   const rowParse = StyleGuideTableRowSchema.safeParse(data);
 
   if (!rowParse.success) {
-    return failure(
-      500,
-      styleGuideErrorCodes.validationError,
-      'Style guide row failed validation.',
-      rowParse.error.format(),
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.validationError,
+      message: 'Style guide row failed validation.',
+      details: rowParse.error.format(),
+    });
   }
 
   // Map snake_case database columns to camelCase response
@@ -196,15 +189,14 @@ export const getStyleGuide = async (
   const parsed = StyleGuideResponseSchema.safeParse(mapped);
 
   if (!parsed.success) {
-    return failure(
-      500,
-      styleGuideErrorCodes.validationError,
-      'Style guide response failed validation.',
-      parsed.error.format(),
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.validationError,
+      message: 'Style guide response failed validation.',
+      details: parsed.error.format(),
+    });
   }
 
-  return success(parsed.data, 200);
+  return domainSuccess(parsed.data);
 };
 
 /**
@@ -216,7 +208,7 @@ export const updateStyleGuide = async (
   guideId: string,
   clerkUserId: string,
   data: CreateStyleGuideRequest,
-): Promise<HandlerResult<StyleGuideResponse, StyleGuideServiceError, unknown>> => {
+): Promise<DomainResult<StyleGuideResponse, StyleGuideDomainError>> => {
   // Map camelCase TypeScript to snake_case database columns
   const dbRecord = {
     brand_name: data.brandName,
@@ -234,7 +226,7 @@ export const updateStyleGuide = async (
 
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
   }
   const { data: updatedData, error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -246,29 +238,27 @@ export const updateStyleGuide = async (
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+      return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
     }
-    return failure(
-      500,
-      styleGuideErrorCodes.upsertError,
-      `Failed to update style guide: ${error.message}`,
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.upsertError,
+      message: `Failed to update style guide: ${error.message}`,
+    });
   }
 
   if (!updatedData) {
-    return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
   }
 
   // Validate the database row
   const rowParse = StyleGuideTableRowSchema.safeParse(updatedData);
 
   if (!rowParse.success) {
-    return failure(
-      500,
-      styleGuideErrorCodes.validationError,
-      'Style guide row failed validation.',
-      rowParse.error.format(),
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.validationError,
+      message: 'Style guide row failed validation.',
+      details: rowParse.error.format(),
+    });
   }
 
   // Map snake_case database columns to camelCase response
@@ -295,15 +285,14 @@ export const updateStyleGuide = async (
   const parsed = StyleGuideResponseSchema.safeParse(mapped);
 
   if (!parsed.success) {
-    return failure(
-      500,
-      styleGuideErrorCodes.validationError,
-      'Style guide response failed validation.',
-      parsed.error.format(),
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.validationError,
+      message: 'Style guide response failed validation.',
+      details: parsed.error.format(),
+    });
   }
 
-  return success(parsed.data, 200);
+  return domainSuccess(parsed.data);
 };
 
 /**
@@ -314,10 +303,10 @@ export const deleteStyleGuide = async (
   client: SupabaseClient,
   guideId: string,
   clerkUserId: string,
-): Promise<HandlerResult<{ success: boolean }, StyleGuideServiceError, unknown>> => {
+): Promise<DomainResult<{ success: boolean }, StyleGuideDomainError>> => {
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
   }
   const { error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -327,16 +316,15 @@ export const deleteStyleGuide = async (
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return failure(404, styleGuideErrorCodes.notFound, 'Style guide not found');
+      return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
     }
-    return failure(
-      500,
-      styleGuideErrorCodes.upsertError,
-      `Failed to delete style guide: ${error.message}`,
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.upsertError,
+      message: `Failed to delete style guide: ${error.message}`,
+    });
   }
 
-  return success({ success: true }, 200);
+  return domainSuccess({ success: true });
 };
 
 /**
@@ -346,10 +334,10 @@ export const deleteStyleGuide = async (
 export const markOnboardingCompleted = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<HandlerResult<{ success: boolean }, StyleGuideServiceError, unknown>> => {
+): Promise<DomainResult<{ success: boolean }, StyleGuideDomainError>> => {
   const profileId = await getProfileIdByClerkId(client, clerkUserId);
   if (!profileId) {
-    return failure(404, styleGuideErrorCodes.notFound, 'Profile not found');
+    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
   }
   const { error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -357,12 +345,11 @@ export const markOnboardingCompleted = async (
     .eq('profile_id', profileId);
 
   if (error) {
-    return failure(
-      500,
-      styleGuideErrorCodes.upsertError,
-      `Failed to update onboarding status: ${error.message}`,
-    );
+    return domainFailure({
+      code: styleGuideErrorCodes.upsertError,
+      message: `Failed to update onboarding status: ${error.message}`,
+    });
   }
 
-  return success({ success: true }, 200);
+  return domainSuccess({ success: true });
 };

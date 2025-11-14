@@ -1,9 +1,8 @@
 import type { Hono } from 'hono';
 import {
   failure,
-  respond,
-  type ErrorResult,
 } from '@/backend/http/response';
+import { respondWithDomain, respondCreated } from '@/backend/http/mapper';
 import {
   getLogger,
   getSupabase,
@@ -13,7 +12,6 @@ import { CreateStyleGuideRequestSchema } from '@/features/onboarding/backend/sch
 import { upsertStyleGuide, getStyleGuide, updateStyleGuide, deleteStyleGuide, markOnboardingCompleted } from './service';
 import {
   styleGuideErrorCodes,
-  type StyleGuideServiceError,
 } from './error';
 
 export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
@@ -29,13 +27,13 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           styleGuideErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
@@ -44,14 +42,14 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = CreateStyleGuideRequestSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           styleGuideErrorCodes.validationError,
           'Invalid request body. Please check your input.',
           parsedBody.error.format(),
         ),
+        400
       );
     }
 
@@ -61,14 +59,11 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     // Save to database
     const result = await upsertStyleGuide(supabase, userId, parsedBody.data);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
-      logger.error('Failed to save style guide', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Style guide saved successfully', { userId });
     }
 
-    logger.info('Style guide saved successfully', { userId });
-    return respond(c, result);
+    return respondCreated(c, result);
   });
 
   /**
@@ -83,13 +78,13 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const requestingUserId = c.req.header('x-clerk-user-id');
 
     if (!requestingUserId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           styleGuideErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
@@ -97,25 +92,25 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const targetUserId = c.req.param('userId');
 
     if (!targetUserId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           styleGuideErrorCodes.validationError,
           'User ID parameter is required.',
         ),
+        400
       );
     }
 
     // Verify that requesting user can only access their own style guide
     if (requestingUserId !== targetUserId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           403,
           styleGuideErrorCodes.unauthorized,
           'You can only access your own style guide.',
         ),
+        403
       );
     }
 
@@ -125,14 +120,11 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     // Get style guide
     const result = await getStyleGuide(supabase, targetUserId);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
-      logger.error('Failed to get style guide', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Style guide retrieved successfully', { userId: targetUserId });
     }
 
-    logger.info('Style guide retrieved successfully', { userId: targetUserId, result });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -148,24 +140,24 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const guideId = c.req.param('id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           styleGuideErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
     if (!guideId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           styleGuideErrorCodes.validationError,
           'Style guide ID is required.',
         ),
+        400
       );
     }
 
@@ -174,14 +166,14 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = CreateStyleGuideRequestSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           styleGuideErrorCodes.validationError,
           'Invalid request body. Please check your input.',
           parsedBody.error.format(),
         ),
+        400
       );
     }
 
@@ -191,14 +183,11 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     // Update style guide
     const result = await updateStyleGuide(supabase, guideId, userId, parsedBody.data);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
-      logger.error('Failed to update style guide', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Style guide updated successfully', { userId, guideId });
     }
 
-    logger.info('Style guide updated successfully', { userId, guideId });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -213,24 +202,24 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const guideId = c.req.param('id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           styleGuideErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
     if (!guideId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           styleGuideErrorCodes.validationError,
           'Style guide ID is required.',
         ),
+        400
       );
     }
 
@@ -240,14 +229,11 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     // Delete style guide
     const result = await deleteStyleGuide(supabase, guideId, userId);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
-      logger.error('Failed to delete style guide', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Style guide deleted successfully', { userId, guideId });
     }
 
-    logger.info('Style guide deleted successfully', { userId, guideId });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -262,13 +248,13 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           styleGuideErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
@@ -278,13 +264,10 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     // Update the onboarding_completed flag
     const result = await markOnboardingCompleted(supabase, userId);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<StyleGuideServiceError, unknown>;
-      logger.error('Failed to mark onboarding completed', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Onboarding marked as completed', { userId });
     }
 
-    logger.info('Onboarding marked as completed', { userId });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 };

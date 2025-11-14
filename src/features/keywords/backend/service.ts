@@ -6,8 +6,8 @@ import {
   normalizeKeyword,
   validateKeywordPhrase,
 } from "@/features/keywords/lib/normalize";
-import { success, failure, type HandlerResult } from "@/backend/http/response";
-import { keywordErrorCodes, type KeywordServiceError } from "./error";
+import { domainSuccess, domainFailure, type DomainResult } from "@/backend/domain/result";
+import { keywordErrorCodes, type KeywordDomainError } from "./error";
 import type {
   Keyword,
   KeywordListResponse,
@@ -24,7 +24,7 @@ import { d4seo } from "../lib/dataforseo";
 export async function listKeywords(
   supabase: SupabaseClient,
   input: ListKeywordsInput
-): Promise<HandlerResult<KeywordListResponse, KeywordServiceError>> {
+): Promise<DomainResult<KeywordListResponse, KeywordDomainError>> {
   try {
     const { query, page, limit } = input;
     const offset = (page - 1) * limit;
@@ -51,12 +51,11 @@ export async function listKeywords(
     ]);
 
     if (error) {
-      return failure(
-        500,
-        keywordErrorCodes.fetchError,
-        "Failed to fetch keywords",
-        error
-      );
+      return domainFailure({
+        code: keywordErrorCodes.fetchError,
+        message: "Failed to fetch keywords",
+        details: error
+      });
     }
 
     const items: Keyword[] = (data || []).map((row) => ({
@@ -68,7 +67,7 @@ export async function listKeywords(
       updatedAt: row.updated_at,
     }));
 
-    return success({
+    return domainSuccess({
       items,
       total: count || 0,
       page,
@@ -76,12 +75,11 @@ export async function listKeywords(
       hasMore: (count || 0) > offset + items.length,
     });
   } catch (err) {
-    return failure(
-      500,
-      keywordErrorCodes.fetchError,
-      "Unexpected error fetching keywords",
-      err
-    );
+    return domainFailure({
+      code: keywordErrorCodes.fetchError,
+      message: "Unexpected error fetching keywords",
+      details: err
+    });
   }
 }
 
@@ -89,10 +87,10 @@ export async function listKeywords(
 export async function createKeyword(
   supabase: SupabaseClient,
   input: CreateKeywordInput
-): Promise<HandlerResult<Keyword, KeywordServiceError>> {
+): Promise<DomainResult<Keyword, KeywordDomainError>> {
   const validation = validateKeywordPhrase(input.phrase);
   if (!validation.valid) {
-    return failure(400, keywordErrorCodes.invalidPhrase, validation.error!);
+    return domainFailure({ code: keywordErrorCodes.invalidPhrase, message: validation.error! });
   }
 
   const normalized = normalizeKeyword(input.phrase);
@@ -110,38 +108,32 @@ export async function createKeyword(
 
     if (error) {
       if (error.code === "23505") {
-        return failure(
-          409,
-          keywordErrorCodes.duplicateNormalized,
-          "Keyword already exists"
-        );
+        return domainFailure({
+          code: keywordErrorCodes.duplicateNormalized,
+          message: "Keyword already exists"
+        });
       }
-      return failure(
-        500,
-        keywordErrorCodes.createError,
-        "Failed to create keyword",
-        error
-      );
+      return domainFailure({
+        code: keywordErrorCodes.createError,
+        message: "Failed to create keyword",
+        details: error
+      });
     }
 
-    return success(
-      {
-        id: data.id,
-        phrase: data.phrase,
-        normalized: data.normalized,
-        source: data.source,
-        createdAt: data.created_at,
-        updatedAt: data.updated_at,
-      },
-      201
-    );
+    return domainSuccess({
+      id: data.id,
+      phrase: data.phrase,
+      normalized: data.normalized,
+      source: data.source,
+      createdAt: data.created_at,
+      updatedAt: data.updated_at,
+    });
   } catch (err) {
-    return failure(
-      500,
-      keywordErrorCodes.createError,
-      "Unexpected error creating keyword",
-      err
-    );
+    return domainFailure({
+      code: keywordErrorCodes.createError,
+      message: "Unexpected error creating keyword",
+      details: err
+    });
   }
 }
 
@@ -151,9 +143,9 @@ export async function bulkCreateKeywords(
   logger: AppLogger,
   input: BulkCreateKeywordsInput
 ): Promise<
-  HandlerResult<
+  DomainResult<
     { created: number; skipped: number; keywords: Keyword[] },
-    KeywordServiceError
+    KeywordDomainError
   >
 > {
   const rows = input.phrases
@@ -171,11 +163,10 @@ export async function bulkCreateKeywords(
     .filter((row): row is NonNullable<typeof row> => row !== null);
 
   if (rows.length === 0) {
-    return failure(
-      400,
-      keywordErrorCodes.bulkInsertError,
-      "No valid keywords to insert"
-    );
+    return domainFailure({
+      code: keywordErrorCodes.bulkInsertError,
+      message: "No valid keywords to insert"
+    });
   }
 
   try {
@@ -186,12 +177,11 @@ export async function bulkCreateKeywords(
 
     if (error) {
       logger.error("Bulk insert error:", error);
-      return failure(
-        500,
-        keywordErrorCodes.bulkInsertError,
-        "Failed to bulk insert keywords",
-        error
-      );
+      return domainFailure({
+        code: keywordErrorCodes.bulkInsertError,
+        message: "Failed to bulk insert keywords",
+        details: error
+      });
     }
 
     const created = data?.length || 0;
@@ -201,29 +191,25 @@ export async function bulkCreateKeywords(
       `Bulk insert: ${created} created, ${skipped} skipped (duplicates)`
     );
 
-    return success(
-      {
-        created,
-        skipped,
-        keywords: (data || []).map((row) => ({
-          id: row.id,
-          phrase: row.phrase,
-          normalized: row.normalized,
-          source: row.source,
-          createdAt: row.created_at,
-          updatedAt: row.updated_at,
-        })),
-      },
-      201
-    );
+    return domainSuccess({
+      created,
+      skipped,
+      keywords: (data || []).map((row) => ({
+        id: row.id,
+        phrase: row.phrase,
+        normalized: row.normalized,
+        source: row.source,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      })),
+    });
   } catch (err) {
     logger.error("Unexpected bulk insert error:", err);
-    return failure(
-      500,
-      keywordErrorCodes.bulkInsertError,
-      "Unexpected error during bulk insert",
-      err
-    );
+    return domainFailure({
+      code: keywordErrorCodes.bulkInsertError,
+      message: "Unexpected error during bulk insert",
+      details: err
+    });
   }
 }
 
@@ -233,7 +219,7 @@ export async function fetchKeywordSuggestions(
   logger: AppLogger,
   config: AppConfig,
   input: KeywordSuggestionsInput
-): Promise<HandlerResult<KeywordSuggestionsResponse, KeywordServiceError>> {
+): Promise<DomainResult<KeywordSuggestionsResponse, KeywordDomainError>> {
   try {
     const { keyword, context } = input;
 
@@ -254,20 +240,18 @@ export async function fetchKeywordSuggestions(
       parsed = JSON.parse(text);
     } catch (err) {
       logger.error("Failed to parse AI suggestions JSON:", err, text);
-      return failure(
-        500,
-        keywordErrorCodes.dataForSEOError,
-        "연관 검색어 결과를 해석하는 중 오류가 발생했습니다."
-      );
+      return domainFailure({
+        code: keywordErrorCodes.dataForSEOError,
+        message: "연관 검색어 결과를 해석하는 중 오류가 발생했습니다."
+      });
     }
 
     if (!Array.isArray(parsed)) {
       logger.error("AI suggestions is not an array:", parsed);
-      return failure(
-        500,
-        keywordErrorCodes.dataForSEOError,
-        "연관 검색어 결과 형식이 올바르지 않습니다."
-      );
+      return domainFailure({
+        code: keywordErrorCodes.dataForSEOError,
+        message: "연관 검색어 결과 형식이 올바르지 않습니다."
+      });
     }
 
     const normalizedKeyword = keyword.trim().toLowerCase();
@@ -285,19 +269,18 @@ export async function fetchKeywordSuggestions(
       competition: null,
     }));
 
-    return success({
+    return domainSuccess({
       suggestions,
       cached: false,
       cacheExpiresAt: null,
     });
   } catch (err: any) {
     logger.error("Unexpected AI keyword suggestion error:", err);
-    return failure(
-      500,
-      keywordErrorCodes.dataForSEOError,
-      "연관 검색어 생성 중 예기치 않은 오류가 발생했습니다.",
-      err
-    );
+    return domainFailure({
+      code: keywordErrorCodes.dataForSEOError,
+      message: "연관 검색어 생성 중 예기치 않은 오류가 발생했습니다.",
+      details: err
+    });
   }
 }
 
@@ -307,7 +290,7 @@ export async function fetchLongTailSuggestions(input: KeywordSuggestionsInput) {
   const relatedKeywords = await d4seo.requestSuggestions(keyword);
 
   // 현재는 일반 연관 검색어와 동일한 처리
-  return success({
+  return domainSuccess({
     suggestions: relatedKeywords,
     cached: false,
     cacheExpiresAt: null,

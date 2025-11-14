@@ -1,3 +1,5 @@
+import type { DomainError } from '@/backend/domain/result';
+
 export const articleErrorCodes = {
   unauthorized: 'ARTICLE_UNAUTHORIZED',
   notFound: 'ARTICLE_NOT_FOUND',
@@ -13,7 +15,6 @@ export const articleErrorCodes = {
   quotaIncrementFailed: 'QUOTA_INCREMENT_FAILED',
 } as const;
 
-type ArticleErrorValue =
-  (typeof articleErrorCodes)[keyof typeof articleErrorCodes];
-
-export type ArticleServiceError = ArticleErrorValue;
+export type ArticleDomainError = DomainError & {
+  code: (typeof articleErrorCodes)[keyof typeof articleErrorCodes];
+};

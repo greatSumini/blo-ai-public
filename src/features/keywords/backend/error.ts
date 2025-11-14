@@ -1,3 +1,5 @@
+import type { DomainError } from '@/backend/domain/result';
+
 export const keywordErrorCodes = {
   // CRUD errors
   fetchError: 'KEYWORD_FETCH_ERROR',
@@ -26,4 +28,6 @@ export const keywordErrorCodes = {
   cacheWriteError: 'CACHE_WRITE_ERROR',
 } as const;
 
-export type KeywordServiceError = (typeof keywordErrorCodes)[keyof typeof keywordErrorCodes];
+export type KeywordDomainError = DomainError & {
+  code: (typeof keywordErrorCodes)[keyof typeof keywordErrorCodes];
+};

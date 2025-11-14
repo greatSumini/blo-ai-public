@@ -2,9 +2,8 @@ import type { Hono } from 'hono';
 import {
   failure,
   success,
-  respond,
-  type ErrorResult,
 } from '@/backend/http/response';
+import { respondWithDomain, respondCreated } from '@/backend/http/mapper';
 import {
   getLogger,
   getSupabase,
@@ -27,7 +26,6 @@ import {
 } from './service';
 import {
   articleErrorCodes,
-  type ArticleServiceError,
 } from './error';
 import { generateArticleContent } from './ai-service';
 import { checkQuota, incrementQuota } from './quota-service';
@@ -46,13 +44,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           articleErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
@@ -61,14 +59,14 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const parsedQuery = ListArticlesQuerySchema.safeParse(queryParams);
 
     if (!parsedQuery.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           articleErrorCodes.validationError,
           'Invalid query parameters. Please check your input.',
           parsedQuery.error.format(),
         ),
+        400
       );
     }
 
@@ -78,18 +76,15 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     // List articles
     const result = await listArticles(supabase, userId, parsedQuery.data);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Failed to list articles', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Articles listed successfully', {
+        userId,
+        count: result.data.articles.length,
+        total: result.data.total,
+      });
     }
 
-    logger.info('Articles listed successfully', {
-      userId,
-      count: result.data.articles.length,
-      total: result.data.total,
-    });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -103,13 +98,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           articleErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
@@ -119,14 +114,11 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     // Get dashboard stats
     const result = await getDashboardStats(supabase, userId);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Failed to get dashboard stats', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Dashboard stats retrieved successfully', { userId });
     }
 
-    logger.info('Dashboard stats retrieved successfully', { userId });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -141,13 +133,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           articleErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
@@ -156,14 +148,14 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = CreateArticleRequestSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           articleErrorCodes.validationError,
           'Invalid request body. Please check your input.',
           parsedBody.error.format(),
         ),
+        400
       );
     }
 
@@ -173,14 +165,11 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     // Create article draft
     const result = await createArticle(supabase, userId, parsedBody.data);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Failed to create article draft', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Article draft created successfully', { userId, articleId: result.data.id });
     }
 
-    logger.info('Article draft created successfully', { userId, articleId: result.data.id });
-    return respond(c, result);
+    return respondCreated(c, result);
   });
 
   /**
@@ -195,26 +184,26 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           articleErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
     const articleId = c.req.param('id');
 
     if (!articleId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           articleErrorCodes.validationError,
           'Article ID is required.',
         ),
+        400
       );
     }
 
@@ -224,14 +213,11 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     // Get article
     const result = await getArticleById(supabase, userId, articleId);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Failed to get article', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Article retrieved successfully', { userId, articleId });
     }
 
-    logger.info('Article retrieved successfully', { userId, articleId });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -247,26 +233,26 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           articleErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
     const articleId = c.req.param('id');
 
     if (!articleId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           articleErrorCodes.validationError,
           'Article ID is required.',
         ),
+        400
       );
     }
 
@@ -275,14 +261,14 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = UpdateArticleRequestSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           articleErrorCodes.validationError,
           'Invalid request body. Please check your input.',
           parsedBody.error.format(),
         ),
+        400
       );
     }
 
@@ -297,14 +283,11 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
       parsedBody.data,
     );
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Failed to update article', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Article updated successfully', { userId, articleId });
     }
 
-    logger.info('Article updated successfully', { userId, articleId });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -319,26 +302,26 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           articleErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
     const articleId = c.req.param('id');
 
     if (!articleId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           articleErrorCodes.validationError,
           'Article ID is required.',
         ),
+        400
       );
     }
 
@@ -348,14 +331,11 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     // Delete article
     const result = await deleteArticle(supabase, userId, articleId);
 
-    if (!result.ok) {
-      const errorResult = result as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Failed to delete article', errorResult.error.message);
-      return respond(c, result);
+    if (result.ok) {
+      logger.info('Article deleted successfully', { userId, articleId });
     }
 
-    logger.info('Article deleted successfully', { userId, articleId });
-    return respond(c, result);
+    return respondWithDomain(c, result);
   });
 
   /**
@@ -370,13 +350,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const userId = c.req.header('x-clerk-user-id');
 
     if (!userId) {
-      return respond(
-        c,
+      return c.json(
         failure(
           401,
           articleErrorCodes.unauthorized,
           'User ID is required. Please provide x-clerk-user-id header.',
         ),
+        401
       );
     }
 
@@ -385,14 +365,14 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const parsedBody = GenerateArticleRequestSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return respond(
-        c,
+      return c.json(
         failure(
           400,
           articleErrorCodes.validationError,
           'Invalid request body. Please check your input.',
           parsedBody.error.format(),
         ),
+        400
       );
     }
 
@@ -404,14 +384,11 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const quotaCheckResult = await checkQuota(supabase, userId);
 
     if (!quotaCheckResult.ok) {
-      const errorResult = quotaCheckResult as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Quota check failed', errorResult.error.message);
-      return respond(c, quotaCheckResult);
+      return respondWithDomain(c, quotaCheckResult);
     }
 
     if (!quotaCheckResult.data.allowed) {
-      return respond(
-        c,
+      return c.json(
         failure(
           429,
           articleErrorCodes.quotaExceeded,
@@ -422,6 +399,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
             limit: quotaCheckResult.data.limit,
           },
         ),
+        429
       );
     }
 
@@ -434,9 +412,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     );
 
     if (!generationResult.ok) {
-      const errorResult = generationResult as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('AI generation failed', errorResult.error.message);
-      return respond(c, generationResult);
+      return respondWithDomain(c, generationResult);
     }
 
     const generatedContent = generationResult.data;
@@ -458,17 +434,14 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const articleResult = await createArticle(supabase, userId, createArticleData);
 
     if (!articleResult.ok) {
-      const errorResult = articleResult as ErrorResult<ArticleServiceError, unknown>;
-      logger.error('Failed to save generated article', errorResult.error.message);
-      return respond(c, articleResult);
+      return respondWithDomain(c, articleResult);
     }
 
     // Step 4: Increment quota
     const incrementResult = await incrementQuota(supabase, userId);
 
     if (!incrementResult.ok) {
-      const errorResult = incrementResult as ErrorResult<ArticleServiceError, unknown>;
-      logger.warn('Failed to increment quota after article creation', errorResult.error.message);
+      logger.warn('Failed to increment quota after article creation');
       // Continue anyway since article was created successfully
     }
 
@@ -483,8 +456,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     });
 
     // Return response
-    return respond(
-      c,
+    return c.json(
       success(
         {
           article: articleResult.data,
@@ -493,6 +465,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
         },
         201,
       ),
+      201
     );
   });
 };

@@ -2,10 +2,10 @@ import { generateObject } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import {
-  failure,
-  success,
-  type HandlerResult,
-} from '@/backend/http/response';
+  domainFailure,
+  domainSuccess,
+  type DomainResult,
+} from '@/backend/domain/result';
 import {
   AIGeneratedContentSchema,
   type AIGeneratedContent,
@@ -13,7 +13,7 @@ import {
 } from '@/features/articles/backend/schema';
 import {
   articleErrorCodes,
-  type ArticleServiceError,
+  type ArticleDomainError,
 } from '@/features/articles/backend/error';
 import type { StyleGuideResponse } from '@/features/onboarding/backend/schema';
 
@@ -187,7 +187,7 @@ export const generateArticleContent = async (
   clerkUserId: string,
   apiKey: string,
   request: GenerateArticleRequest,
-): Promise<HandlerResult<AIGeneratedContent, ArticleServiceError, unknown>> => {
+): Promise<DomainResult<AIGeneratedContent, ArticleDomainError>> => {
   try {
     // Get style guide if provided
     const styleGuide = await getStyleGuide(
@@ -197,11 +197,10 @@ export const generateArticleContent = async (
     );
 
     if (request.styleGuideId && !styleGuide) {
-      return failure(
-        404,
-        articleErrorCodes.styleGuideNotFound,
-        'Style guide not found',
-      );
+      return domainFailure({
+        code: articleErrorCodes.styleGuideNotFound,
+        message: 'Style guide not found',
+      });
     }
 
     // Build prompt
@@ -223,13 +222,12 @@ export const generateArticleContent = async (
       prompt,
     });
 
-    return success(object);
+    return domainSuccess(object);
   } catch (error) {
-    return failure(
-      500,
-      articleErrorCodes.aiGenerationFailed,
-      `AI generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      error,
-    );
+    return domainFailure({
+      code: articleErrorCodes.aiGenerationFailed,
+      message: `AI generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      details: error,
+    });
   }
 };
