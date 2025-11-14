@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, PenTool, FileText, User, Menu } from "lucide-react";
+import { LayoutDashboard, PenTool, FileText, User, Menu, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -14,6 +14,7 @@ function SidebarContent() {
   const menuItems = [
     { icon: LayoutDashboard, label: t("sidebar.dashboard"), href: "/dashboard" },
     { icon: PenTool, label: t("sidebar.new_article"), href: "/new-article" },
+    { icon: Tag, label: t("sidebar.keywords"), href: "/keywords" },
     { icon: FileText, label: t("sidebar.style_guide"), href: "/style-guide" },
     { icon: User, label: t("sidebar.account"), href: "/account" },
   ];
