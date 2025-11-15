@@ -163,7 +163,7 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
   console.log("[MIDDLEWARE] ===== REQUEST END =====");
 });
 
-export default async function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest, event: any) {
   const path = req.nextUrl.pathname;
   const skipI18n = path.startsWith("/api") || path.startsWith("/_next");
 
@@ -177,25 +177,40 @@ export default async function middleware(req: NextRequest) {
   }
 
   // 2) Run Clerk auth handler
-  const clerkRes = await clerkHandler(req);
+  const clerkRes = await clerkHandler(req, event);
+
+  // If clerk returned nothing, create a default response
+  let response: NextResponse;
+  if (!clerkRes) {
+    response = NextResponse.next();
+  } else if (clerkRes instanceof NextResponse) {
+    response = clerkRes;
+  } else {
+    // Convert Response to NextResponse
+    response = NextResponse.next();
+    // Copy headers from the original response
+    clerkRes.headers.forEach((value, key) => {
+      response.headers.set(key, value);
+    });
+  }
 
   if (i18nRes) {
     // 3) Merge i18n headers (rewrite + set-cookie) into Clerk response
     const rewrite = i18nRes.headers.get("x-middleware-rewrite");
     if (rewrite) {
-      clerkRes.headers.set("x-middleware-rewrite", rewrite);
+      response.headers.set("x-middleware-rewrite", rewrite);
     }
     try {
       const cookies = i18nRes.cookies.getAll?.() ?? [];
       for (const c of cookies) {
-        clerkRes.cookies.set({ name: c.name, value: c.value, ...c });
+        response.cookies.set({ name: c.name, value: c.value, ...c });
       }
     } catch {
       // noop: cookies merging best-effort only
     }
   }
 
-  return clerkRes;
+  return response;
 }
 
 export const config = {

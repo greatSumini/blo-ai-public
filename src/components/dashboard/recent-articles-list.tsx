@@ -52,7 +52,7 @@ export function RecentArticlesList() {
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-muted-foreground">
-            {t("recent.error", {}, { default: "글 목록을 불러오는 중 오류가 발생했습니다" })}
+            {t("recent.error")}
           </div>
         </CardContent>
       </Card>
@@ -78,7 +78,7 @@ export function RecentArticlesList() {
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-muted-foreground">
-            {t("recent.empty", {}, { default: "아직 작성한 글이 없습니다" })}
+            {t("recent.empty")}
           </div>
         </CardContent>
       </Card>
@@ -122,7 +122,7 @@ export function RecentArticlesList() {
                       variant="ghost"
                       size="icon"
                       onClick={() => handleView(article.id)}
-                      title={t("recent.actions.view", {}, { default: "보기" })}
+                      title={t("recent.actions.view")}
                     >
                       <Eye className="h-4 w-4" />
                     </Button>
@@ -130,7 +130,7 @@ export function RecentArticlesList() {
                       variant="ghost"
                       size="icon"
                       onClick={() => handleEdit(article.id)}
-                      title={t("recent.actions.edit", {}, { default: "수정" })}
+                      title={t("recent.actions.edit")}
                     >
                       <Pencil className="h-4 w-4" />
                     </Button>

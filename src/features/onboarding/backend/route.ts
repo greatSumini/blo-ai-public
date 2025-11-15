@@ -67,7 +67,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const result = await listStyleGuides(supabase, userId);
 
     if (result.ok) {
-      logger.info('Style guides retrieved successfully', { userId, count: result.value.length });
+      logger.info('Style guides retrieved successfully', { userId, count: result.data.length });
     }
 
     return respondWithDomain(c, result);

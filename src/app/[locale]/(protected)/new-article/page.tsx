@@ -40,7 +40,7 @@ type NewArticlePageProps = {
 
 export default function NewArticlePage({ params }: NewArticlePageProps) {
   void params;
-  const t = useI18n();
+  const t = useTranslations('newArticle');
 
   const router = useRouter();
   const { toast } = useToast();
@@ -61,7 +61,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
     ? [
         {
           id: styleGuideData.id,
-          name: t("newArticle.default_style_guide"),
+          name: t("default_style_guide"),
         },
       ]
     : [];
@@ -95,10 +95,10 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
       const message =
         error instanceof Error
           ? error.message
-          : t("newArticle.toast.error.desc");
+          : t("toast.error.desc");
       setLocalError(new Error(message));
       toast({
-        title: t("newArticle.toast.error.title"),
+        title: t("toast.error.title"),
         description: message,
         variant: "destructive",
       });
@@ -121,8 +121,8 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
           setParsed(p);
           setMode("complete");
           toast({
-            title: t("newArticle.toast.success.title"),
-            description: t("newArticle.toast.success.desc", {
+            title: t("toast.success.title"),
+            description: t("toast.success.desc", {
               title: p.title || "AI 생성 글",
             }),
           });
