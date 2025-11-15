@@ -118,5 +118,406 @@
   "metadata": {
     "title": "SEO24",
     "description": "AI-powered content generation SaaS"
+  },
+  "keywords": {
+    "title": "Keywords",
+    "description": "Manage and get suggestions for SEO keywords.",
+    "suggestions": "Keyword Suggestions",
+    "new_keyword": "New Keyword",
+    "table": {
+      "searchPlaceholder": "Search keywords...",
+      "columnKeyword": "Keyword",
+      "columnVolume": "Search Volume",
+      "columnCompetition": "Competition",
+      "columnActions": "Actions",
+      "loading": "Loading keywords...",
+      "noResults": "No results found.",
+      "deleteConfirm": "Are you sure you want to delete this keyword?",
+      "paginationInfo": "{start}-{end} of {total}",
+      "itemsPerPage": "Items per page"
+    },
+    "create": {
+      "title": "Add New Keyword",
+      "fieldLabel": "Keyword",
+      "fieldPlaceholder": "Enter keyword",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "validation": {
+        "required": "Please enter a keyword.",
+        "minLength": "Please enter at least 2 characters."
+      },
+      "toast": {
+        "success": {
+          "title": "Keyword Added",
+          "desc": "The new keyword has been added."
+        },
+        "error": {
+          "title": "Add Failed",
+          "desc": "An error occurred while adding the keyword."
+        }
+      }
+    },
+    "picker": {
+      "searchPlaceholder": "Search keywords...",
+      "loading": "Loading keywords...",
+      "noResults": "No keywords found.",
+      "selectKeyword": "Select Keyword",
+      "selected": "Selected"
+    },
+    "suggestions": {
+      "title": "AI Keyword Suggestions",
+      "subtitle": "Get long-tail keyword suggestions related to your topic.",
+      "keywordLabel": "Topic Keyword",
+      "keywordPlaceholder": "e.g., blog writing tips",
+      "fetchButton": "Get Suggestions",
+      "fetching": "Fetching...",
+      "close": "Close",
+      "addKeyword": "Add Keyword",
+      "adding": "Adding...",
+      "results": {
+        "title": "Suggested Keywords",
+        "empty": "No suggestions found."
+      },
+      "errors": {
+        "validation": {
+          "required": "Please enter a keyword.",
+          "minLength": "Please enter at least 2 characters."
+        },
+        "fetch": {
+          "title": "Suggestion Failed",
+          "desc": "An error occurred while fetching keyword suggestions."
+        },
+        "add": {
+          "title": "Add Failed",
+          "desc": "An error occurred while adding the keyword."
+        }
+      },
+      "toast": {
+        "success": {
+          "title": "Keyword Added",
+          "desc": "The keyword \"{keyword}\" has been added."
+        }
+      }
+    }
+  },
+  "articles": {
+    "title": "Articles",
+    "description": "Manage and edit your AI-generated articles.",
+    "coming_soon": "This page will be implemented soon.",
+    "generationForm": {
+      "title": "AI Article Generation",
+      "subtitle": "Enter a topic and select a style guide.",
+      "topicLabel": "Topic",
+      "topicPlaceholder": "Enter article topic (e.g., blog writing tips)",
+      "styleGuideLabel": "Style Guide",
+      "styleGuidePlaceholder": "Select a style guide",
+      "noStyleGuides": "No style guides available",
+      "createStyleGuide": "Create new style guide",
+      "keywordLabel": "Target Keyword (Optional)",
+      "keywordPlaceholder": "Select a keyword",
+      "noKeywords": "No keywords available",
+      "generateButton": "Generate AI Article",
+      "generating": "Generating...",
+      "validation": {
+        "topicRequired": "Please enter a topic.",
+        "topicMinLength": "Topic must be at least 5 characters.",
+        "styleGuideRequired": "Please select a style guide."
+      }
+    },
+    "articleForm": {
+      "titleLabel": "Title",
+      "titlePlaceholder": "Enter article title",
+      "slugLabel": "Slug",
+      "slugPlaceholder": "URL slug",
+      "keywordsLabel": "Keywords",
+      "keywordsPlaceholder": "Select keywords (optional)",
+      "descriptionLabel": "Summary",
+      "descriptionPlaceholder": "Enter article summary",
+      "contentLabel": "Content",
+      "contentPlaceholder": "Enter article content"
+    },
+    "seoPanel": {
+      "title": "SEO Analysis",
+      "scoreLabel": "SEO Score",
+      "titleLengthLabel": "Title Length",
+      "titleLengthValue": "{current}/{max} characters",
+      "metaTitleLabel": "Meta Title",
+      "metaTitlePlaceholder": "Meta title (optional)",
+      "metaDescLabel": "Meta Description",
+      "metaDescPlaceholder": "Meta description (optional)",
+      "recommendations": "Improvement Recommendations",
+      "noRecommendations": "Everything is optimized!"
+    },
+    "autoSave": {
+      "saving": "Saving...",
+      "saved": "Saved",
+      "error": "Save failed"
+    },
+    "tableOfContents": {
+      "title": "Table of Contents"
+    },
+    "generationProgress": {
+      "generating": "AI is generating your article...",
+      "pleaseWait": "Please wait.",
+      "retry": "Retry"
+    }
+  },
+  "editor": {
+    "loading": "Loading article...",
+    "load_error": "Failed to load the article.",
+    "back": "Go back",
+    "title": "Edit Article",
+    "field_title": "Title",
+    "placeholder_title": "Enter article title",
+    "field_slug": "Slug",
+    "placeholder_slug": "URL slug",
+    "field_keywords": "Keywords",
+    "placeholder_keywords": "Select keywords (optional)",
+    "field_description": "Summary",
+    "placeholder_description": "Enter article summary",
+    "field_content": "Content",
+    "placeholder_content": "Enter article content",
+    "download": "Download",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "hide_toc": "Hide Table of Contents",
+    "show_toc": "Show Table of Contents",
+    "untitled": "Untitled",
+    "edit_tab": "Edit",
+    "preview_tab": "Preview",
+    "download_success_title": "Download Complete",
+    "download_success_desc": "The markdown file has been downloaded.",
+    "copy_success_title": "Copy Complete",
+    "copy_success_desc": "The markdown has been copied to the clipboard.",
+    "copy_error_title": "Copy Failed",
+    "copy_error_desc": "An error occurred while copying to the clipboard."
+  },
+  "onboarding": {
+    "wizard": {
+      "keyboard_shortcut_hint": "Keyboard shortcuts: ← Previous / → Next",
+      "button_previous": "Previous",
+      "button_next": "Next",
+      "button_submitting": "Generating...",
+      "button_complete": "Complete and Generate",
+      "preview_label": "Preview"
+    },
+    "brand_voice": {
+      "title": "Brand Voice",
+      "subtitle": "Define your blog's unique voice.",
+      "field_brand_name": "Brand Name",
+      "placeholder_brand_name": "e.g., Tech Insights Blog",
+      "field_personality": "Brand Personality",
+      "placeholder_personality": "e.g., Professional and friendly",
+      "field_formality": "Formality Level",
+      "option_casual": "Casual",
+      "option_neutral": "Neutral",
+      "option_formal": "Formal",
+      "validation": {
+        "brand_name_required": "Please enter a brand name.",
+        "brand_name_min": "Brand name must be at least 2 characters.",
+        "personality_required": "Please enter brand personality.",
+        "personality_min": "Brand personality must be at least 5 characters."
+      }
+    },
+    "audience": {
+      "title": "Target Audience",
+      "subtitle": "Define your primary readers.",
+      "field_target_audience": "Target Audience",
+      "placeholder_target_audience": "e.g., Startup founders, developers",
+      "field_pain_points": "Reader Pain Points (Optional)",
+      "placeholder_pain_points": "e.g., Time constraints, technology selection challenges",
+      "tip_text": "Tip: The more specific your audience definition, the more tailored content you can create.",
+      "validation": {
+        "target_audience_required": "Please enter a target audience.",
+        "target_audience_min": "Target audience must be at least 5 characters."
+      }
+    },
+    "language": {
+      "title": "Language Settings",
+      "subtitle": "Select the language for content generation.",
+      "field_language": "Language",
+      "description_language": "AI will generate content in this language."
+    },
+    "style": {
+      "title": "Style Settings",
+      "subtitle": "Define the style of your content.",
+      "field_tone": "Tone",
+      "placeholder_tone": "e.g., Friendly and encouraging",
+      "field_content_length": "Content Length",
+      "option_short": "Short (500-800 words)",
+      "option_medium": "Medium (800-1500 words)",
+      "option_long": "Long (1500+ words)",
+      "field_reading_level": "Reading Level",
+      "option_beginner": "Beginner",
+      "option_intermediate": "Intermediate",
+      "option_advanced": "Advanced",
+      "validation": {
+        "tone_required": "Please enter a tone.",
+        "tone_min": "Tone must be at least 3 characters."
+      }
+    },
+    "review": {
+      "title": "Review and Complete",
+      "subtitle": "Review your entries and generate the style guide.",
+      "section_brand_voice": "Brand Voice",
+      "section_audience": "Target Audience",
+      "section_language": "Language",
+      "section_style": "Style",
+      "label_brand_name": "Brand Name",
+      "label_personality": "Personality",
+      "label_formality": "Formality",
+      "label_target_audience": "Target Audience",
+      "label_pain_points": "Pain Points",
+      "label_language": "Language",
+      "label_tone": "Tone",
+      "label_content_length": "Content Length",
+      "label_reading_level": "Reading Level",
+      "value_none": "None"
+    },
+    "step_indicator": {
+      "progress_aria_label": "Onboarding progress: {current}/{total} steps"
+    },
+    "preview_panel": {
+      "title": "Preview",
+      "subtitle": "Preview of the AI-generated style guide",
+      "empty_state": "Fill out the form on the left to see the preview here.",
+      "summary_title": "Summary"
+    }
+  },
+  "landing": {
+    "header": {
+      "nav": {
+        "features": "Features",
+        "how_it_works": "How It Works",
+        "pricing": "Pricing",
+        "use_cases": "Use Cases"
+      },
+      "cta": {
+        "login": "Log in",
+        "get_started": "Get Started"
+      }
+    },
+    "hero": {
+      "badge": "AI-Powered Content Generation",
+      "heading": "Generate SEO-Optimized Blog Posts with AI",
+      "subheading": "Set up your style guide once, and AI will automatically generate high-quality content while maintaining brand consistency.",
+      "cta": {
+        "primary": "Start for Free",
+        "secondary": "View Demo"
+      },
+      "trust_badge": "Already trusted by 1,000+ blogs"
+    },
+    "features": {
+      "section_title": "Powerful Features",
+      "section_subtitle": "Revolutionize your content creation process with AI technology.",
+      "ai_generation": {
+        "title": "AI Article Generation",
+        "description": "Simply enter a topic and automatically generate high-quality, SEO-optimized articles."
+      },
+      "seo_keywords": {
+        "title": "Keyword Management",
+        "description": "Analyze search volume and competition to build effective keyword strategies."
+      },
+      "style_guide": {
+        "title": "Style Guide",
+        "description": "Define your brand's unique tone and style to generate consistent content."
+      },
+      "multi_language": {
+        "title": "Multi-Language Support",
+        "description": "Generate content in various languages including Korean and English."
+      }
+    },
+    "how_it_works": {
+      "section_title": "Simple 3-Step Process",
+      "section_subtitle": "Anyone can easily get started with AI content generation.",
+      "step1": {
+        "title": "Set Up Style Guide",
+        "description": "Define your brand voice, target audience, and preferred tone."
+      },
+      "step2": {
+        "title": "Enter Topic",
+        "description": "Enter the topic and keywords for the article you want to write."
+      },
+      "step3": {
+        "title": "AI Generation and Editing",
+        "description": "Review the AI-generated article and make any necessary edits."
+      }
+    },
+    "use_cases": {
+      "section_title": "Use Cases",
+      "section_subtitle": "Leverage SEO24 in various situations.",
+      "product_launch": {
+        "title": "Product Launch",
+        "description": "Quickly write and SEO-optimize new product introduction articles."
+      },
+      "content_marketing": {
+        "title": "Content Marketing",
+        "description": "Generate blog content at scale to increase search visibility."
+      },
+      "thought_leadership": {
+        "title": "Thought Leadership",
+        "description": "Easily write insightful articles that showcase your expertise."
+      }
+    },
+    "pricing": {
+      "section_title": "Reasonable Pricing",
+      "section_subtitle": "Choose a plan that fits your needs.",
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "period": "/month",
+        "description": "Basic plan for individual bloggers",
+        "features": {
+          "articles": "5 articles per month",
+          "keywords": "Basic keyword management",
+          "style_guides": "1 style guide"
+        },
+        "cta": "Start for Free"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$29",
+        "period": "/month",
+        "description": "Plan for professional bloggers and small teams",
+        "popular": "Popular",
+        "features": {
+          "articles": "50 articles per month",
+          "keywords": "Advanced keyword analysis",
+          "style_guides": "Unlimited style guides",
+          "priority_support": "Priority support"
+        },
+        "cta": "Start Pro"
+      }
+    },
+    "cta": {
+      "heading": "Start AI Content Generation Now",
+      "subheading": "Start for free and upgrade anytime.",
+      "primary_cta": "Start for Free",
+      "no_credit_card": "No credit card required"
+    },
+    "footer": {
+      "brand": {
+        "description": "AI-powered SEO-optimized content generation platform"
+      },
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "use_cases": "Use Cases"
+      },
+      "company": {
+        "title": "Company",
+        "about": "About",
+        "blog": "Blog",
+        "contact": "Contact"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service"
+      },
+      "copyright": "© 2024 SEO24. All rights reserved."
+    }
   }
 }
