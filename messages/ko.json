@@ -1,0 +1,80 @@
+{
+  "common": {
+    "account_management": "계정 관리",
+    "coming_soon": "이 페이지는 추후 구현될 예정입니다.",
+    "login": "로그인",
+    "brand_name": "SEO24",
+    "back": "뒤로",
+    "back_go": "뒤로 가기",
+    "retry": "다시 시도",
+    "loading": "로딩 중...",
+    "error": "오류",
+    "success": "성공"
+  },
+  "sidebar": {
+    "dashboard": "대시보드",
+    "new_article": "새 글 작성",
+    "keywords": "키워드 관리",
+    "style_guide": "스타일 가이드",
+    "account": "계정 관리"
+  },
+  "dashboard": {
+    "title": "대시보드",
+    "welcome": "반갑습니다",
+    "welcome_header.greeting": "안녕하세요, {userName}님!",
+    "welcome_header.subtitle": "오늘도 멋진 콘텐츠를 만들어 보세요.",
+    "welcome_header.new_article": "새 글 작성",
+    "stats.monthly_articles_title": "월간 완성 글 수",
+    "stats.monthly_articles_suffix": "편",
+    "stats.goal_achievement": "목표의 {rate}%를 달성했어요!",
+    "stats.saved_time_title": "누적 절약 시간",
+    "stats.saved_time_suffix": "시간",
+    "stats.saved_time_desc": "이번 달에 절약한 시간",
+    "recent.title": "최근 작성한 글",
+    "recent.th.status": "상태",
+    "recent.th.title": "제목",
+    "recent.th.created_at": "생성일",
+    "recent.th.actions": "액션",
+    "status.done": "완료",
+    "status.draft": "작성중",
+    "banner.title": "환영합니다! 🎉",
+    "banner.desc": "모든 설정이 완료되었습니다. 이제 AI로 첫 콘텐츠를 생성해보세요!",
+    "banner.cta": "첫 글 작성",
+    "banner.cta_aria": "첫 글 작성하러 가기",
+    "banner.close_aria": "환영 메시지 닫기",
+    "activity.title": "월간 활동 그래프",
+    "activity.placeholder": "차트 라이브러리(예: Recharts)가 여기에 표시됩니다"
+  },
+  "newArticle": {
+    "back": "뒤로 가기",
+    "default_style_guide": "내 스타일 가이드",
+    "toast.error.title": "생성 실패",
+    "toast.error.desc": "AI 글 생성 중 오류가 발생했습니다.",
+    "toast.success.title": "AI 글 생성 완료",
+    "toast.success.desc": "\"{title}\" 글이 생성되었습니다."
+  },
+  "styleGuide": {
+    "title": "스타일 가이드",
+    "subtitle": "AI 글 생성에 사용할 블로그의 스타일 가이드를 관리합니다.",
+    "create_new": "새 가이드 생성",
+    "empty": "아직 생성된 스타일 가이드가 없습니다.",
+    "create": "스타일 가이드 생성하기",
+    "loading": "로딩 중...",
+    "error.load": "스타일 가이드를 불러오는 데 실패했습니다.",
+    "retry": "다시 시도",
+    "delete.confirm": "이 스타일 가이드를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    "delete.success.title": "삭제 완료",
+    "delete.success.desc": "스타일 가이드가 삭제되었습니다.",
+    "delete.error.title": "오류",
+    "delete.error.desc": "스타일 가이드 삭제에 실패했습니다.",
+    "update.success.desc": "스타일 가이드가 업데이트되었습니다.",
+    "update.error.desc": "스타일 가이드 업데이트에 실패했습니다.",
+    "edit.title": "스타일 가이드 편집",
+    "edit.hint": "현재 스타일 가이드를 다시 생성하려면 새 가이드 생성 페이지로 이동하세요.",
+    "cancel": "취소"
+  },
+  "metadata": {
+    "title": "SEO24",
+    "description": "AI 기반 콘텐츠 생성 SaaS"
+  }
+}

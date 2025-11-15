@@ -1,7 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/backend/supabase/client";
-import { createI18nMiddleware } from "@/lib/i18n/middleware";
+import createMiddleware from 'next-intl/middleware';
+import { routing } from '@/i18n/routing';
 import { getOnboardingCompletedFromDb } from "@/features/onboarding/backend/onboarding-status";
 
 /**
@@ -36,7 +37,7 @@ const resolveOnboardingCompleted = async (userId: string): Promise<boolean> => {
 
   if (!supabaseUrl || !supabaseServiceRoleKey) {
     console.error(
-      "[MIDDLEWARE] Missing Supabase credentials for onboarding check",
+      "[MIDDLEWARE] Missing Supabase credentials for onboarding check"
     );
     return false;
   }
@@ -69,11 +70,7 @@ const isProtectedRoute = createRouteMatcher([
 const isOnboardingRoute = createRouteMatcher(["/auth/onboarding(.*)"]);
 
 // i18n middleware: detect locale and rewrite behind the scenes
-const i18n = createI18nMiddleware({
-  locales: ["ko", "en"],
-  defaultLocale: "ko",
-  urlMappingStrategy: "rewrite",
-});
+const handleI18nRouting = createMiddleware(routing);
 
 const clerkHandler = clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims } = await auth();
@@ -82,7 +79,10 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
   console.log("[MIDDLEWARE] ===== REQUEST START =====");
   console.log("[MIDDLEWARE] URL:", reqUrl.pathname + reqUrl.search);
   console.log("[MIDDLEWARE] userId:", userId);
-  console.log("[MIDDLEWARE] sessionClaims.publicMetadata:", sessionClaims?.publicMetadata);
+  console.log(
+    "[MIDDLEWARE] sessionClaims.publicMetadata:",
+    sessionClaims?.publicMetadata
+  );
 
   // STAGE 1: Onboarding Route Guard
   if (isOnboardingRoute(req)) {
@@ -101,7 +101,9 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
     console.log("[MIDDLEWARE] onboardingCompleted:", onboardingCompleted);
 
     if (onboardingCompleted) {
-      console.log("[MIDDLEWARE] User already completed onboarding, redirecting to /dashboard");
+      console.log(
+        "[MIDDLEWARE] User already completed onboarding, redirecting to /dashboard"
+      );
       const dashboardUrl = new URL("/dashboard", req.url);
       return NextResponse.redirect(dashboardUrl);
     }
@@ -127,19 +129,30 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
 
     const onboardingCompleted = await resolveOnboardingCompleted(userId);
 
-    const justCompletedOnboarding = new URL(req.url).searchParams.get("onboarding_completed") === "true";
+    const justCompletedOnboarding =
+      new URL(req.url).searchParams.get("onboarding_completed") === "true";
 
-    console.log("[MIDDLEWARE] onboardingCompleted (resolved):", onboardingCompleted);
-    console.log("[MIDDLEWARE] justCompletedOnboarding (query param):", justCompletedOnboarding);
+    console.log(
+      "[MIDDLEWARE] onboardingCompleted (resolved):",
+      onboardingCompleted
+    );
+    console.log(
+      "[MIDDLEWARE] justCompletedOnboarding (query param):",
+      justCompletedOnboarding
+    );
 
     if (!onboardingCompleted && !justCompletedOnboarding) {
-      console.log("[MIDDLEWARE] User not onboarded and no bypass param, redirecting to /auth/onboarding");
+      console.log(
+        "[MIDDLEWARE] User not onboarded and no bypass param, redirecting to /auth/onboarding"
+      );
       const onboardingUrl = new URL("/auth/onboarding", req.url);
       return NextResponse.redirect(onboardingUrl);
     }
 
     if (justCompletedOnboarding) {
-      console.log("[MIDDLEWARE] Bypass active: allowing access despite onboardingCompleted=false");
+      console.log(
+        "[MIDDLEWARE] Bypass active: allowing access despite onboardingCompleted=false"
+      );
     }
 
     console.log("[MIDDLEWARE] Allowing access to protected route");
@@ -152,19 +165,19 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-  const skipI18n = path.startsWith('/api') || path.startsWith('/_next');
+  const skipI18n = path.startsWith("/api") || path.startsWith("/_next");
 
   let i18nRes: NextResponse | null = null;
   if (!skipI18n) {
     // 1) Run i18n first (may set rewrite and cookies)
-    i18nRes = i18n(req);
+    i18nRes = handleI18nRouting(req);
     // If i18n decided to redirect, honor it immediately
     const i18nLocation = i18nRes.headers.get("location");
     if (i18nLocation) return i18nRes;
   }
 
   // 2) Run Clerk auth handler
-  const clerkRes = await (clerkHandler as any)(req);
+  const clerkRes = await clerkHandler(req);
 
   if (i18nRes) {
     // 3) Merge i18n headers (rewrite + set-cookie) into Clerk response

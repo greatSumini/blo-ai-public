@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import Providers from "../providers";
-import { I18nProvider } from "@/lib/i18n/client";
-import { getI18n } from "@/lib/i18n/server";
+import { hasLocale } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
-  void (await params);
-  const t = await getI18n();
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata' });
   return {
-    title: t("metadata.title"),
-    description: t("metadata.description"),
+    title: t("title"),
+    description: t("description"),
   };
 }
 
@@ -21,9 +27,14 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
-  return (
-    <I18nProvider locale={locale}>
-      <Providers>{children}</Providers>
-    </I18nProvider>
-  );
+
+  // Ensure that the incoming `locale` is valid
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  return <Providers>{children}</Providers>;
 }

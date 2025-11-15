@@ -26,7 +26,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PageLayout } from "@/components/layout/page-layout";
 import {
   Dialog,
   DialogTrigger,
@@ -34,7 +33,6 @@ import {
   DialogTitle,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { Card } from "@/components/ui/card";
 
 type NewArticlePageProps = {
   params: Promise<Record<string, never>>;
@@ -197,163 +195,127 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   );
 
   return (
-    <PageLayout
-      title="새 글 생성"
-      description="AI를 활용해 블로그 글 초안을 빠르게 만들어보세요."
-      actions={
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="h-10">
-              시스템 프롬프트
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>기본 시스템 프롬프트</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-3 text-sm">
-              <p>
-                아래 원칙에 따라 블로그 글을 생성합니다. 사용자의
-                <strong> 추가 요구사항</strong>은 모든 규칙보다
-                <strong> 가장 높은 우선순위</strong>로 적용됩니다.
-              </p>
-              <ol className="list-decimal pl-5 space-y-1">
-                <li>SEO에 최적화된 제목 작성</li>
-                <li>본문은 Markdown 형식 (제목/소제목/목록/강조)</li>
-                <li>서론-본론-결론의 자연스러운 구조</li>
-                <li>실용적이고 실행 가능한 정보 제공</li>
-                <li>독자의 고민 해결에 집중</li>
-                <li>메타 설명은 160자 이내</li>
-                <li>주요 키워드를 자연스럽게 본문에 포함</li>
-                <li>소제목은 명확하고 구조적으로 구성</li>
-              </ol>
-              <p className="text-muted-foreground">
-                선택한 스타일 가이드(톤/길이/난이도/언어)와 키워드를 반영해
-                작성합니다.
-              </p>
-            </div>
-          </DialogContent>
-        </Dialog>
-      }
-    >
+    <div className="min-h-screen bg-white">
       {mode === "form" && (
-        <Card className="p-8">
-          <GenerationForm
-            styleGuides={styleGuides}
-            onSubmit={handleGenerateSubmit}
-            isLoading={isLoadingStyleGuide}
-          />
-        </Card>
+        <GenerationForm
+          styleGuides={styleGuides}
+          onSubmit={handleGenerateSubmit}
+          isLoading={isLoadingStyleGuide}
+        />
       )}
 
       {mode === "generating" && (
-        <div className="space-y-6">
-          <div
-            className="rounded-lg border p-4"
-            style={{ borderColor: "#E1E5EA" }}
-          >
-            <p className="mb-3 text-sm" style={{ color: "#6B7280" }}>
-              AI가 글을 작성하고 있습니다. 잠시만 기다려주세요.
-            </p>
-            <div className="max-h-96 overflow-y-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-32">항목</TableHead>
-                    <TableHead>값</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>제목</TableCell>
-                    <TableCell>
-                      {generatingParsed.title || "(분석 중...)"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>메타 설명</TableCell>
-                    <TableCell>
-                      {(generatingParsed.metaDescription || "").slice(0, 160) ||
-                        "(분석 중...)"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>키워드</TableCell>
-                    <TableCell>
-                      {generatingParsed.keywords &&
-                      generatingParsed.keywords.length > 0
-                        ? generatingParsed.keywords.slice(0, 10).join(", ")
-                        : "(분석 중...)"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>소제목</TableCell>
-                    <TableCell>
-                      {generatingParsed.headings &&
-                      generatingParsed.headings.length > 0
-                        ? generatingParsed.headings.slice(0, 5).join(" / ")
-                        : "(분석 중...)"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>본문 미리보기</TableCell>
-                    <TableCell>
-                      <div className="whitespace-pre-wrap">
-                        {(
-                          generatingParsed.content ||
-                          generatingPreview ||
-                          ""
-                        ).slice(0, 300)}
-                        {((generatingParsed.content || generatingPreview || "")
-                          .length ?? 0) > 300
-                          ? "..."
-                          : ""}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+        <div className="container mx-auto max-w-4xl px-4 py-8">
+          <div className="space-y-6">
+            <div
+              className="rounded-lg border p-4"
+              style={{ borderColor: "#E1E5EA" }}
+            >
+              <p className="mb-3 text-sm" style={{ color: "#6B7280" }}>
+                AI가 글을 작성하고 있습니다. 잠시만 기다려주세요.
+              </p>
+              <div className="max-h-96 overflow-y-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-32">항목</TableHead>
+                      <TableHead>값</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>제목</TableCell>
+                      <TableCell>
+                        {generatingParsed.title || "(분석 중...)"}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>메타 설명</TableCell>
+                      <TableCell>
+                        {(generatingParsed.metaDescription || "").slice(0, 160) ||
+                          "(분석 중...)"}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>키워드</TableCell>
+                      <TableCell>
+                        {generatingParsed.keywords &&
+                        generatingParsed.keywords.length > 0
+                          ? generatingParsed.keywords.slice(0, 10).join(", ")
+                          : "(분석 중...)"}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>소제목</TableCell>
+                      <TableCell>
+                        {generatingParsed.headings &&
+                        generatingParsed.headings.length > 0
+                          ? generatingParsed.headings.slice(0, 5).join(" / ")
+                          : "(분석 중...)"}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>본문 미리보기</TableCell>
+                      <TableCell>
+                        <div className="whitespace-pre-wrap">
+                          {(
+                            generatingParsed.content ||
+                            generatingPreview ||
+                            ""
+                          ).slice(0, 300)}
+                          {((generatingParsed.content || generatingPreview || "")
+                            .length ?? 0) > 300
+                            ? "..."
+                            : ""}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
         </div>
       )}
 
       {mode === "complete" && parsed && (
-        <div className="space-y-6">
-          <div>
-            <h2 className="mb-2 text-2xl font-bold">{parsed.title}</h2>
-            {parsed.metaDescription && (
-              <p className="text-sm" style={{ color: "#6B7280" }}>
-                {parsed.metaDescription}
-              </p>
-            )}
-          </div>
-          <div className="prose prose-neutral max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {parsed.content}
-            </ReactMarkdown>
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setMode("form");
-                setParsed(null);
-              }}
-              style={{ borderRadius: "8px" }}
-            >
-              다시하기
-            </Button>
-            <Button
-              onClick={handleSave}
-              className="px-6"
-              style={{ backgroundColor: "#3BA2F8", borderRadius: "8px" }}
-            >
-              저장하기
-            </Button>
+        <div className="container mx-auto max-w-4xl px-4 py-8">
+          <div className="space-y-6">
+            <div>
+              <h2 className="mb-2 text-2xl font-bold">{parsed.title}</h2>
+              {parsed.metaDescription && (
+                <p className="text-sm" style={{ color: "#6B7280" }}>
+                  {parsed.metaDescription}
+                </p>
+              )}
+            </div>
+            <div className="prose prose-neutral max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {parsed.content}
+              </ReactMarkdown>
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setMode("form");
+                  setParsed(null);
+                }}
+                style={{ borderRadius: "8px" }}
+              >
+                다시하기
+              </Button>
+              <Button
+                onClick={handleSave}
+                className="px-6"
+                style={{ backgroundColor: "#3BA2F8", borderRadius: "8px" }}
+              >
+                저장하기
+              </Button>
+            </div>
           </div>
         </div>
       )}
-    </PageLayout>
+    </div>
   );
 }

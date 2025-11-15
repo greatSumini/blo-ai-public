@@ -8,14 +8,17 @@
 ## 📋 Executive Summary
 
 ### 핵심 문제
+
 현재 코드베이스의 **모든 service.ts 파일이 HTTP 관련 책임(상태 코드, 응답 포맷팅)을 가지고 있어** 계층 분리 원칙을 위반하고 있습니다.
 
 ### 영향 범위
+
 - **5개 feature 모듈** 전체에 걸쳐 발생
 - **총 22개 서비스 함수**가 위반 패턴을 포함
 - **테스트 불가능**, **재사용 불가능**, **관심사 혼재** 등 다중 문제 발생
 
 ### 권장 조치
+
 **단계적 리팩토링 전략**으로 HTTP 관심사를 service layer에서 완전히 제거하고, 도메인 중심 설계로 전환
 
 ---
@@ -51,6 +54,7 @@
 ### 1.2 현재 위반 사항
 
 **❌ 잘못된 패턴**: Service Layer가 HTTP 상태 코드를 반환
+
 ```typescript
 // service.ts - 위반 사례
 export async function createKeyword(...): Promise<HandlerResult<Keyword, ...>> {
@@ -60,6 +64,7 @@ export async function createKeyword(...): Promise<HandlerResult<Keyword, ...>> {
 ```
 
 **✅ 올바른 패턴**: Service Layer는 도메인 결과만 반환
+
 ```typescript
 // service.ts - 올바른 구현
 export async function createKeyword(...): Promise<Result<Keyword, DomainError>> {
@@ -79,13 +84,13 @@ app.post('/api/keywords', async (c) => {
 
 ### 1.3 위반으로 인한 문제점
 
-| 문제 유형 | 설명 | 영향도 |
-|---------|------|--------|
-| **테스트 어려움** | Service 단위 테스트 시 HTTP 컨텍스트 모킹 필요 | 🔴 High |
-| **재사용성 저하** | 비즈니스 로직을 CLI/배치/다른 API에서 재사용 불가 | 🔴 High |
-| **관심사 혼재** | 한 레이어가 비즈니스+HTTP 두 가지 책임 보유 | 🟠 Medium |
-| **의존성 역전** | 하위 레이어(Service)가 상위 레이어(HTTP)에 의존 | 🟠 Medium |
-| **유지보수성 악화** | 비즈니스 로직 변경 시 HTTP 로직도 함께 수정 필요 | 🟡 Low |
+| 문제 유형           | 설명                                              | 영향도    |
+| ------------------- | ------------------------------------------------- | --------- |
+| **테스트 어려움**   | Service 단위 테스트 시 HTTP 컨텍스트 모킹 필요    | 🔴 High   |
+| **재사용성 저하**   | 비즈니스 로직을 CLI/배치/다른 API에서 재사용 불가 | 🔴 High   |
+| **관심사 혼재**     | 한 레이어가 비즈니스+HTTP 두 가지 책임 보유       | 🟠 Medium |
+| **의존성 역전**     | 하위 레이어(Service)가 상위 레이어(HTTP)에 의존   | 🟠 Medium |
+| **유지보수성 악화** | 비즈니스 로직 변경 시 HTTP 로직도 함께 수정 필요  | 🟡 Low    |
 
 ---
 
@@ -94,26 +99,28 @@ app.post('/api/keywords', async (c) => {
 ### 2.1 패턴 분류
 
 #### Pattern A: HTTP 상태 코드를 Service에서 반환
+
 **위치**: 거의 모든 service 함수
 **문제**: 비즈니스 레이어가 HTTP 프로토콜에 의존
 
 ```typescript
 // ❌ 위반 사례
-return success(data, 201);  // 201 Created
-return success(data, 200);  // 200 OK
-return failure(404, 'NOT_FOUND', 'Resource not found');
-return failure(409, 'DUPLICATE', 'Already exists');
+return success(data, 201); // 201 Created
+return success(data, 200); // 200 OK
+return failure(404, "NOT_FOUND", "Resource not found");
+return failure(409, "DUPLICATE", "Already exists");
 ```
 
 #### Pattern B: HandlerResult 타입 사용
+
 **위치**: 모든 service 함수 시그니처
 **문제**: `HandlerResult`는 HTTP status를 포함한 타입
 
 ```typescript
 // ❌ 현재 타입 (HTTP 의존적)
 export type HandlerResult<TData, TCode extends string, TDetails = unknown> =
-  | SuccessResult<TData>    // { ok: true, status: number, data }
-  | ErrorResult<TCode, TDetails>;  // { ok: false, status: number, error }
+  | SuccessResult<TData> // { ok: true, status: number, data }
+  | ErrorResult<TCode, TDetails>; // { ok: false, status: number, error }
 
 // ✅ 개선된 타입 (도메인 중심)
 export type DomainResult<TData, TError> =
@@ -122,13 +129,14 @@ export type DomainResult<TData, TError> =
 ```
 
 #### Pattern C: 도메인 에러와 HTTP 상태 코드 혼재
+
 **위치**: service.ts 내 에러 처리
 **문제**: 도메인 에러 코드와 HTTP 상태 코드가 동일 레이어에서 결정
 
 ```typescript
 // ❌ 위반 사례
-if (error.code === '23505') {
-  return failure(409, 'DUPLICATE_NORMALIZED', 'Keyword already exists');
+if (error.code === "23505") {
+  return failure(409, "DUPLICATE_NORMALIZED", "Keyword already exists");
   //            ^^^  HTTP 상태 코드를 service에서 결정
 }
 ```
@@ -137,94 +145,101 @@ if (error.code === '23505') {
 
 #### 📁 **features/keywords/backend/service.ts** (5개 함수)
 
-| 함수명 | 라인 | 위반 패턴 | 심각도 |
-|--------|------|-----------|--------|
-| `listKeywords` | 54-59, 71-77, 79-84 | Pattern A, B | 🔴 High |
-| `createKeyword` | 95, 114-117, 120-125, 137, 140-145 | Pattern A, B, C | 🔴 High |
-| `bulkCreateKeywords` | 175-178, 189-195, 204-218, 221-226 | Pattern A, B | 🔴 High |
-| `fetchKeywordSuggestions` | 257-261, 265-270, 288-292, 295-300 | Pattern A, B | 🔴 High |
-| `fetchLongTailSuggestions` | 310-314 | Pattern A, B | 🟠 Medium |
+| 함수명                     | 라인                               | 위반 패턴       | 심각도    |
+| -------------------------- | ---------------------------------- | --------------- | --------- |
+| `listKeywords`             | 54-59, 71-77, 79-84                | Pattern A, B    | 🔴 High   |
+| `createKeyword`            | 95, 114-117, 120-125, 137, 140-145 | Pattern A, B, C | 🔴 High   |
+| `bulkCreateKeywords`       | 175-178, 189-195, 204-218, 221-226 | Pattern A, B    | 🔴 High   |
+| `fetchKeywordSuggestions`  | 257-261, 265-270, 288-292, 295-300 | Pattern A, B    | 🔴 High   |
+| `fetchLongTailSuggestions` | 310-314                            | Pattern A, B    | 🟠 Medium |
 
 **주요 이슈**:
+
 - Line 137: `return success(keyword, 201)` - 201 상태 코드 하드코딩
 - Line 114-117: `return failure(409, ...)` - 중복 에러를 409로 매핑 (HTTP 관심사)
 - Line 259: DataForSEO 에러를 500으로 매핑 (서비스 레이어에서 HTTP 상태 결정)
 
 #### 📁 **features/articles/backend/service.ts** (7개 함수)
 
-| 함수명 | 라인 | 위반 패턴 | 심각도 |
-|--------|------|-----------|--------|
-| `createArticle` | 79, 105-110, 122, 124-129 | Pattern A, B | 🔴 High |
-| `getArticleById` | 144, 154-156, 169-178 | Pattern A, B, C | 🔴 High |
-| `updateArticle` | 220, 232-235, 252, 254-259 | Pattern A, B, C | 🔴 High |
-| `deleteArticle` | 274, 283-288, 290 | Pattern A, B | 🔴 High |
-| `listArticles` | 303, 330-334, 338-343, 348-353, 355-360 | Pattern A, B | 🔴 High |
-| `getDashboardStats` | 373, 383-387, 412-418 | Pattern A, B | 🔴 High |
-| `mapArticleRowToResponse` | 28-64 | Pattern A | 🟡 Low |
+| 함수명                    | 라인                                    | 위반 패턴       | 심각도  |
+| ------------------------- | --------------------------------------- | --------------- | ------- |
+| `createArticle`           | 79, 105-110, 122, 124-129               | Pattern A, B    | 🔴 High |
+| `getArticleById`          | 144, 154-156, 169-178                   | Pattern A, B, C | 🔴 High |
+| `updateArticle`           | 220, 232-235, 252, 254-259              | Pattern A, B, C | 🔴 High |
+| `deleteArticle`           | 274, 283-288, 290                       | Pattern A, B    | 🔴 High |
+| `listArticles`            | 303, 330-334, 338-343, 348-353, 355-360 | Pattern A, B    | 🔴 High |
+| `getDashboardStats`       | 373, 383-387, 412-418                   | Pattern A, B    | 🔴 High |
+| `mapArticleRowToResponse` | 28-64                                   | Pattern A       | 🟡 Low  |
 
 **주요 이슈**:
+
 - Line 122: `return success(mapped, 201)` - 생성 성공 시 201 반환
 - Line 154-156: PostgreSQL 에러 코드(PGRST116)를 404로 변환 (HTTP 매핑 책임)
 - Line 290: `return success({ id: articleId }, 200)` - 삭제 성공 시 200 반환
 
 #### 📁 **features/articles/backend/quota-service.ts** (3개 함수)
 
-| 함수명 | 라인 | 위반 패턴 | 심각도 |
-|--------|------|-----------|--------|
-| `checkQuota` | 89, 94-98, 107-116, 118-123 | Pattern A, B | 🔴 High |
+| 함수명           | 라인                                | 위반 패턴    | 심각도  |
+| ---------------- | ----------------------------------- | ------------ | ------- |
+| `checkQuota`     | 89, 94-98, 107-116, 118-123         | Pattern A, B | 🔴 High |
 | `incrementQuota` | 140, 145-150, 166-172, 177, 179-185 | Pattern A, B | 🔴 High |
-| `getQuotaStatus` | 206-215, 224-233, 235-241 | Pattern A, B | 🔴 High |
+| `getQuotaStatus` | 206-215, 224-233, 235-241           | Pattern A, B | 🔴 High |
 
 **주요 이슈**:
+
 - Line 89, 140: Profile 조회 실패 시 404 반환 (HTTP 상태 결정)
 - Line 107-116: `return success({ allowed, tier, ... }, 200)` - 모든 성공 케이스에 200 하드코딩
 - 비즈니스 규칙(quota 체크)과 HTTP 응답이 동일 레이어에서 처리됨
 
 #### 📁 **features/articles/backend/ai-service.ts** (1개 함수)
 
-| 함수명 | 라인 | 위반 패턴 | 심각도 |
-|--------|------|-----------|--------|
+| 함수명                   | 라인                  | 위반 패턴    | 심각도  |
+| ------------------------ | --------------------- | ------------ | ------- |
 | `generateArticleContent` | 200-204, 226, 228-234 | Pattern A, B | 🔴 High |
 
 **주요 이슈**:
+
 - Line 200-204: Style guide 없음을 404로 처리 (HTTP 관심사)
 - Line 226: AI 생성 성공 시 기본 200 반환
 - AI 생성 로직(도메인)과 HTTP 응답 형식이 혼재
 
 #### 📁 **features/onboarding/backend/service.ts** (4개 함수)
 
-| 함수명 | 라인 | 위반 패턴 | 심각도 |
-|--------|------|-----------|--------|
-| `upsertStyleGuide` | 34-38, 68-73, 76-80, 86-93, 96-113, 118-125, 127 | Pattern A, B | 🔴 High |
-| `getStyleGuide` | 140, 149-150, 164-173, 176-193, 198-205, 207 | Pattern A, B, C | 🔴 High |
-| `updateStyleGuide` | 237, 248-250, 263-272, 275-292, 297-304, 306 | Pattern A, B, C | 🔴 High |
-| `deleteStyleGuide` | 320, 329-330, 339 | Pattern A, B, C | 🔴 High |
-| `markOnboardingCompleted` | 352, 359-365, 367 | Pattern A, B | 🔴 High |
+| 함수명                    | 라인                                             | 위반 패턴       | 심각도  |
+| ------------------------- | ------------------------------------------------ | --------------- | ------- |
+| `upsertStyleGuide`        | 34-38, 68-73, 76-80, 86-93, 96-113, 118-125, 127 | Pattern A, B    | 🔴 High |
+| `getStyleGuide`           | 140, 149-150, 164-173, 176-193, 198-205, 207     | Pattern A, B, C | 🔴 High |
+| `updateStyleGuide`        | 237, 248-250, 263-272, 275-292, 297-304, 306     | Pattern A, B, C | 🔴 High |
+| `deleteStyleGuide`        | 320, 329-330, 339                                | Pattern A, B, C | 🔴 High |
+| `markOnboardingCompleted` | 352, 359-365, 367                                | Pattern A, B    | 🔴 High |
 
 **주요 이슈**:
+
 - Line 127: `return success(parsed.data, 201)` - 생성 성공 시 201 반환
 - Line 140, 237, 320, 352: Profile 없음을 404로 처리 (모든 함수에서 반복)
 - Line 149-150, 248-250, 329-330: PostgreSQL 에러(PGRST116)를 404로 변환
 
 #### 📁 **features/profiles/backend/service.ts** (2개 함수)
 
-| 함수명 | 라인 | 위반 패턴 | 심각도 |
-|--------|------|-----------|--------|
-| `upsertProfile` | 90, 93 | Pattern A, B | 🟠 Medium |
+| 함수명                   | 라인     | 위반 패턴    | 심각도    |
+| ------------------------ | -------- | ------------ | --------- |
+| `upsertProfile`          | 90, 93   | Pattern A, B | 🟠 Medium |
 | `deleteProfileByClerkId` | 105, 106 | Pattern A, B | 🟠 Medium |
 
 **주요 이슈**:
+
 - Line 90, 105: DB 에러를 500으로 처리 (HTTP 매핑)
 - Line 93, 106: 성공 시 200 반환
 - 비교적 간단한 CRUD이지만 동일한 패턴 위반
 
 #### 📁 **features/example/backend/service.ts** (1개 함수)
 
-| 함수명 | 라인 | 위반 패턴 | 심각도 |
-|--------|------|-----------|--------|
+| 함수명           | 라인                     | 위반 패턴    | 심각도    |
+| ---------------- | ------------------------ | ------------ | --------- |
 | `getExampleById` | 34, 38, 44-49, 64-69, 72 | Pattern A, B | 🟠 Medium |
 
 **주요 이슈**:
+
 - Line 34, 38: DB 에러를 500, 404로 매핑
 - Line 72: `return success(parsed.data)` - 상태 코드 없지만 여전히 HandlerResult 사용
 
@@ -252,6 +267,7 @@ Pattern C (에러 코드 혼재):  45% (10개 함수)
 ### 3.1 큰 그림: 도메인 중심 설계로 전환
 
 #### Before (현재 구조)
+
 ```
 route.ts
   ↓ (HTTP Request)
@@ -267,6 +283,7 @@ HTTP Response
 ```
 
 #### After (개선 구조)
+
 ```
 route.ts
   ↓ (HTTP Request)
@@ -309,9 +326,9 @@ export type DomainFailure<TError extends DomainError> = {
  * 도메인 에러 (HTTP 상태 코드 없음)
  */
 export type DomainError = {
-  code: string;           // 도메인 에러 코드 (예: 'KEYWORD_DUPLICATE')
-  message: string;        // 사용자 친화적 메시지
-  details?: unknown;      // 추가 컨텍스트
+  code: string; // 도메인 에러 코드 (예: 'KEYWORD_DUPLICATE')
+  message: string; // 사용자 친화적 메시지
+  details?: unknown; // 추가 컨텍스트
 };
 
 /**
@@ -335,37 +352,37 @@ export const domainFailure = <TError extends DomainError>(
 ```typescript
 // src/backend/http/mapper.ts (신규 파일)
 
-import type { DomainError, DomainResult } from '@/backend/domain/result';
-import type { AppContext } from '@/backend/hono/context';
-import type { ContentfulStatusCode } from 'hono/utils/http-status';
+import type { DomainError, DomainResult } from "@/backend/domain/result";
+import type { AppContext } from "@/backend/hono/context";
+import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 /**
  * 도메인 에러 코드 → HTTP 상태 코드 매핑 규칙
  */
 const ERROR_STATUS_MAP: Record<string, ContentfulStatusCode> = {
   // 4xx Client Errors
-  'VALIDATION_ERROR': 400,
-  'INVALID_INPUT': 400,
-  'INVALID_PHRASE': 400,
-  'DUPLICATE': 409,
-  'DUPLICATE_NORMALIZED': 409,
-  'NOT_FOUND': 404,
-  'PROFILE_NOT_FOUND': 404,
-  'ARTICLE_NOT_FOUND': 404,
-  'STYLE_GUIDE_NOT_FOUND': 404,
-  'UNAUTHORIZED': 401,
-  'FORBIDDEN': 403,
-  'QUOTA_EXCEEDED': 429,
+  VALIDATION_ERROR: 400,
+  INVALID_INPUT: 400,
+  INVALID_PHRASE: 400,
+  DUPLICATE: 409,
+  DUPLICATE_NORMALIZED: 409,
+  NOT_FOUND: 404,
+  PROFILE_NOT_FOUND: 404,
+  ARTICLE_NOT_FOUND: 404,
+  STYLE_GUIDE_NOT_FOUND: 404,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  QUOTA_EXCEEDED: 429,
 
   // 5xx Server Errors
-  'DATABASE_ERROR': 500,
-  'FETCH_ERROR': 500,
-  'CREATE_ERROR': 500,
-  'UPDATE_ERROR': 500,
-  'DELETE_ERROR': 500,
-  'AI_GENERATION_FAILED': 500,
-  'DATAFORSEO_ERROR': 500,
-  'QUOTA_CHECK_FAILED': 500,
+  DATABASE_ERROR: 500,
+  FETCH_ERROR: 500,
+  CREATE_ERROR: 500,
+  UPDATE_ERROR: 500,
+  DELETE_ERROR: 500,
+  AI_GENERATION_FAILED: 500,
+  DATAFORSEO_ERROR: 500,
+  QUOTA_CHECK_FAILED: 500,
 };
 
 /**
@@ -378,12 +395,12 @@ function inferStatusCode(errorCode: string): ContentfulStatusCode {
   }
 
   // 패턴 기반 추론
-  if (errorCode.includes('NOT_FOUND')) return 404;
-  if (errorCode.includes('DUPLICATE')) return 409;
-  if (errorCode.includes('UNAUTHORIZED')) return 401;
-  if (errorCode.includes('FORBIDDEN')) return 403;
-  if (errorCode.includes('QUOTA')) return 429;
-  if (errorCode.includes('VALIDATION')) return 400;
+  if (errorCode.includes("NOT_FOUND")) return 404;
+  if (errorCode.includes("DUPLICATE")) return 409;
+  if (errorCode.includes("UNAUTHORIZED")) return 401;
+  if (errorCode.includes("FORBIDDEN")) return 403;
+  if (errorCode.includes("QUOTA")) return 429;
+  if (errorCode.includes("VALIDATION")) return 400;
 
   // 기본값: 500 Internal Server Error
   return 500;
@@ -456,7 +473,7 @@ export async function createKeyword(
   const validation = validateKeywordPhrase(input.phrase);
   if (!validation.valid) {
     return domainFailure({
-      code: 'INVALID_PHRASE',
+      code: "INVALID_PHRASE",
       message: validation.error!,
     });
   }
@@ -479,13 +496,13 @@ export async function createKeyword(
     if (error) {
       if (error.code === "23505") {
         return domainFailure({
-          code: 'DUPLICATE_NORMALIZED',
-          message: 'Keyword already exists',
+          code: "DUPLICATE_NORMALIZED",
+          message: "Keyword already exists",
         });
       }
       return domainFailure({
-        code: 'CREATE_ERROR',
-        message: 'Failed to create keyword',
+        code: "CREATE_ERROR",
+        message: "Failed to create keyword",
         details: error,
       });
     }
@@ -501,8 +518,8 @@ export async function createKeyword(
     });
   } catch (err) {
     return domainFailure({
-      code: 'CREATE_ERROR',
-      message: 'Unexpected error creating keyword',
+      code: "CREATE_ERROR",
+      message: "Unexpected error creating keyword",
       details: err,
     });
   }
@@ -565,39 +582,39 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
 ```typescript
 // src/features/keywords/backend/error.ts (개선 후)
 
-import type { DomainError } from '@/backend/domain/result';
+import type { DomainError } from "@/backend/domain/result";
 
 /**
  * 키워드 도메인 에러 코드 (HTTP 무관)
  */
 export const keywordErrorCodes = {
   // 검증 에러
-  invalidPhrase: 'INVALID_PHRASE',
+  invalidPhrase: "INVALID_PHRASE",
 
   // 중복 에러
-  duplicateNormalized: 'DUPLICATE_NORMALIZED',
+  duplicateNormalized: "DUPLICATE_NORMALIZED",
 
   // 데이터베이스 에러
-  fetchError: 'FETCH_ERROR',
-  createError: 'CREATE_ERROR',
-  bulkInsertError: 'BULK_INSERT_ERROR',
+  fetchError: "FETCH_ERROR",
+  createError: "CREATE_ERROR",
+  bulkInsertError: "BULK_INSERT_ERROR",
 
   // 외부 서비스 에러
-  dataForSEOError: 'DATAFORSEO_ERROR',
+  dataForSEOError: "DATAFORSEO_ERROR",
 } as const;
 
 /**
  * 키워드 도메인 에러 타입
  */
 export type KeywordDomainError = DomainError & {
-  code: typeof keywordErrorCodes[keyof typeof keywordErrorCodes];
+  code: (typeof keywordErrorCodes)[keyof typeof keywordErrorCodes];
 };
 
 /**
  * 에러 생성 헬퍼
  */
 export function createKeywordError(
-  code: KeywordDomainError['code'],
+  code: KeywordDomainError["code"],
   message: string,
   details?: unknown
 ): KeywordDomainError {
@@ -610,30 +627,36 @@ export function createKeywordError(
 각 feature별로 다음 순서로 진행:
 
 #### Step 1: 도메인 타입 준비
+
 - [ ] `src/backend/domain/result.ts` 생성
 - [ ] `DomainResult`, `DomainError` 타입 정의
 - [ ] `domainSuccess`, `domainFailure` 헬퍼 구현
 
 #### Step 2: HTTP 매핑 레이어 구현
+
 - [ ] `src/backend/http/mapper.ts` 생성
 - [ ] `ERROR_STATUS_MAP` 정의 (모든 도메인 에러 코드 포함)
 - [ ] `respondWithDomain`, `respondCreated` 헬퍼 구현
 
 #### Step 3: Feature별 마이그레이션 (우선순위 순)
+
 각 feature에 대해:
 
 1. **에러 정의 변환**
+
    - [ ] `{feature}/backend/error.ts` 업데이트
    - [ ] HTTP 상태 코드 제거
    - [ ] `DomainError` 기반으로 재정의
 
 2. **Service 함수 변환**
+
    - [ ] `Promise<HandlerResult>` → `Promise<DomainResult>` 변경
    - [ ] `success(data, 201)` → `domainSuccess(data)` 변경
    - [ ] `failure(404, code, msg)` → `domainFailure({ code, message })` 변경
    - [ ] 모든 HTTP 상태 코드 제거
 
 3. **Route 함수 변환**
+
    - [ ] `respond(c, result)` → `respondWithDomain(c, result)` 변경
    - [ ] 생성 엔드포인트는 `respondCreated(c, result)` 사용
    - [ ] 커스텀 상태 코드가 필요한 경우 `respondWithDomain(c, result, customStatus)` 사용
@@ -643,6 +666,7 @@ export function createKeywordError(
    - [ ] Route 함수 통합 테스트 (HTTP 응답 검증)
 
 #### Step 4: 기존 코드 제거
+
 - [ ] `src/backend/http/response.ts`의 `success`, `failure` 함수 deprecated 처리
 - [ ] 모든 feature 마이그레이션 완료 후 삭제
 
@@ -653,37 +677,38 @@ export function createKeywordError(
 ### 4.1 마이그레이션 우선순위
 
 **Phase 1: 기반 인프라 (Week 1)**
+
 1. ✅ 도메인 타입 시스템 구축 (`domain/result.ts`)
 2. ✅ HTTP 매핑 레이어 구현 (`http/mapper.ts`)
 3. ✅ 에러 코드 통합 정리 (`ERROR_STATUS_MAP`)
 
 **Phase 2: 간단한 Feature 먼저 (Week 2)**
+
 1. 🟢 `features/example` - 1개 함수만 있어 학습용으로 적합
 2. 🟢 `features/profiles` - 2개 함수, 비교적 단순한 CRUD
 
-**Phase 3: 중간 복잡도 Feature (Week 3)**
-3. 🟡 `features/keywords` - 5개 함수, 외부 API 연동 포함
-4. 🟡 `features/onboarding` - 4개 함수, 상태 관리 포함
+**Phase 3: 중간 복잡도 Feature (Week 3)** 3. 🟡 `features/keywords` - 5개 함수, 외부 API 연동 포함 4. 🟡 `features/onboarding` - 4개 함수, 상태 관리 포함
 
-**Phase 4: 복잡한 Feature (Week 4-5)**
-5. 🔴 `features/articles` - 7개 함수 + AI/quota 서비스
-   - `articles/backend/service.ts` (7개 함수)
-   - `articles/backend/quota-service.ts` (3개 함수)
-   - `articles/backend/ai-service.ts` (1개 함수)
+**Phase 4: 복잡한 Feature (Week 4-5)** 5. 🔴 `features/articles` - 7개 함수 + AI/quota 서비스
+
+- `articles/backend/service.ts` (7개 함수)
+- `articles/backend/quota-service.ts` (3개 함수)
+- `articles/backend/ai-service.ts` (1개 함수)
 
 **Phase 5: 정리 및 최적화 (Week 6)**
+
 - 레거시 코드 제거
 - 통합 테스트 작성
 - 문서화
 
 ### 4.2 리스크 및 대응 방안
 
-| 리스크 | 확률 | 영향 | 대응 방안 |
-|--------|------|------|----------|
-| 기존 API 클라이언트 호환성 깨짐 | 🟡 Low | 🔴 High | 응답 형식은 동일하게 유지 (JSON 구조 불변) |
-| 마이그레이션 중 버그 발생 | 🟠 Medium | 🟠 Medium | Feature별 단계적 진행, 충분한 테스트 |
-| 팀원 학습 곡선 | 🟢 Low | 🟡 Low | 명확한 가이드 및 예시 코드 제공 |
-| 마이그레이션 시간 초과 | 🟡 Low | 🟠 Medium | 우선순위 조정, 핵심 feature 먼저 진행 |
+| 리스크                          | 확률      | 영향      | 대응 방안                                  |
+| ------------------------------- | --------- | --------- | ------------------------------------------ |
+| 기존 API 클라이언트 호환성 깨짐 | 🟡 Low    | 🔴 High   | 응답 형식은 동일하게 유지 (JSON 구조 불변) |
+| 마이그레이션 중 버그 발생       | 🟠 Medium | 🟠 Medium | Feature별 단계적 진행, 충분한 테스트       |
+| 팀원 학습 곡선                  | 🟢 Low    | 🟡 Low    | 명확한 가이드 및 예시 코드 제공            |
+| 마이그레이션 시간 초과          | 🟡 Low    | 🟠 Medium | 우선순위 조정, 핵심 feature 먼저 진행      |
 
 ### 4.3 성공 지표
 
@@ -704,6 +729,7 @@ export function createKeywordError(
 #### 단계별 체크리스트
 
 **Step 0: 준비 (착수 전)**
+
 ```bash
 # 1. 현재 브랜치 확인
 git status
@@ -762,12 +788,14 @@ git commit -m "refactor(example): migrate to domain-centric layering"
 **Step 3-6: 각 Feature 순차 마이그레이션**
 
 동일한 절차를 각 feature에 반복:
+
 - `features/profiles`
 - `features/keywords`
 - `features/onboarding`
 - `features/articles` (가장 복잡, 3개 서비스 파일)
 
 각 feature마다:
+
 1. 에러 정의 변환
 2. Service 변환
 3. Route 변환
@@ -862,17 +890,18 @@ git reset --hard origin/main
 ### 6.1 Keywords Feature 전체 변환
 
 #### Before: service.ts
+
 ```typescript
 // ❌ 현재 코드 (HTTP 의존적)
-import { success, failure, type HandlerResult } from '@/backend/http/response';
+import { success, failure, type HandlerResult } from "@/backend/http/response";
 
 export async function createKeyword(
   supabase: SupabaseClient,
   input: CreateKeywordInput
 ): Promise<HandlerResult<Keyword, KeywordServiceError>> {
   // ...
-  if (error.code === '23505') {
-    return failure(409, 'DUPLICATE_NORMALIZED', 'Keyword already exists');
+  if (error.code === "23505") {
+    return failure(409, "DUPLICATE_NORMALIZED", "Keyword already exists");
     //            ^^^ HTTP 상태 코드
   }
   return success(keyword, 201);
@@ -881,20 +910,25 @@ export async function createKeyword(
 ```
 
 #### After: service.ts
+
 ```typescript
 // ✅ 개선 코드 (도메인 중심)
-import { domainSuccess, domainFailure, type DomainResult } from '@/backend/domain/result';
-import type { KeywordDomainError } from './error';
+import {
+  domainSuccess,
+  domainFailure,
+  type DomainResult,
+} from "@/backend/domain/result";
+import type { KeywordDomainError } from "./error";
 
 export async function createKeyword(
   supabase: SupabaseClient,
   input: CreateKeywordInput
 ): Promise<DomainResult<Keyword, KeywordDomainError>> {
   // ...
-  if (error.code === '23505') {
+  if (error.code === "23505") {
     return domainFailure({
-      code: 'DUPLICATE_NORMALIZED',
-      message: 'Keyword already exists',
+      code: "DUPLICATE_NORMALIZED",
+      message: "Keyword already exists",
     });
     // ✅ HTTP 상태 코드 없음
   }
@@ -904,11 +938,12 @@ export async function createKeyword(
 ```
 
 #### Before: route.ts
+
 ```typescript
 // ❌ 현재 코드
-import { respond } from '@/backend/http/response';
+import { respond } from "@/backend/http/response";
 
-app.post('/api/keywords', async (c) => {
+app.post("/api/keywords", async (c) => {
   const result = await createKeyword(supabase, parsedBody.data);
   return respond(c, result);
   // respond가 result에 이미 포함된 status를 사용
@@ -917,11 +952,12 @@ app.post('/api/keywords', async (c) => {
 ```
 
 #### After: route.ts
+
 ```typescript
 // ✅ 개선 코드
-import { respondCreated } from '@/backend/http/mapper';
+import { respondCreated } from "@/backend/http/mapper";
 
-app.post('/api/keywords', async (c) => {
+app.post("/api/keywords", async (c) => {
   const result = await createKeyword(supabase, parsedBody.data);
   return respondCreated(c, result);
   // ✅ HTTP 상태 코드 결정은 route에서 (201 Created)
@@ -932,17 +968,18 @@ app.post('/api/keywords', async (c) => {
 ### 6.2 Articles Feature AI Service 변환
 
 #### Before: ai-service.ts
+
 ```typescript
 // ❌ 현재 코드
 export const generateArticleContent = async (
   client: SupabaseClient,
   clerkUserId: string,
   apiKey: string,
-  request: GenerateArticleRequest,
+  request: GenerateArticleRequest
 ): Promise<HandlerResult<AIGeneratedContent, ArticleServiceError, unknown>> => {
   // ...
   if (request.styleGuideId && !styleGuide) {
-    return failure(404, 'STYLE_GUIDE_NOT_FOUND', 'Style guide not found');
+    return failure(404, "STYLE_GUIDE_NOT_FOUND", "Style guide not found");
     //            ^^^ HTTP 상태
   }
 
@@ -952,19 +989,20 @@ export const generateArticleContent = async (
 ```
 
 #### After: ai-service.ts
+
 ```typescript
 // ✅ 개선 코드
 export const generateArticleContent = async (
   client: SupabaseClient,
   clerkUserId: string,
   apiKey: string,
-  request: GenerateArticleRequest,
+  request: GenerateArticleRequest
 ): Promise<DomainResult<AIGeneratedContent, ArticleDomainError>> => {
   // ...
   if (request.styleGuideId && !styleGuide) {
     return domainFailure({
-      code: 'STYLE_GUIDE_NOT_FOUND',
-      message: 'Style guide not found',
+      code: "STYLE_GUIDE_NOT_FOUND",
+      message: "Style guide not found",
     });
     // ✅ HTTP 상태 없음
   }
@@ -975,16 +1013,17 @@ export const generateArticleContent = async (
 ```
 
 #### After: route.ts (AI 엔드포인트)
+
 ```typescript
 // ✅ 개선 코드
-app.post('/api/articles/generate', async (c) => {
+app.post("/api/articles/generate", async (c) => {
   // ... quota check, validation ...
 
   const generationResult = await generateArticleContent(
     supabase,
     userId,
     config.google.generativeAiApiKey,
-    parsedBody.data,
+    parsedBody.data
   );
 
   if (!generationResult.ok) {
@@ -995,20 +1034,24 @@ app.post('/api/articles/generate', async (c) => {
   }
 
   // ✅ 성공 시 201 Created
-  return respondCreated(c, domainSuccess({
-    article: articleResult.data,
-    generatedContent: generationResult.data,
-    quotaRemaining,
-  }));
+  return respondCreated(
+    c,
+    domainSuccess({
+      article: articleResult.data,
+      generatedContent: generationResult.data,
+      quotaRemaining,
+    })
+  );
 });
 ```
 
 ### 6.3 Profiles Webhook 변환
 
 #### Before: route.ts
+
 ```typescript
 // ❌ 현재 코드 (service가 HTTP 상태 반환)
-app.post('/api/webhooks/clerk', async (c) => {
+app.post("/api/webhooks/clerk", async (c) => {
   // ...
   const result = await upsertProfile(supabase, user);
   if (!result.ok) return respond(c, result);
@@ -1019,9 +1062,10 @@ app.post('/api/webhooks/clerk', async (c) => {
 ```
 
 #### After: route.ts
+
 ```typescript
 // ✅ 개선 코드 (route가 HTTP 상태 결정)
-app.post('/api/webhooks/clerk', async (c) => {
+app.post("/api/webhooks/clerk", async (c) => {
   // ...
   const result = await upsertProfile(supabase, user);
 
@@ -1064,6 +1108,7 @@ app.post('/api/webhooks/clerk', async (c) => {
 ```
 
 HTTP 상태 코드도 동일:
+
 - 생성 성공: 201
 - 조회 성공: 200
 - 중복 에러: 409
@@ -1076,6 +1121,7 @@ HTTP 상태 코드도 동일:
 **A**: 당장은 아니지만, 마이그레이션 완료 후 삭제 가능합니다.
 
 **단계별 접근**:
+
 1. Phase 1-4: `HandlerResult`와 `DomainResult` 공존
 2. Phase 5: 모든 feature 마이그레이션 완료 확인
 3. Phase 6: `HandlerResult` deprecated 표시
@@ -1088,8 +1134,8 @@ HTTP 상태 코드도 동일:
 ```typescript
 // src/backend/http/mapper.ts
 const ERROR_STATUS_MAP: Record<string, ContentfulStatusCode> = {
-  'DUPLICATE': 409,
-  'NOT_FOUND': 404,
+  DUPLICATE: 409,
+  NOT_FOUND: 404,
   // ...
 };
 
@@ -1100,6 +1146,7 @@ const ERROR_STATUS_MAP: Record<string, ContentfulStatusCode> = {
 ### Q4: 테스트 코드는 어떻게 변경되나요?
 
 **Before**: Service 테스트 시 HTTP 모킹 필요
+
 ```typescript
 // ❌ HTTP status를 검증해야 함
 const result = await createKeyword(...);
@@ -1107,6 +1154,7 @@ expect(result.status).toBe(201);  // HTTP 관심사
 ```
 
 **After**: 순수 도메인 테스트
+
 ```typescript
 // ✅ 비즈니스 로직만 검증
 const result = await createKeyword(...);
@@ -1115,6 +1163,7 @@ expect(result.data.phrase).toBe('example');
 ```
 
 Route 테스트는 별도로:
+
 ```typescript
 // HTTP 응답 검증 (E2E 또는 통합 테스트)
 const response = await request(app).post('/api/keywords').send({...});
@@ -1174,6 +1223,7 @@ app.post('/api/articles/generate', async (c) => {
 ```
 
 **핵심**:
+
 - 각 service는 독립적인 도메인 로직만 수행
 - route가 서비스들을 조합하고 HTTP 응답 생성
 
@@ -1184,11 +1234,13 @@ app.post('/api/articles/generate', async (c) => {
 ### 8.1 설계 원칙
 
 - **Clean Architecture** (Robert C. Martin)
+
   - Presentation Layer는 외부 세계(HTTP, CLI 등)와의 인터페이스
   - Business Layer는 도메인 로직에만 집중
   - 의존성 방향: Presentation → Business → Data
 
 - **Hexagonal Architecture** (Ports and Adapters)
+
   - 비즈니스 로직은 외부 기술(HTTP, DB)에 독립적
   - Adapter(route.ts)가 Port(service.ts)를 호출
 
@@ -1229,24 +1281,28 @@ src/
 마이그레이션 완료 전 확인:
 
 ### 코드 품질
+
 - [ ] 모든 service 함수가 `DomainResult`를 반환
 - [ ] service 내부에 HTTP 상태 코드 없음 (100% 제거)
 - [ ] route에서만 HTTP 상태 코드 결정
 - [ ] `ERROR_STATUS_MAP`에 모든 에러 코드 등록
 
 ### 테스트
+
 - [ ] 모든 service 단위 테스트 통과 (HTTP 모킹 없이)
 - [ ] 모든 route 통합 테스트 통과
 - [ ] E2E 테스트 통과
 - [ ] 테스트 커버리지 유지 또는 증가
 
 ### 문서화
+
 - [ ] 각 feature의 README 업데이트
 - [ ] 마이그레이션 가이드 작성
 - [ ] API 문서 확인 (변경사항 없음)
 - [ ] 팀원 온보딩 자료 준비
 
 ### 배포 준비
+
 - [ ] 로컬 환경에서 전체 기능 동작 확인
 - [ ] Staging 환경 배포 및 검증
 - [ ] 롤백 계획 수립
@@ -1259,14 +1315,17 @@ src/
 ### 10.1 주요 성과 (마이그레이션 완료 후)
 
 1. **명확한 레이어 분리**
+
    - Business Logic Layer: 순수 도메인 로직만 포함
    - Presentation Layer: HTTP 관련 책임만 담당
 
 2. **테스트 용이성 향상**
+
    - Service 단위 테스트 시 HTTP 모킹 불필요
    - 빠른 테스트 실행, 높은 신뢰성
 
 3. **재사용성 증대**
+
    - 비즈니스 로직을 CLI, 배치 작업 등에서 재사용 가능
    - API 변경 없이 로직만 독립적으로 수정 가능
 

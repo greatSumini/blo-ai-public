@@ -1,7 +1,7 @@
 import "./globals.css";
 import Providers from "./providers";
-import { getCurrentLocale } from "@/lib/i18n/server";
-import { I18nProvider } from "@/lib/i18n/client";
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 
 /**
  * Root Layout
@@ -19,7 +19,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getCurrentLocale().catch(() => "ko");
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
@@ -31,9 +33,9 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased font-sans">
-        <I18nProvider locale={locale}>
+        <NextIntlClientProvider messages={messages}>
           <Providers>{children}</Providers>
-        </I18nProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

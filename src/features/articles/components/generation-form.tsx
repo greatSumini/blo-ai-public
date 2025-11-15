@@ -8,12 +8,9 @@ import {
   Form,
   FormField,
   FormItem,
-  FormLabel,
   FormControl,
-  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -23,8 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { KeywordPicker } from "@/features/keywords/components/KeywordPicker";
-import { SuggestionsDialog } from "@/features/keywords/components/SuggestionsDialog";
 import { Sparkles } from "lucide-react";
 
 const GenerationFormSchema = z.object({
@@ -75,169 +70,96 @@ export function GenerationForm({
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        {/* Topic Input */}
-        <FormField
-          control={form.control}
-          name="topic"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-base font-semibold">
-                글의 주제 <span style={{ color: "#DC2626" }}>*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  placeholder="예: Next.js에서 Server Actions 사용하기"
-                  disabled={isSubmitting || isLoading}
-                  className="h-12 text-base"
-                  style={{
-                    borderColor: "#E1E5EA",
-                    borderRadius: "8px",
-                  }}
-                />
-              </FormControl>
-              <FormDescription>
-                작성하고 싶은 글의 주제나 키워드를 입력해주세요
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Style Guide Selection */}
-        <FormField
-          control={form.control}
-          name="styleGuideId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-base font-semibold">
-                스타일 가이드 <span style={{ color: "#DC2626" }}>*</span>
-              </FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                disabled={isSubmitting || isLoading}
-              >
-                <FormControl>
-                  <SelectTrigger
-                    className="h-12 text-base"
-                    style={{
-                      borderColor: "#E1E5EA",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <SelectValue placeholder="스타일 가이드를 선택하세요" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {styleGuides.map((guide) => (
-                    <SelectItem key={guide.id} value={guide.id}>
-                      {guide.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                글의 톤, 길이, 난이도를 결정하는 기본 설정입니다
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Keywords (Optional) */}
-        <FormField
-          control={form.control}
-          name="keywords"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-base font-semibold">
-                키워드 (선택사항)
-              </FormLabel>
-              <FormControl>
-                <div className="space-y-2">
-                  <KeywordPicker
-                    value={field.value || []}
-                    onChange={field.onChange}
-                    placeholder="저장된 키워드에서 선택..."
-                    disabled={isSubmitting || isLoading}
-                  />
-                  <div className="flex justify-end">
-                    <SuggestionsDialog
-                      onKeywordsAdded={(added) => {
-                        const current = field.value || [];
-                        const merged = Array.from(
-                          new Set([...current, ...added])
-                        );
-                        field.onChange(merged);
-                      }}
-                    >
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        disabled={isSubmitting || isLoading}
-                      >
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        연관 검색어 찾기
-                      </Button>
-                    </SuggestionsDialog>
-                  </div>
-                </div>
-              </FormControl>
-              <FormDescription>
-                키워드 관리에서 저장한 키워드(연관 검색어 포함)를 검색해 선택할
-                수 있어요
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Additional Instructions */}
-        <FormField
-          control={form.control}
-          name="additionalInstructions"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-base font-semibold">
-                추가 요구사항 (선택사항)
-              </FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  placeholder="예: 이 섹션은 반드시 포함하고, 예시는 한국 스타트업 사례로 작성해줘. 금지어는 사용하지 마."
-                  disabled={isSubmitting || isLoading}
-                  className="min-h-28"
-                />
-              </FormControl>
-              <FormDescription>
-                입력한 내용은 시스템 프롬프트에 전달되며, 모든 규칙보다 가장
-                높은 우선순위로 고려됩니다.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Submit Button */}
-        <div className="flex justify-end pt-4">
-          <Button
-            type="submit"
-            disabled={isSubmitting || isLoading || !form.formState.isValid}
-            className="h-12 px-8"
-            style={{
-              backgroundColor: "#3BA2F8",
-              borderRadius: "8px",
-            }}
-          >
-            <Sparkles className="mr-2 h-4 w-4" />
-            {isSubmitting ? "생성 중..." : "AI로 글 생성하기"}
-          </Button>
+    <div className="flex min-h-[calc(100vh-200px)] items-center justify-center">
+      <div className="w-full max-w-3xl space-y-8 px-4">
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+            3분만에 완성하는 고품질 컨텐츠
+          </h1>
+          <p className="text-lg text-gray-600">
+            SEO 최적화된, 사람이 쓴 것 같은 컨텐츠를 생성해보세요
+          </p>
         </div>
-      </form>
-    </Form>
+
+        {/* Main Form */}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
+            {/* Textarea with Style Guide Selector */}
+            <FormField
+              control={form.control}
+              name="topic"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="relative">
+                      <Textarea
+                        {...field}
+                        placeholder="작성할 컨텐츠를 설명해주세요"
+                        disabled={isSubmitting || isLoading}
+                        rows={4}
+                        className="resize-none rounded-2xl border-gray-200 px-6 py-5 text-base shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                      />
+                      {/* Style Guide Selector - Absolute positioned inside textarea */}
+                      <div className="absolute bottom-3 left-4">
+                        <FormField
+                          control={form.control}
+                          name="styleGuideId"
+                          render={({ field: selectField }) => (
+                            <FormItem>
+                              <Select
+                                onValueChange={selectField.onChange}
+                                defaultValue={selectField.value}
+                                disabled={isSubmitting || isLoading}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="h-8 w-[180px] rounded-lg border-gray-300 bg-white/90 backdrop-blur-sm text-sm shadow-sm hover:bg-white">
+                                    <SelectValue placeholder="스타일 가이드" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {styleGuides.map((guide) => (
+                                    <SelectItem key={guide.id} value={guide.id}>
+                                      {guide.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      {/* Submit Button - Absolute positioned bottom right */}
+                      <div className="absolute bottom-3 right-4">
+                        <Button
+                          type="submit"
+                          disabled={
+                            isSubmitting || isLoading || !form.formState.isValid
+                          }
+                          className="h-8 rounded-lg bg-blue-500 px-5 text-sm font-medium shadow-sm hover:bg-blue-600 transition-colors"
+                        >
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          {isSubmitting ? "생성 중..." : "생성하기"}
+                        </Button>
+                      </div>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+
+        {/* Helper Text */}
+        <p className="text-center text-sm text-gray-500">
+          AI가 SEO에 최적화된 블로그 글을 자동으로 생성합니다
+        </p>
+      </div>
+    </div>
   );
 }
