@@ -1,5 +1,6 @@
 import type { Context } from 'hono';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { ClerkClient } from '@clerk/backend';
 
 export type AppLogger = Pick<Console, 'info' | 'error' | 'warn' | 'debug'>;
 
@@ -15,13 +16,17 @@ export type AppConfig = {
     login: string;
     password: string;
   };
+  clerk: {
+    secretKey: string;
+    publishableKey: string;
+  };
 };
 
 export type AppVariables = {
   supabase: SupabaseClient;
   logger: AppLogger;
   config: AppConfig;
-  clerkUserId: string;
+  clerk: ClerkClient;
 };
 
 export type AppEnv = {
@@ -34,7 +39,7 @@ export const contextKeys = {
   supabase: 'supabase',
   logger: 'logger',
   config: 'config',
-  clerkUserId: 'clerkUserId',
+  clerk: 'clerk',
 } as const satisfies Record<keyof AppVariables, keyof AppVariables>;
 
 export const getSupabase = (c: AppContext) =>
@@ -46,5 +51,5 @@ export const getLogger = (c: AppContext) =>
 export const getConfig = (c: AppContext) =>
   c.get(contextKeys.config) as AppConfig;
 
-export const getClerkUserId = (c: AppContext) =>
-  c.get(contextKeys.clerkUserId) as string;
+export const getClerk = (c: AppContext) =>
+  c.get(contextKeys.clerk) as ClerkClient;

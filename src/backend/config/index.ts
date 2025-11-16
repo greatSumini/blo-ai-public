@@ -7,6 +7,8 @@ const envSchema = z.object({
   GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1),
   DATAFORSEO_LOGIN: z.string().min(1),
   DATAFORSEO_PASSWORD: z.string().min(1),
+  CLERK_SECRET_KEY: z.string().min(1),
+  CLERK_PUBLISHABLE_KEY: z.string().min(1),
 });
 
 let cachedConfig: AppConfig | null = null;
@@ -22,6 +24,8 @@ export const getAppConfig = (): AppConfig => {
     GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     DATAFORSEO_LOGIN: process.env.DATAFORSEO_LOGIN,
     DATAFORSEO_PASSWORD: process.env.DATAFORSEO_PASSWORD,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY,
   });
 
   if (!parsed.success) {
@@ -42,6 +46,10 @@ export const getAppConfig = (): AppConfig => {
     dataForSEO: {
       login: parsed.data.DATAFORSEO_LOGIN,
       password: parsed.data.DATAFORSEO_PASSWORD,
+    },
+    clerk: {
+      secretKey: parsed.data.CLERK_SECRET_KEY,
+      publishableKey: parsed.data.CLERK_PUBLISHABLE_KEY,
     },
   } satisfies AppConfig;
 

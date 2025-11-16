@@ -28,9 +28,7 @@ export const createHonoApp = () => {
   app.use('*', errorBoundary());
   app.use('*', withAppContext());
   app.use('*', withSupabase());
-
-  // Authentication middleware (applied to all /api routes)
-  app.use('/api/*', withClerkAuth());
+  app.use('*', withClerkAuth());
 
   registerExampleRoutes(app);
   registerOnboardingRoutes(app);

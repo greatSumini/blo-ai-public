@@ -1,6 +1,6 @@
 import { Hono } from "hono";
+import { getAuth } from "@hono/clerk-auth";
 import type { AppEnv } from "@/backend/hono/context";
-import { withClerkAuth } from "@/backend/middleware/clerk-auth";
 import { respondWithDomain } from "@/backend/http/mapper";
 import { failure } from "@/backend/http/response";
 import {
@@ -17,9 +17,6 @@ import {
 
 const app = new Hono<AppEnv>();
 
-// Apply Clerk authentication to all account routes
-app.use("*", withClerkAuth());
-
 // ========================================
 // Profile Routes
 // ========================================
@@ -29,10 +26,17 @@ app.use("*", withClerkAuth());
  * Get current user's profile
  */
 app.get("/api/account/profile", async (c) => {
-  const clerkUserId = c.get("clerkUserId");
+  const auth = getAuth(c);
+  if (!auth?.userId) {
+    return c.json(
+      failure(401, "UNAUTHORIZED", "Authentication required. Please sign in."),
+      401
+    );
+  }
+
   const supabase = c.get("supabase");
 
-  const result = await getProfileByClerkId(supabase, clerkUserId);
+  const result = await getProfileByClerkId(supabase, auth.userId);
   return respondWithDomain(c, result);
 });
 
@@ -41,7 +45,14 @@ app.get("/api/account/profile", async (c) => {
  * Update current user's profile
  */
 app.put("/api/account/profile", async (c) => {
-  const clerkUserId = c.get("clerkUserId");
+  const auth = getAuth(c);
+  if (!auth?.userId) {
+    return c.json(
+      failure(401, "UNAUTHORIZED", "Authentication required. Please sign in."),
+      401
+    );
+  }
+
   const supabase = c.get("supabase");
 
   const body = await c.req.json();
@@ -51,7 +62,7 @@ app.put("/api/account/profile", async (c) => {
     return c.json(failure(400, "VALIDATION_ERROR", "Invalid request body"), 400);
   }
 
-  const result = await updateProfileByClerkId(supabase, clerkUserId, parsed.data);
+  const result = await updateProfileByClerkId(supabase, auth.userId, parsed.data);
   return respondWithDomain(c, result);
 });
 
@@ -64,11 +75,18 @@ app.put("/api/account/profile", async (c) => {
  * Get current user's account settings (auto-creates if not exists)
  */
 app.get("/api/account/settings", async (c) => {
-  const clerkUserId = c.get("clerkUserId");
+  const auth = getAuth(c);
+  if (!auth?.userId) {
+    return c.json(
+      failure(401, "UNAUTHORIZED", "Authentication required. Please sign in."),
+      401
+    );
+  }
+
   const supabase = c.get("supabase");
 
   // First get profile to get profileId
-  const profileResult = await getProfileByClerkId(supabase, clerkUserId);
+  const profileResult = await getProfileByClerkId(supabase, auth.userId);
   if (!profileResult.ok) {
     return respondWithDomain(c, profileResult);
   }
@@ -85,7 +103,14 @@ app.get("/api/account/settings", async (c) => {
  * Update current user's account settings
  */
 app.put("/api/account/settings", async (c) => {
-  const clerkUserId = c.get("clerkUserId");
+  const auth = getAuth(c);
+  if (!auth?.userId) {
+    return c.json(
+      failure(401, "UNAUTHORIZED", "Authentication required. Please sign in."),
+      401
+    );
+  }
+
   const supabase = c.get("supabase");
 
   const body = await c.req.json();
@@ -96,7 +121,7 @@ app.put("/api/account/settings", async (c) => {
   }
 
   // First get profile to get profileId
-  const profileResult = await getProfileByClerkId(supabase, clerkUserId);
+  const profileResult = await getProfileByClerkId(supabase, auth.userId);
   if (!profileResult.ok) {
     return respondWithDomain(c, profileResult);
   }

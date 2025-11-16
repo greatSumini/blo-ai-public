@@ -1,4 +1,5 @@
 import type { Hono } from 'hono';
+import { getAuth } from '@hono/clerk-auth';
 import {
   failure,
 } from '@/backend/http/response';
@@ -6,7 +7,6 @@ import { respondWithDomain, respondCreated } from '@/backend/http/mapper';
 import {
   getLogger,
   getSupabase,
-  getClerkUserId,
   type AppEnv,
 } from '@/backend/hono/context';
 import { CreateStyleGuideRequestSchema } from '@/features/onboarding/backend/schema';
@@ -23,7 +23,17 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
    * Request body: OnboardingFormData
    */
   app.post('/api/style-guides', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(
+          401,
+          'UNAUTHORIZED',
+          'Authentication required. Please sign in.'
+        ),
+        401
+      );
+    }
 
     // Parse and validate request body
     const body = await c.req.json();
@@ -45,10 +55,10 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Create new style guide
-    const result = await createStyleGuide(supabase, userId, parsedBody.data);
+    const result = await createStyleGuide(supabase, auth.userId, parsedBody.data);
 
     if (result.ok) {
-      logger.info('Style guide created successfully', { userId });
+      logger.info('Style guide created successfully', { userId: auth.userId });
     }
 
     return respondCreated(c, result);
@@ -59,15 +69,26 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
    * Gets all style guides for a user
    */
   app.get('/api/style-guides', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(
+          401,
+          'UNAUTHORIZED',
+          'Authentication required. Please sign in.'
+        ),
+        401
+      );
+    }
+
     const supabase = getSupabase(c);
     const logger = getLogger(c);
 
     // Get all style guides
-    const result = await listStyleGuides(supabase, userId);
+    const result = await listStyleGuides(supabase, auth.userId);
 
     if (result.ok) {
-      logger.info('Style guides retrieved successfully', { userId, count: result.data.length });
+      logger.info('Style guides retrieved successfully', { userId: auth.userId, count: result.data.length });
     }
 
     return respondWithDomain(c, result);
@@ -80,7 +101,18 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
    * URL params: id (style guide ID)
    */
   app.get('/api/style-guides/:id', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(
+          401,
+          'UNAUTHORIZED',
+          'Authentication required. Please sign in.'
+        ),
+        401
+      );
+    }
+
     const guideId = c.req.param('id');
 
     if (!guideId) {
@@ -98,10 +130,10 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Get style guide by ID
-    const result = await getStyleGuideById(supabase, guideId, userId);
+    const result = await getStyleGuideById(supabase, guideId, auth.userId);
 
     if (result.ok) {
-      logger.info('Style guide retrieved successfully', { userId, guideId });
+      logger.info('Style guide retrieved successfully', { userId: auth.userId, guideId });
     }
 
     return respondWithDomain(c, result);
@@ -115,7 +147,18 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
    * Request body: OnboardingFormData
    */
   app.patch('/api/style-guides/:id', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(
+          401,
+          'UNAUTHORIZED',
+          'Authentication required. Please sign in.'
+        ),
+        401
+      );
+    }
+
     const guideId = c.req.param('id');
 
     if (!guideId) {
@@ -149,10 +192,10 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Update style guide
-    const result = await updateStyleGuide(supabase, guideId, userId, parsedBody.data);
+    const result = await updateStyleGuide(supabase, guideId, auth.userId, parsedBody.data);
 
     if (result.ok) {
-      logger.info('Style guide updated successfully', { userId, guideId });
+      logger.info('Style guide updated successfully', { userId: auth.userId, guideId });
     }
 
     return respondWithDomain(c, result);
@@ -165,7 +208,18 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
    * URL params: id (style guide ID)
    */
   app.delete('/api/style-guides/:id', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(
+          401,
+          'UNAUTHORIZED',
+          'Authentication required. Please sign in.'
+        ),
+        401
+      );
+    }
+
     const guideId = c.req.param('id');
 
     if (!guideId) {
@@ -183,10 +237,10 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Delete style guide
-    const result = await deleteStyleGuide(supabase, guideId, userId);
+    const result = await deleteStyleGuide(supabase, guideId, auth.userId);
 
     if (result.ok) {
-      logger.info('Style guide deleted successfully', { userId, guideId });
+      logger.info('Style guide deleted successfully', { userId: auth.userId, guideId });
     }
 
     return respondWithDomain(c, result);
@@ -198,15 +252,26 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
    * This ensures the middleware can check completion status from DB
    */
   app.patch('/api/onboarding/complete', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(
+          401,
+          'UNAUTHORIZED',
+          'Authentication required. Please sign in.'
+        ),
+        401
+      );
+    }
+
     const supabase = getSupabase(c);
     const logger = getLogger(c);
 
     // Update the onboarding_completed flag
-    const result = await markOnboardingCompleted(supabase, userId);
+    const result = await markOnboardingCompleted(supabase, auth.userId);
 
     if (result.ok) {
-      logger.info('Onboarding marked as completed', { userId });
+      logger.info('Onboarding marked as completed', { userId: auth.userId });
     }
 
     return respondWithDomain(c, result);

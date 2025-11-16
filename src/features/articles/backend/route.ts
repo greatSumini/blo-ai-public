@@ -1,4 +1,5 @@
 import type { Hono } from 'hono';
+import { getAuth } from '@hono/clerk-auth';
 import {
   failure,
   success,
@@ -8,7 +9,6 @@ import {
   getLogger,
   getSupabase,
   getConfig,
-  getClerkUserId,
   type AppEnv,
 } from '@/backend/hono/context';
 import {
@@ -40,7 +40,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * Query params: limit, offset, status, sortBy, sortOrder
    */
   app.get('/api/articles', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
 
     // Parse and validate query parameters
     const queryParams = c.req.query();
@@ -62,11 +68,11 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // List articles
-    const result = await listArticles(supabase, userId, parsedQuery.data);
+    const result = await listArticles(supabase, auth.userId, parsedQuery.data);
 
     if (result.ok) {
       logger.info('Articles listed successfully', {
-        userId,
+        userId: auth.userId,
         count: result.data.articles.length,
         total: result.data.total,
       });
@@ -80,16 +86,22 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * Gets dashboard statistics for the current user
    */
   app.get('/api/articles/dashboard/stats', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, articleErrorCodes.unauthorized || 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
 
     const supabase = getSupabase(c);
     const logger = getLogger(c);
 
     // Get dashboard stats
-    const result = await getDashboardStats(supabase, userId);
+    const result = await getDashboardStats(supabase, auth.userId);
 
     if (result.ok) {
-      logger.info('Dashboard stats retrieved successfully', { userId });
+      logger.info('Dashboard stats retrieved successfully', { userId: auth.userId });
     }
 
     return respondWithDomain(c, result);
@@ -101,7 +113,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * Query params: limit (default: 10)
    */
   app.get('/api/articles/recent', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, articleErrorCodes.unauthorized || 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
     const limitParam = c.req.query('limit');
     const limit = limitParam ? parseInt(limitParam, 10) : 10;
 
@@ -109,7 +127,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // List recent articles with default limit
-    const result = await listArticles(supabase, userId, {
+    const result = await listArticles(supabase, auth.userId, {
       limit,
       offset: 0,
       sortBy: 'updated_at',
@@ -118,7 +136,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
 
     if (result.ok) {
       logger.info('Recent articles retrieved successfully', {
-        userId,
+        userId: auth.userId,
         count: result.data.articles.length,
       });
     }
@@ -133,7 +151,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * Request body: CreateArticleRequest
    */
   app.post('/api/articles/draft', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, articleErrorCodes.unauthorized || 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
 
     // Parse and validate request body
     const body = await c.req.json();
@@ -155,10 +179,10 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Create article draft
-    const result = await createArticle(supabase, userId, parsedBody.data);
+    const result = await createArticle(supabase, auth.userId, parsedBody.data);
 
     if (result.ok) {
-      logger.info('Article draft created successfully', { userId, articleId: result.data.id });
+      logger.info('Article draft created successfully', { userId: auth.userId, articleId: result.data.id });
     }
 
     return respondCreated(c, result);
@@ -171,7 +195,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * URL params: id (article UUID)
    */
   app.get('/api/articles/:id', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, articleErrorCodes.unauthorized || 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
     const articleId = c.req.param('id');
 
     if (!articleId) {
@@ -189,10 +219,10 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Get article
-    const result = await getArticleById(supabase, userId, articleId);
+    const result = await getArticleById(supabase, auth.userId, articleId);
 
     if (result.ok) {
-      logger.info('Article retrieved successfully', { userId, articleId });
+      logger.info('Article retrieved successfully', { userId: auth.userId, articleId });
     }
 
     return respondWithDomain(c, result);
@@ -206,7 +236,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * Request body: UpdateArticleRequest
    */
   app.patch('/api/articles/:id', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, articleErrorCodes.unauthorized || 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
     const articleId = c.req.param('id');
 
     if (!articleId) {
@@ -242,13 +278,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     // Update article
     const result = await updateArticle(
       supabase,
-      userId,
+      auth.userId,
       articleId,
       parsedBody.data,
     );
 
     if (result.ok) {
-      logger.info('Article updated successfully', { userId, articleId });
+      logger.info('Article updated successfully', { userId: auth.userId, articleId });
     }
 
     return respondWithDomain(c, result);
@@ -261,7 +297,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * URL params: id (article UUID)
    */
   app.delete('/api/articles/:id', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, articleErrorCodes.unauthorized || 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
     const articleId = c.req.param('id');
 
     if (!articleId) {
@@ -279,10 +321,10 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Delete article
-    const result = await deleteArticle(supabase, userId, articleId);
+    const result = await deleteArticle(supabase, auth.userId, articleId);
 
     if (result.ok) {
-      logger.info('Article deleted successfully', { userId, articleId });
+      logger.info('Article deleted successfully', { userId: auth.userId, articleId });
     }
 
     return respondWithDomain(c, result);
@@ -295,7 +337,13 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
    * Request body: GenerateArticleRequest
    */
   app.post('/api/articles/generate', async (c) => {
-    const userId = getClerkUserId(c);
+    const auth = getAuth(c);
+    if (!auth?.userId) {
+      return c.json(
+        failure(401, articleErrorCodes.unauthorized || 'UNAUTHORIZED', 'Authentication required. Please sign in.'),
+        401
+      );
+    }
 
     // Parse and validate request body
     const body = await c.req.json();
@@ -318,7 +366,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const config = getConfig(c);
 
     // Step 1: Check quota
-    const quotaCheckResult = await checkQuota(supabase, userId);
+    const quotaCheckResult = await checkQuota(supabase, auth.userId);
 
     if (!quotaCheckResult.ok) {
       return respondWithDomain(c, quotaCheckResult);
@@ -343,7 +391,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     // Step 2: Generate article content using AI
     const generationResult = await generateArticleContent(
       supabase,
-      userId,
+      auth.userId,
       config.google.generativeAiApiKey,
       parsedBody.data,
     );
@@ -368,14 +416,14 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
       metaDescription: generatedContent.metaDescription,
     };
 
-    const articleResult = await createArticle(supabase, userId, createArticleData);
+    const articleResult = await createArticle(supabase, auth.userId, createArticleData);
 
     if (!articleResult.ok) {
       return respondWithDomain(c, articleResult);
     }
 
     // Step 4: Increment quota
-    const incrementResult = await incrementQuota(supabase, userId);
+    const incrementResult = await incrementQuota(supabase, auth.userId);
 
     if (!incrementResult.ok) {
       logger.warn('Failed to increment quota after article creation');
@@ -387,7 +435,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
       : quotaCheckResult.data.remaining - 1;
 
     logger.info('Article generated successfully', {
-      userId,
+      userId: auth.userId,
       articleId: articleResult.data.id,
       quotaRemaining,
     });
