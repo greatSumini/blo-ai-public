@@ -35,8 +35,12 @@ export const useStyleGuide = () => {
 
       try {
         const client = createAuthenticatedClient(userId);
-        const response = await client.get(`/api/style-guides/${userId}`);
-        return response.data as StyleGuideData;
+        // Fix: Use list API to get all style guides for the user
+        const response = await client.get(`/api/style-guides`);
+        const guides = response.data as StyleGuideData[];
+
+        // Return the first (default) style guide, or null if none exist
+        return guides.length > 0 ? guides[0] : null;
       } catch (error: any) {
         // Handle 404 - return null if not found
         if (error.response?.status === 404) {

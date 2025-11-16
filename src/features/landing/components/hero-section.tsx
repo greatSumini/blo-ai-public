@@ -13,61 +13,62 @@ export function HeroSection() {
   const t = useTranslations("landing.hero");
 
   return (
-    <section className="relative min-h-[calc(100vh-4rem)] w-full flex items-center justify-center overflow-hidden bg-[#FCFCFD]">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,162,248,0.05),transparent_50%)]" />
+    <section className="relative min-h-[calc(100vh-4rem)] w-full flex items-center justify-center overflow-hidden bg-bg-primary">
+      {/* Subtle background gradient - Claude.ai style */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--accent)/0.08),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,hsl(var(--primary)/0.05),transparent_50%)]" />
 
-      <div className="relative z-10 container mx-auto px-4 md:px-6 max-w-4xl py-12 md:py-20">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 max-w-5xl py-16 md:py-24 lg:py-32">
         <div className="text-center">
-          {/* Badge */}
+          {/* Badge - Claude.ai inspired subtle design */}
           <motion.div
             custom={0}
             variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
-            className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-full border border-[#E1E5EA] bg-[#F5F7FA]/50 mb-6 md:mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-default/60 bg-bg-secondary/40 mb-8 md:mb-10 backdrop-blur-sm hover:border-border-default transition-colors duration-slow"
           >
-            <span className="text-xs font-medium text-[#374151]">
+            <span className="text-xs md:text-sm font-medium text-text-secondary">
               {t("badge")}
             </span>
           </motion.div>
 
-          {/* Main Heading */}
+          {/* Main Heading - Claude.ai style typography */}
           <motion.div
             custom={1}
             variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 md:mb-6 tracking-tighter text-[#111827] leading-[1.1] px-2">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium mb-6 md:mb-8 tracking-tight text-text-primary leading-[1.15] px-2">
               {t("heading")}
             </h1>
           </motion.div>
 
-          {/* Subheading */}
+          {/* Subheading - Claude.ai style muted text */}
           <motion.div
             custom={2}
             variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
           >
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#6B7280] mb-8 md:mb-10 max-w-2xl mx-auto font-normal leading-relaxed px-2">
+            <p className="text-base sm:text-lg md:text-xl text-text-secondary mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed px-2">
               {t("subheading")}
             </p>
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Claude.ai style with accent-brand */}
           <motion.div
             custom={3}
             variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 md:mb-20"
           >
-            {/* Primary CTA */}
+            {/* Primary CTA - accent-brand color (#C46849) */}
             <Button
               size="lg"
-              className="rounded-lg px-8 py-6 text-base font-medium bg-[#3BA2F8] hover:bg-[#2E91E6] hover:shadow-md transition-all duration-200 text-white shadow-sm w-full sm:w-auto"
+              className="rounded-lg px-8 py-6 h-auto text-base font-medium bg-accent-brand text-white hover:opacity-90 transition-opacity duration-fast w-full sm:w-auto"
               asChild
             >
               <Link href="/signup">
@@ -76,11 +77,11 @@ export function HeroSection() {
               </Link>
             </Button>
 
-            {/* Secondary CTA */}
+            {/* Secondary CTA - Claude.ai ghost style */}
             <Button
               size="lg"
               variant="outline"
-              className="rounded-lg px-8 py-6 text-base font-medium border-[#E1E5EA] bg-white hover:bg-[#F5F7FA] text-[#374151] w-full sm:w-auto"
+              className="rounded-lg px-8 py-6 h-auto text-base font-medium border-border-default/60 bg-transparent hover:bg-bg-secondary hover:border-border-default text-text-primary transition-all duration-normal w-full sm:w-auto"
               asChild
             >
               <Link href="#demo">
@@ -90,27 +91,27 @@ export function HeroSection() {
             </Button>
           </motion.div>
 
-          {/* Trust Badge */}
+          {/* Trust Badge - Claude.ai subtle style */}
           <motion.div
             custom={4}
             variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-center gap-6"
+            className="flex flex-col items-center gap-8"
           >
-            <p className="text-sm text-[#6B7280]">{t("trust_badge")}</p>
-            <div className="flex flex-wrap items-center justify-center gap-8">
+            <p className="text-xs md:text-sm text-text-tertiary">{t("trust_badge")}</p>
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
               {TRUST_BADGE_LOGOS.map((logo, index) => (
                 <div
                   key={index}
-                  className="opacity-50 hover:opacity-100 transition-opacity"
+                  className="opacity-40 hover:opacity-70 transition-opacity duration-slow grayscale hover:grayscale-0"
                 >
                   <Image
                     src={logo.src}
                     alt={logo.alt}
                     width={120}
                     height={60}
-                    className="object-contain"
+                    className="object-contain h-8 md:h-10 w-auto"
                   />
                 </div>
               ))}
@@ -119,8 +120,8 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Bottom border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#E1E5EA]" />
+      {/* Bottom border - subtle */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-border-default/40" />
     </section>
   );
 }

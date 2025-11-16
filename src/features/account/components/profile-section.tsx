@@ -80,7 +80,7 @@ export function ProfileSection() {
           aria-live="polite"
           aria-label={t("loading")}
         >
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loader2 className="h-8 w-8 animate-spin text-text-secondary" />
           <span className="sr-only">{t("loading")}</span>
         </div>
       </SectionCard>
@@ -92,7 +92,7 @@ export function ProfileSection() {
       <div className="flex flex-col sm:flex-row items-start gap-6">
         {/* Avatar */}
         <div className="relative flex-shrink-0 group">
-          <Avatar className="h-24 w-24 transition-all duration-200 group-hover:ring-4 group-hover:ring-primary/10">
+          <Avatar className="h-24 w-24 transition-all duration-200 ease-out group-hover:ring-4 group-hover:ring-ring/20 motion-reduce:transition-none">
             <AvatarImage src={profile?.imageUrl ?? undefined} alt={fullName} />
             <AvatarFallback className="text-2xl">
               {fullName?.[0]?.toUpperCase() ?? "U"}
@@ -102,7 +102,7 @@ export function ProfileSection() {
             <Button
               size="icon"
               variant="secondary"
-              className="absolute -bottom-2 -right-2 h-9 w-9 rounded-full shadow-sm cursor-pointer transition-all duration-200 hover:scale-110 hover:shadow-md"
+              className="absolute -bottom-2 -right-2 h-9 w-9 rounded-full shadow-sm cursor-pointer transition-all duration-200 ease-out hover:scale-110 hover:shadow-md motion-reduce:transition-none"
               disabled={isUploadingImage}
               asChild
             >
@@ -146,9 +146,9 @@ export function ProfileSection() {
               id="email"
               value={profile?.email ?? ""}
               disabled
-              className="max-w-lg bg-muted/50 border-muted cursor-not-allowed"
+              className="max-w-lg bg-bg-secondary border-border-default cursor-not-allowed"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-text-tertiary">
               {t("fields.emailHint")}
             </p>
           </div>
@@ -156,7 +156,7 @@ export function ProfileSection() {
           {/* Joined Date */}
           <div className="space-y-2">
             <Label>{t("fields.joinedAt")}</Label>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-text-secondary">
               {profile?.createdAt
                 ? format(new Date(profile.createdAt), "PPP", { locale: dateLocale })
                 : "-"}

@@ -82,11 +82,12 @@ export const checkQuota = async (
   clerkUserId: string,
 ): Promise<DomainResult<QuotaCheckResult, ArticleDomainError>> => {
   try {
-    // Resolve profile id
-    const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
-    const profileId = await getProfileIdByClerkId(client, clerkUserId);
+    // Ensure profile exists and get id
+    const { ensureProfile } = await import('@/features/profiles/backend/service');
+    const profile = await ensureProfile(client, clerkUserId);
+    const profileId = profile?.id;
     if (!profileId) {
-      return domainFailure({ code: articleErrorCodes.quotaCheckFailed, message: 'Profile not found' });
+      return domainFailure({ code: articleErrorCodes.quotaCheckFailed, message: 'Failed to resolve or create user profile' });
     }
     const quota = await getOrCreateQuotaRecord(client, profileId);
 
@@ -128,11 +129,12 @@ export const incrementQuota = async (
   clerkUserId: string,
 ): Promise<DomainResult<{ newCount: number; remaining: number }, ArticleDomainError>> => {
   try {
-    // Get current quota to determine tier
-    const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
-    const profileId = await getProfileIdByClerkId(client, clerkUserId);
+    // Ensure profile exists and get current quota to determine tier
+    const { ensureProfile } = await import('@/features/profiles/backend/service');
+    const profile = await ensureProfile(client, clerkUserId);
+    const profileId = profile?.id;
     if (!profileId) {
-      return domainFailure({ code: articleErrorCodes.quotaIncrementFailed, message: 'Profile not found' });
+      return domainFailure({ code: articleErrorCodes.quotaIncrementFailed, message: 'Failed to resolve or create user profile' });
     }
     const quota = await getOrCreateQuotaRecord(client, profileId);
 
@@ -187,10 +189,22 @@ export const getQuotaStatus = async (
   try {
     const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
     const profileId = await getProfileIdByClerkId(client, clerkUserId);
+
+    // If profile doesn't exist, return default free tier status
+    if (!profileId) {
+      return domainSuccess({
+        allowed: true,
+        tier: 'free',
+        currentCount: 0,
+        limit: QUOTA_LIMITS.free,
+        remaining: QUOTA_LIMITS.free,
+      });
+    }
+
     const { data: quota } = await client
       .from(GENERATION_QUOTA_TABLE)
       .select('*')
-      .eq('profile_id', profileId ?? '')
+      .eq('profile_id', profileId)
       .single();
 
     if (!quota) {

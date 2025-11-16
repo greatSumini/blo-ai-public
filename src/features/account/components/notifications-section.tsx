@@ -63,12 +63,12 @@ export function NotificationsSection() {
     <SectionCard title={t("title")} description={t("description")}>
       <div className="space-y-4">
         {/* Email Updates */}
-        <div className="flex items-center justify-between p-4 rounded-lg border border-transparent hover:border-border hover:bg-muted/30 transition-colors duration-200">
+        <div className="flex items-center justify-between p-4 rounded-lg border border-transparent hover:border-border-default hover:bg-bg-secondary transition-all duration-200 motion-reduce:transition-none">
           <div className="space-y-0.5">
-            <Label htmlFor="emailUpdates" className="text-base font-medium cursor-pointer">
+            <Label htmlFor="emailUpdates" className="text-base font-medium cursor-pointer text-text-primary">
               {t("fields.emailUpdates")}
             </Label>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-text-secondary">
               {t("fields.emailUpdatesDesc")}
             </p>
           </div>
@@ -79,15 +79,15 @@ export function NotificationsSection() {
           />
         </div>
 
-        <div className="h-px bg-border/50" />
+        <div className="h-px bg-border-default" />
 
         {/* Weekly Report */}
-        <div className="flex items-center justify-between p-4 rounded-lg border border-transparent hover:border-border hover:bg-muted/30 transition-colors duration-200">
+        <div className="flex items-center justify-between p-4 rounded-lg border border-transparent hover:border-border-default hover:bg-bg-secondary transition-all duration-200 motion-reduce:transition-none">
           <div className="space-y-0.5">
-            <Label htmlFor="weeklyReport" className="text-base font-medium cursor-pointer">
+            <Label htmlFor="weeklyReport" className="text-base font-medium cursor-pointer text-text-primary">
               {t("fields.weeklyReport")}
             </Label>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-text-secondary">
               {t("fields.weeklyReportDesc")}
             </p>
           </div>

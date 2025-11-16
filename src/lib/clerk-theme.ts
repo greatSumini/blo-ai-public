@@ -6,17 +6,17 @@ export const clerkAppearance: Appearance = {
     socialButtonsVariant: "iconButton",
   },
   variables: {
-    // Colors from design guide
-    colorPrimary: "#3BA2F8", // Accent Blue
-    colorBackground: "#FCFCFD", // Off-White
-    colorText: "#111827", // Gray 900
-    colorTextSecondary: "#374151", // Gray 700
-    colorInputBackground: "#FFFFFF",
-    colorInputText: "#111827",
-    colorDanger: "#EF4444", // Error Red
+    // Colors using CSS variables for dark mode support
+    colorPrimary: "hsl(var(--accent))", // Accent color
+    colorBackground: "hsl(var(--background))", // Background
+    colorText: "hsl(var(--foreground))", // Foreground text
+    colorTextSecondary: "hsl(var(--muted-foreground))", // Muted text
+    colorInputBackground: "hsl(var(--card))", // Card/Input background
+    colorInputText: "hsl(var(--foreground))", // Input text
+    colorDanger: "hsl(var(--destructive))", // Error/Destructive
 
     // Border radius
-    borderRadius: "8px",
+    borderRadius: "0.5rem", // 8px
 
     // Typography
     fontFamily: "Pretendard Variable, -apple-system, sans-serif",
@@ -36,74 +36,85 @@ export const clerkAppearance: Appearance = {
 
     // Card
     card: {
-      backgroundColor: "#FFFFFF",
-      border: "1px solid #E1E5EA",
-      borderRadius: "12px",
+      backgroundColor: "hsl(var(--card))",
+      border: "1px solid hsl(var(--border))",
+      borderRadius: "0.75rem", // 12px
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.07)",
       padding: "32px 24px",
+      transition: "box-shadow 0.3s ease",
     },
 
     // Header
     headerTitle: {
-      fontSize: "24px",
+      fontSize: "1.5rem", // 24px
       fontWeight: 600,
-      color: "#111827",
+      color: "hsl(var(--foreground))",
       letterSpacing: "-0.025em",
     },
     headerSubtitle: {
-      fontSize: "14px",
+      fontSize: "0.875rem", // 14px
       fontWeight: 400,
-      color: "#6B7280",
+      color: "hsl(var(--muted-foreground))",
       marginTop: "8px",
     },
 
     // Social buttons
     socialButtonsBlockButton: {
-      border: "1px solid #E1E5EA",
-      borderRadius: "8px",
+      border: "1px solid hsl(var(--border))",
+      borderRadius: "0.5rem", // 8px
+      transition: "background-color 0.1s ease-in-out",
       "&:hover": {
-        backgroundColor: "#F3F4F6",
+        backgroundColor: "hsl(var(--secondary))",
       },
     },
 
     // Form elements
     formFieldLabel: {
-      fontSize: "14px",
+      fontSize: "0.875rem", // 14px
       fontWeight: 500,
-      color: "#374151",
+      color: "hsl(var(--foreground))",
       marginBottom: "8px",
     },
     formFieldInput: {
       height: "40px",
       padding: "12px 16px",
-      border: "1px solid #D1D5DB",
-      borderRadius: "6px",
-      fontSize: "16px",
+      border: "1px solid hsl(var(--border))",
+      borderRadius: "0.375rem", // 6px
+      fontSize: "1rem", // 16px
+      backgroundColor: "hsl(var(--card))",
+      color: "hsl(var(--foreground))",
+      transition: "border-color 0.2s ease, box-shadow 0.2s ease",
       "&:focus": {
-        borderColor: "#3BA2F8",
-        boxShadow: "0 0 0 3px rgba(59, 162, 248, 0.1)",
+        borderColor: "hsl(var(--accent))",
+        boxShadow: "0 0 0 3px hsla(var(--accent) / 0.1)",
+        outline: "none",
       },
       "&::placeholder": {
-        color: "#D1D5DB",
+        color: "hsl(var(--muted-foreground))",
       },
     },
     formFieldInputShowPasswordButton: {
-      color: "#6B7280",
+      color: "hsl(var(--muted-foreground))",
     },
 
     // Buttons
     formButtonPrimary: {
       height: "48px",
-      backgroundColor: "#3BA2F8",
-      borderRadius: "8px",
-      fontSize: "16px",
+      backgroundColor: "hsl(var(--accent))",
+      borderRadius: "0.5rem", // 8px
+      fontSize: "1rem", // 16px
       fontWeight: 600,
       padding: "0 24px",
+      transition: "all 0.1s ease-in-out",
       "&:hover": {
-        backgroundColor: "#2E91E5",
+        backgroundColor: "hsla(var(--accent) / 0.9)",
       },
       "&:active": {
-        backgroundColor: "#2680D0",
+        transform: "scale(0.95)",
+      },
+      "&:focus-visible": {
+        outline: "2px solid hsl(var(--ring))",
+        outlineOffset: "2px",
       },
     },
 
@@ -112,40 +123,42 @@ export const clerkAppearance: Appearance = {
       marginTop: "24px",
     },
     footerActionLink: {
-      color: "#3BA2F8",
+      color: "hsl(var(--accent))",
       fontWeight: 500,
+      transition: "color 0.2s ease",
       "&:hover": {
-        color: "#2E91E5",
+        color: "hsla(var(--accent) / 0.8)",
       },
     },
 
     // Divider
     dividerLine: {
-      backgroundColor: "#E1E5EA",
+      backgroundColor: "hsl(var(--border))",
     },
     dividerText: {
-      color: "#6B7280",
-      fontSize: "14px",
+      color: "hsl(var(--muted-foreground))",
+      fontSize: "0.875rem", // 14px
     },
 
     // Alert
     alertText: {
-      fontSize: "14px",
+      fontSize: "0.875rem", // 14px
     },
 
     // Identifier
     identityPreviewText: {
-      fontSize: "14px",
+      fontSize: "0.875rem", // 14px
       fontWeight: 500,
     },
 
     // Links
     formFieldAction: {
-      color: "#3BA2F8",
-      fontSize: "14px",
+      color: "hsl(var(--accent))",
+      fontSize: "0.875rem", // 14px
       fontWeight: 500,
+      transition: "color 0.2s ease",
       "&:hover": {
-        color: "#2E91E5",
+        color: "hsla(var(--accent) / 0.8)",
       },
     },
   },

@@ -14,12 +14,15 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
 
   return (
     <div className="relative">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B7280]" />
+      <Search
+        className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+        aria-hidden="true"
+      />
       <Input
         placeholder={t("placeholder")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="pl-10 border-[#E1E5EA]"
+        className="pl-10 border-border bg-background text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-[#C46849] focus-visible:ring-offset-2"
         aria-label={t("ariaLabel")}
       />
     </div>

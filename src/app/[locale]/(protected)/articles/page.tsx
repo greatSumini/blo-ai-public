@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { PageLayout } from "@/components/layout/page-layout";
+import { Button } from "@/components/ui/button-v2";
 import { ArticlesFilters } from "@/features/articles/components/articles-filters";
 import { ArticlesGrid } from "@/features/articles/components/articles-grid";
 import { useListArticles } from "@/features/articles/hooks/useListArticles";
@@ -15,7 +15,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAuthenticatedClient, extractApiErrorMessage } from "@/lib/remote/api-client";
@@ -103,28 +102,33 @@ export default function ArticlesPage({ params }: ArticlesPageProps) {
     }
   };
 
-  // PageLayout actions 활용
-  const headerActions = (
-    <div className="flex items-center gap-4">
-      <span className="text-sm text-gray-500">
-        {t("total_count", { count: data?.total || 0 })}
-      </span>
-      <Button
-        onClick={() => router.push(`/${locale}/new-article`)}
-        className="bg-blue-500 hover:bg-blue-600"
-      >
-        <Sparkles className="mr-2 h-4 w-4" />
-        {t("create_new")}
-      </Button>
-    </div>
-  );
-
   return (
-    <PageLayout
-      title={t("title")}
-      description={t("description")}
-      actions={headerActions}
-    >
+    <div className="container mx-auto px-4 md:px-6 py-8 md:py-12 max-w-7xl">
+      {/* Page Header */}
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-medium leading-tight text-text-primary">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-base text-text-secondary leading-relaxed">
+            {t("description")}
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-text-tertiary">
+            {t("total_count", { count: data?.total || 0 })}
+          </span>
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={() => router.push(`/${locale}/new-article`)}
+          >
+            <Sparkles className="mr-2 h-4 w-4" />
+            {t("create_new")}
+          </Button>
+        </div>
+      </div>
+
       {/* Filters */}
       <ArticlesFilters
         searchQuery={searchQuery}
@@ -155,14 +159,14 @@ export default function ArticlesPage({ params }: ArticlesPageProps) {
           </DialogHeader>
           <DialogFooter>
             <Button
-              variant="outline"
+              variant="secondary"
               onClick={() => setDeleteDialogOpen(false)}
               disabled={deleteMutation.isPending}
             >
               {t("delete.confirm.cancel")}
             </Button>
             <Button
-              variant="destructive"
+              variant="danger"
               onClick={confirmDelete}
               disabled={deleteMutation.isPending}
             >
@@ -171,6 +175,6 @@ export default function ArticlesPage({ params }: ArticlesPageProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </PageLayout>
+    </div>
   );
 }

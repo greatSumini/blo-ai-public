@@ -16,7 +16,7 @@ import {
 } from '@/features/onboarding/backend/error';
 
 const STYLE_GUIDES_TABLE = 'style_guides';
-import { ensureProfile, getProfileIdByClerkId } from '@/features/profiles/backend/service';
+import { ensureProfile } from '@/features/profiles/backend/service';
 
 /**
  * Creates a new style guide for a user
@@ -127,9 +127,11 @@ export const listStyleGuides = async (
   client: SupabaseClient,
   clerkUserId: string,
 ): Promise<DomainResult<StyleGuideResponse[], StyleGuideDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { data, error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -205,9 +207,11 @@ export const getStyleGuideById = async (
   guideId: string,
   clerkUserId: string,
 ): Promise<DomainResult<StyleGuideResponse, StyleGuideDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { data, error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -300,9 +304,11 @@ export const updateStyleGuide = async (
     notes: data.notes || null,
   };
 
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { data: updatedData, error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -380,9 +386,11 @@ export const deleteStyleGuide = async (
   guideId: string,
   clerkUserId: string,
 ): Promise<DomainResult<{ success: boolean }, StyleGuideDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { error } = await client
     .from(STYLE_GUIDES_TABLE)
@@ -411,9 +419,11 @@ export const markOnboardingCompleted = async (
   client: SupabaseClient,
   clerkUserId: string,
 ): Promise<DomainResult<{ success: boolean }, StyleGuideDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { error } = await client
     .from(STYLE_GUIDES_TABLE)

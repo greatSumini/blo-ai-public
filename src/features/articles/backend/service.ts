@@ -18,7 +18,7 @@ import {
   articleErrorCodes,
   type ArticleDomainError,
 } from '@/features/articles/backend/error';
-import { ensureProfile, getProfileIdByClerkId } from '@/features/profiles/backend/service';
+import { ensureProfile } from '@/features/profiles/backend/service';
 
 const ARTICLES_TABLE = 'articles';
 
@@ -138,9 +138,11 @@ export const getArticleById = async (
   clerkUserId: string,
   articleId: string,
 ): Promise<DomainResult<ArticleResponse, ArticleDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: articleErrorCodes.createError, message: 'Failed to resolve or create user profile' });
   }
   const { data, error } = await client
     .from(ARTICLES_TABLE)
@@ -213,9 +215,11 @@ export const updateArticle = async (
     }
   }
 
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: articleErrorCodes.createError, message: 'Failed to resolve or create user profile' });
   }
   const { data: updatedData, error } = await client
     .from(ARTICLES_TABLE)
@@ -263,9 +267,11 @@ export const deleteArticle = async (
   clerkUserId: string,
   articleId: string,
 ): Promise<DomainResult<{ id: string }, ArticleDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: articleErrorCodes.createError, message: 'Failed to resolve or create user profile' });
   }
   const { error } = await client
     .from(ARTICLES_TABLE)
@@ -291,9 +297,11 @@ export const listArticles = async (
   clerkUserId: string,
   query: ListArticlesQuery,
 ): Promise<DomainResult<ListArticlesResponse, ArticleDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: articleErrorCodes.createError, message: 'Failed to resolve or create user profile' });
   }
 
   // Build the base query
@@ -359,9 +367,11 @@ export const getDashboardStats = async (
   client: SupabaseClient,
   clerkUserId: string,
 ): Promise<DomainResult<DashboardStatsResponse, ArticleDomainError>> => {
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  // Ensure profile exists and get id
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
+    return domainFailure({ code: articleErrorCodes.createError, message: 'Failed to resolve or create user profile' });
   }
 
   // Get all articles for the user with views and time_spent

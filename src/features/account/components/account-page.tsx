@@ -9,13 +9,13 @@ export function AccountPage() {
   const t = useTranslations("common");
 
   return (
-    <div className="container max-w-5xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12 space-y-8 sm:space-y-10">
+    <div className="container max-w-5xl px-4 md:px-6 py-8 md:py-12 lg:py-16 space-y-8 md:space-y-12">
       {/* Page Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-medium leading-tight text-text-primary">
           {t("account_management")}
         </h1>
-        <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
+        <p className="text-base md:text-lg text-text-secondary max-w-2xl leading-relaxed">
           {t("account_management_description")}
         </p>
       </div>

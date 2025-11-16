@@ -108,7 +108,7 @@ export function KeywordTable() {
 
       {/* Total Count */}
       {hasData && (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           {t("table.totalCount", { count: totalFiltered })}
         </p>
       )}
@@ -117,11 +117,11 @@ export function KeywordTable() {
       {isLoading ? (
         <TableSkeleton />
       ) : error ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-8 text-center">
-          <p className="text-base font-medium text-red-900 mb-1">
+        <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-8 text-center">
+          <p className="text-base font-medium text-destructive mb-1">
             {t("table.loadError")}
           </p>
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-destructive/80">
             {error instanceof Error ? error.message : t("table.loadErrorFallback")}
           </p>
         </div>
@@ -130,24 +130,24 @@ export function KeywordTable() {
       ) : isNoResults ? (
         <EmptyState type="no-results" />
       ) : (
-        <div className="rounded-lg border border-gray-200">
+        <div className="rounded-lg border border-border">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead className="w-[50%]">{t("table.columnKeyword")}</TableHead>
-                <TableHead className="w-[20%]">{t("table.columnSource")}</TableHead>
-                <TableHead className="w-[20%]">{t("table.columnCreatedAt")}</TableHead>
-                <TableHead className="w-[10%] text-right">{t("table.columnActions")}</TableHead>
+              <TableRow className="bg-secondary">
+                <TableHead scope="col" className="w-[50%]">{t("table.columnKeyword")}</TableHead>
+                <TableHead scope="col" className="w-[20%]">{t("table.columnSource")}</TableHead>
+                <TableHead scope="col" className="w-[20%]">{t("table.columnCreatedAt")}</TableHead>
+                <TableHead scope="col" className="w-[10%] text-right">{t("table.columnActions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredItems.map((keyword) => (
                 <TableRow
                   key={keyword.id}
-                  className="transition-colors hover:bg-gray-50"
+                  className="group transition-colors duration-100 hover:bg-secondary motion-reduce:transition-none"
                 >
                   <TableCell>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-foreground">
                       {keyword.phrase}
                     </span>
                   </TableCell>
@@ -162,10 +162,10 @@ export function KeywordTable() {
                   </TableCell>
                   <TableCell>
                     <div className="space-y-1">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm text-foreground">
                         {format(new Date(keyword.createdAt), "yyyy-MM-dd")}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-muted-foreground">
                         {formatDistanceToNow(new Date(keyword.createdAt), {
                           addSuffix: true,
                           locale: dateLocale,
@@ -174,12 +174,12 @@ export function KeywordTable() {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
+                    <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 motion-reduce:transition-none">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleCopy(keyword.phrase)}
-                        className="transition-colors"
+                        className="transition-colors duration-100 motion-reduce:transition-none"
                         aria-label={t("table.copyAria", { phrase: keyword.phrase })}
                       >
                         <Copy className="h-4 w-4" />
@@ -188,7 +188,7 @@ export function KeywordTable() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeleteClick(keyword.id, keyword.phrase)}
-                        className="text-red-600 hover:text-red-700 transition-colors"
+                        className="text-destructive hover:text-destructive/90 transition-colors duration-100 motion-reduce:transition-none"
                         aria-label={t("table.deleteAria", { phrase: keyword.phrase })}
                       >
                         <Trash2 className="h-4 w-4" />

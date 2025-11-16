@@ -29,7 +29,7 @@ export function AutoSaveIndicator({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
-          className="flex items-center gap-2.5 text-sm text-muted-foreground"
+          className="flex items-center gap-2.5 text-sm text-text-secondary"
         >
           <Loader2 className="h-4 w-4 animate-spin" />
           <span>{t("saving")}</span>
@@ -55,7 +55,7 @@ export function AutoSaveIndicator({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
-          className="flex items-center gap-2.5 text-sm text-muted-foreground"
+          className="flex items-center gap-2.5 text-sm text-text-secondary"
         >
           <div className="flex items-center justify-center w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30">
             <Check className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />

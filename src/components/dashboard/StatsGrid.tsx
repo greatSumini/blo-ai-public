@@ -40,7 +40,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-3 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-3 animate-fade-in-up-delay-100 motion-reduce:animate-none">
       {cards.map((card, index) => (
         <StatCard key={index} {...card} />
       ))}

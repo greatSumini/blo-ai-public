@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from "@/i18n/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { GenerationForm } from "@/features/articles/components/generation-form";
 import { GenerationProgressSection } from "@/features/articles/components/generation-progress-section";
 import { ArticlePreviewSection } from "@/features/articles/components/article-preview-section";
 import { useStyleGuide } from "@/features/articles/hooks/useStyleGuide";
 import type { GenerationFormData } from "@/features/articles/components/generation-form";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 import { useCompletion } from "@ai-sdk/react";
 import {
   parseGeneratedText,
@@ -25,7 +25,7 @@ type NewArticlePageProps = {
 
 export default function NewArticlePage({ params }: NewArticlePageProps) {
   void params;
-  const t = useTranslations('newArticle');
+  const t = useTranslations("newArticle");
   const router = useRouter();
   const { toast } = useToast();
 
@@ -37,7 +37,8 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
     keywords: string[];
   } | null>(null);
 
-  const { data: styleGuideData, isLoading: isLoadingStyleGuide } = useStyleGuide();
+  const { data: styleGuideData, isLoading: isLoadingStyleGuide } =
+    useStyleGuide();
   const { user } = useCurrentUser();
   const { completion, complete, stop, isLoading } = useCompletion({
     api: "/api/articles/generate",
@@ -68,9 +69,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
     } catch (error) {
       console.error("Failed to generate article:", error);
       const message =
-        error instanceof Error
-          ? error.message
-          : t("toast.error.desc");
+        error instanceof Error ? error.message : t("toast.error.desc");
       toast({
         title: t("toast.error.title"),
         description: message,
@@ -109,7 +108,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
     if (!user?.id) {
       toast({
         title: t("save.loginRequired"),
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -147,8 +146,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
       });
       router.push(`/articles/${article.id}/edit`);
     } catch (e) {
-      const message =
-        e instanceof Error ? e.message : t("save.error.desc");
+      const message = e instanceof Error ? e.message : t("save.error.desc");
       toast({
         title: t("save.error.title"),
         description: message,
@@ -174,7 +172,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <AnimatePresence mode="wait" initial={false}>
         {mode === "form" && (
           <GenerationForm

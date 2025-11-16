@@ -33,22 +33,38 @@ export function GenerationProgressSection({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="container mx-auto max-w-4xl px-4 py-12 space-y-6"
+      className="container mx-auto max-w-4xl px-4 md:px-6 py-16 md:py-24 space-y-8 motion-reduce:transition-none"
+      role="region"
+      aria-label="Article generation progress"
     >
       {/* Current Task */}
-      <div className="text-center space-y-2">
-        <p className="text-lg font-medium text-foreground">{currentTask}</p>
-        <Button variant="ghost" size="sm" onClick={onCancel}>
+      <div className="text-center space-y-4" role="status" aria-live="polite" aria-atomic="true">
+        <p className="text-xl md:text-2xl font-medium text-foreground dark:text-foreground">
+          {currentTask}
+        </p>
+        <Button
+          variant="ghost"
+          size="default"
+          onClick={onCancel}
+          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C46849] focus-visible:ring-offset-2 min-h-[44px]"
+          aria-label="Cancel article generation"
+        >
           {t("cancel")}
         </Button>
       </div>
 
       {/* Streaming Preview (Plain Text) */}
-      <Card className="border-border bg-card">
-        <CardContent className="p-6">
-          <div className="whitespace-pre-wrap font-mono text-sm text-muted-foreground max-h-96 overflow-y-auto">
+      <Card className="border-border bg-card dark:bg-card dark:border-border shadow-sm">
+        <CardContent className="p-6 md:p-8">
+          <div
+            className="whitespace-pre-wrap font-mono text-sm text-muted-foreground dark:text-muted-foreground max-h-96 overflow-y-auto"
+            aria-live="off"
+          >
             {streamingText || t("initializing")}
-            <span className="inline-block w-0.5 h-4 bg-primary ml-1 animate-pulse" />
+            <span
+              className="inline-block w-0.5 h-4 bg-[#C46849] dark:bg-[#d97757] ml-1 animate-pulse"
+              aria-hidden="true"
+            />
           </div>
         </CardContent>
       </Card>

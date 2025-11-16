@@ -127,12 +127,15 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // List recent articles with default limit
-    const result = await listArticles(supabase, auth.userId, {
+    // Use schema parse to ensure default values are applied
+    const queryData = ListArticlesQuerySchema.parse({
       limit,
       offset: 0,
       sortBy: 'updated_at',
       sortOrder: 'desc',
     });
+
+    const result = await listArticles(supabase, auth.userId, queryData);
 
     if (result.ok) {
       logger.info('Recent articles retrieved successfully', {

@@ -27,8 +27,9 @@ const getStyleGuide = async (
   clerkUserId: string,
   styleGuideId?: string,
 ): Promise<StyleGuideResponse | null> => {
-  const { getProfileIdByClerkId } = await import('@/features/profiles/backend/service');
-  const profileId = await getProfileIdByClerkId(client, clerkUserId);
+  const { ensureProfile } = await import('@/features/profiles/backend/service');
+  const profile = await ensureProfile(client, clerkUserId);
+  const profileId = profile?.id;
   if (!profileId) return null;
   let query = client.from(STYLE_GUIDES_TABLE).select('*').eq('profile_id', profileId);
 

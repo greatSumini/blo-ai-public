@@ -20,38 +20,47 @@ export function ArticleCard({ article, onView }: ArticleCardProps) {
   const locale = useLocale();
   const dateLocale = locale === 'ko' ? ko : enUS;
 
-  const statusColors = {
-    draft: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-    published: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-    archived: 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400',
+  const statusConfig = {
+    draft: {
+      className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-950/50 dark:text-yellow-400 border-yellow-300 dark:border-yellow-800'
+    },
+    published: {
+      className: 'bg-green-100 text-green-800 dark:bg-green-950/50 dark:text-green-400 border-green-300 dark:border-green-800'
+    },
+    archived: {
+      className: 'bg-bg-secondary text-text-secondary border-border-default'
+    },
   };
 
   return (
-    <Card className="group transition-all hover:shadow-lg hover:border-primary/50">
+    <Card className="group transition-all duration-300 ease-out hover:shadow-lg hover:border-accent-brand/50 motion-reduce:transition-none border-border-default">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
+          <CardTitle className="text-lg line-clamp-2 text-text-primary group-hover:text-accent-brand transition-colors duration-100">
             {article.title}
           </CardTitle>
-          <Badge className={statusColors[article.status]} variant="secondary">
+          <Badge
+            variant="secondary"
+            className={statusConfig[article.status].className}
+          >
             {t(`status.${article.status}`)}
           </Badge>
         </div>
       </CardHeader>
       <CardContent>
         {article.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+          <p className="text-sm text-text-secondary line-clamp-2 mb-4">
             {article.description}
           </p>
         )}
 
-        <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
+        <div className="flex items-center gap-4 text-xs text-text-tertiary mb-4">
           <span className="flex items-center gap-1">
-            <Eye className="w-3 h-3" />
+            <Eye className="w-3 h-3" aria-hidden="true" />
             {article.views}
           </span>
           <span className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" />
+            <Calendar className="w-3 h-3" aria-hidden="true" />
             {format(new Date(article.updatedAt), 'PP', { locale: dateLocale })}
           </span>
         </div>
@@ -60,10 +69,10 @@ export function ArticleCard({ article, onView }: ArticleCardProps) {
           onClick={() => onView(article.id)}
           variant="ghost"
           size="sm"
-          className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+          className="w-full group-hover:bg-accent-brand group-hover:text-white transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-brand focus-visible:ring-offset-2"
         >
           {t('viewArticle')}
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
         </Button>
       </CardContent>
     </Card>

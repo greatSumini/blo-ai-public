@@ -54,15 +54,15 @@ export function WelcomeBanner({ onDismiss }: WelcomeBannerProps) {
       role="status"
       aria-live="polite"
       className={`
-        transition-all duration-250 ease-out
+        transition-all duration-300 ease-out motion-reduce:transition-none
         ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}
       `}
     >
       <div
         className="
-          bg-[#F0F9FF]
-          border-l-4 border-[#3BA2F8]
-          rounded-[12px]
+          bg-blue-50 dark:bg-blue-950/20
+          border-l-4 border-blue-500 dark:border-blue-400
+          rounded-lg
           p-4 md:p-6
           shadow-sm
         "
@@ -71,11 +71,11 @@ export function WelcomeBanner({ onDismiss }: WelcomeBannerProps) {
           {/* Content */}
           <div className="flex items-start gap-3 flex-1">
             <div className="flex-shrink-0 mt-0.5">
-              <Sparkles className="w-5 h-5 text-[#3BA2F8]" aria-hidden="true" />
+              <Sparkles className="w-5 h-5 text-blue-500 dark:text-blue-400" aria-hidden="true" />
             </div>
             <div className="flex-1">
-              <h3 className="text-[16px] font-semibold text-[#1E2A38] mb-1">{t("title")}</h3>
-              <p className="text-[14px] text-[#374151] leading-[1.5]">
+              <h3 className="text-base font-semibold text-text-primary mb-2">{t("title")}</h3>
+              <p className="text-sm text-text-secondary leading-relaxed">
                 {t("desc")}
               </p>
             </div>
@@ -86,20 +86,19 @@ export function WelcomeBanner({ onDismiss }: WelcomeBannerProps) {
             <button
               onClick={handleCTAClick}
               className="
-                bg-[#3BA2F8]
+                bg-accent-brand hover:bg-accent-brand/90
                 text-white
                 px-6
                 py-2.5
                 rounded-lg
-                text-[14px]
+                text-sm
                 font-medium
-                hover:bg-[#2d8fd9]
-                transition-colors
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#3BA2F8]
-                focus:ring-offset-2
-                h-[40px]
+                transition-all duration-100
+                focus-visible:outline-none
+                focus-visible:ring-2
+                focus-visible:ring-accent-brand
+                focus-visible:ring-offset-2
+                motion-reduce:transition-none
               "
               aria-label={t("cta_aria")}
             >
@@ -109,15 +108,16 @@ export function WelcomeBanner({ onDismiss }: WelcomeBannerProps) {
               onClick={handleDismiss}
               className="
                 p-2
-                text-[#6B7280]
-                hover:text-[#374151]
-                hover:bg-white/50
+                text-text-secondary
+                hover:text-text-primary
+                hover:bg-bg-secondary
                 rounded-lg
-                transition-colors
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#3BA2F8]
-                focus:ring-offset-2
+                transition-colors duration-100
+                focus-visible:outline-none
+                focus-visible:ring-2
+                focus-visible:ring-accent-brand
+                focus-visible:ring-offset-2
+                motion-reduce:transition-none
               "
               aria-label={t("close_aria")}
             >

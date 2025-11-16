@@ -40,21 +40,25 @@ export function ArticlePreviewSection({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="container mx-auto max-w-4xl px-4 py-12 space-y-8"
+      transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+      className="container mx-auto max-w-4xl px-4 md:px-6 py-16 md:py-24 space-y-8 motion-reduce:transition-none"
     >
       {/* Success Message (Simple) */}
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        className="flex items-center justify-center gap-3"
+        className="flex items-center justify-center gap-4"
+        role="status"
+        aria-live="polite"
       >
-        <CheckCircle2 className="w-6 h-6 text-green-600" />
-        <p className="text-lg font-medium text-foreground">{t("ready")}</p>
+        <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-500" />
+        <p className="text-xl md:text-2xl font-medium text-foreground dark:text-foreground">
+          {t("ready")}
+        </p>
       </motion.div>
 
       {/* Metadata (Collapsible) */}
@@ -101,10 +105,12 @@ export function ArticlePreviewSection({
       </Collapsible>
 
       {/* Article Preview */}
-      <Card className="border-border bg-card">
-        <CardContent className="p-8">
-          <article className="prose prose-lg max-w-none dark:prose-invert">
-            <h1>{article.title}</h1>
+      <Card className="border-border bg-background dark:bg-background dark:border-border shadow-sm hover:shadow-md transition-shadow duration-300">
+        <CardContent className="p-8 md:p-12">
+          <article className="prose prose-lg max-w-prose mx-auto dark:prose-invert">
+            <h1 className="text-4xl md:text-5xl font-medium leading-tight">
+              {article.title}
+            </h1>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {article.content}
             </ReactMarkdown>
@@ -113,12 +119,21 @@ export function ArticlePreviewSection({
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Button onClick={onEdit} className="flex-1" disabled={isSaving}>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Button
+          onClick={onEdit}
+          className="flex-1 bg-[#C46849] hover:bg-[#b05a3e] text-white dark:bg-[#C46849] dark:hover:bg-[#b05a3e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C46849] focus-visible:ring-offset-2 transition-all duration-100 active:scale-95"
+          disabled={isSaving}
+        >
           <Edit className="w-4 h-4 mr-2" />
           {t("actions.edit")}
         </Button>
-        <Button onClick={onRegenerate} variant="outline" disabled={isSaving}>
+        <Button
+          onClick={onRegenerate}
+          variant="outline"
+          disabled={isSaving}
+          className="border-border hover:bg-secondary dark:border-border dark:hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C46849] focus-visible:ring-offset-2 transition-all duration-100"
+        >
           <RefreshCw className="w-4 h-4 mr-2" />
           {t("actions.regenerate")}
         </Button>

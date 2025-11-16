@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/layout/page-layout";
+import { ErrorDisplay } from "@/components/error-display";
 import type { StyleGuideResponse } from "@/features/style-guide/types";
 import {
   useListStyleGuides,
@@ -96,7 +97,7 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
     <Button
       onClick={handleCreateNew}
       size="lg"
-      className="bg-[#3BA2F8] hover:bg-[#2E91E6]"
+      className="bg-accent-brand hover:bg-accent-brand/90 text-white focus-visible:ring-2 focus-visible:ring-accent-brand focus-visible:ring-offset-2"
     >
       <Plus className="mr-2 h-5 w-5" />
       {t("create_new")}
@@ -112,26 +113,34 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
         actions={actions}
         maxWidthClassName="max-w-6xl"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col border-t border-border-default rounded-lg bg-bg-primary">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="rounded-lg border border-[#E1E5EA] bg-white p-6 space-y-4 animate-pulse"
+              className="border-b border-border-default last:border-b-0 py-3 px-3 h-[137px] flex flex-col animate-pulse"
             >
-              <div className="space-y-2">
-                <div className="h-5 bg-[#E5E7EB] rounded w-3/4"></div>
-                <div className="h-4 bg-[#E5E7EB] rounded w-full"></div>
-                <div className="h-4 bg-[#E5E7EB] rounded w-5/6"></div>
+              <div className="flex items-start justify-between flex-1 min-h-0 mb-2">
+                <div className="flex-1 min-w-0">
+                  <div className="h-5 bg-bg-secondary rounded w-1/4 mb-2"></div>
+                  <div className="space-y-2 max-w-[720px]">
+                    <div className="h-4 bg-bg-secondary rounded w-full"></div>
+                    <div className="h-4 bg-bg-secondary rounded w-3/4"></div>
+                  </div>
+                </div>
+                <div className="flex gap-1 ml-4 flex-shrink-0">
+                  <div className="h-8 w-8 bg-bg-secondary rounded"></div>
+                  <div className="h-8 w-8 bg-bg-secondary rounded"></div>
+                  <div className="h-8 w-8 bg-bg-secondary rounded"></div>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <div className="h-6 bg-[#E5E7EB] rounded w-16"></div>
-                <div className="h-6 bg-[#E5E7EB] rounded w-16"></div>
-                <div className="h-6 bg-[#E5E7EB] rounded w-16"></div>
-              </div>
-              <div className="flex gap-2 pt-4 border-t border-[#E1E5EA]">
-                <div className="h-8 bg-[#E5E7EB] rounded flex-1"></div>
-                <div className="h-8 bg-[#E5E7EB] rounded flex-1"></div>
-                <div className="h-8 bg-[#E5E7EB] rounded w-10"></div>
+              <div className="flex items-center gap-2">
+                <div className="h-6 bg-bg-secondary rounded w-32"></div>
+                <div className="h-3 w-3 bg-bg-secondary rounded-full"></div>
+                <div className="h-4 bg-bg-secondary rounded w-16"></div>
+                <div className="h-3 w-3 bg-bg-secondary rounded-full"></div>
+                <div className="h-4 bg-bg-secondary rounded w-24"></div>
+                <div className="h-3 w-3 bg-bg-secondary rounded-full"></div>
+                <div className="h-4 bg-bg-secondary rounded w-32"></div>
               </div>
             </div>
           ))}
@@ -149,10 +158,10 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
         actions={actions}
         maxWidthClassName="max-w-6xl"
       >
-        <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-          <p className="text-red-500">{t("error.load")}</p>
-          <Button onClick={() => router.refresh()}>{t("retry")}</Button>
-        </div>
+        <ErrorDisplay
+          message={t("error.load")}
+          onRetry={() => router.refresh()}
+        />
       </PageLayout>
     );
   }
@@ -183,7 +192,7 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
         ) : (
           // 검색 결과 없음
           <div className="text-center py-12 space-y-4">
-            <p className="text-[#6B7280]">{t("noResults")}</p>
+            <p className="text-base text-text-secondary">{t("noResults")}</p>
             <Button variant="link" onClick={() => setSearchQuery("")}>
               {t("clearSearch")}
             </Button>

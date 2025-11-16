@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#FCFCFD] pt-16">
+      <main className="min-h-screen bg-background pt-16">
         <HeroSection />
         <FeaturesSection />
         <HowItWorksSection />

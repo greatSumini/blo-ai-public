@@ -193,29 +193,11 @@ export function OnboardingWizard({
   };
 
   return (
-    <div
-      className="min-h-screen py-8"
-      style={{ backgroundColor: "#FCFCFD" }}
-    >
-      <div className="container mx-auto max-w-7xl px-4">
+    <div className="min-h-screen">
+      <div className="">
         {/* Step Indicator */}
         <div className="mb-8">
           <StepIndicator currentStep={currentStep} />
-
-          {/* Keyboard shortcut hint */}
-          <div className="mt-2 text-center">
-            <p className="text-xs" style={{ color: "#9CA3AF" }}>
-              <kbd className="rounded px-1.5 py-0.5" style={{ backgroundColor: "#F3F4F6", color: "#6B7280", border: "1px solid #E5E7EB" }}>
-                Alt
-              </kbd>
-              {" + "}
-              <kbd className="rounded px-1.5 py-0.5" style={{ backgroundColor: "#F3F4F6", color: "#6B7280", border: "1px solid #E5E7EB" }}>
-                ← / →
-              </kbd>
-              {" "}
-              {t("keyboard_shortcut_hint")}
-            </p>
-          </div>
         </div>
 
         <Form {...form}>
@@ -237,28 +219,16 @@ export function OnboardingWizard({
             {/* Desktop: 2-column layout */}
             <div className="hidden lg:grid lg:grid-cols-[1fr,400px] lg:gap-8">
               {/* Left: Form */}
-              <div
-                className="rounded-lg border p-6"
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  borderColor: "#E1E5EA",
-                  borderRadius: "12px",
-                }}
-              >
+              <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
                 {renderStep()}
 
                 {/* Navigation Buttons */}
-                <div className="mt-8 flex items-center justify-between border-t pt-6">
+                <div className="mt-8 flex items-center justify-between border-t border-border pt-6">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handlePrevious}
                     disabled={currentStep === 1}
-                    className="h-10"
-                    style={{
-                      borderColor: "#E1E5EA",
-                      borderRadius: "8px",
-                    }}
                   >
                     <ChevronLeft className="mr-2 h-4 w-4" />
                     {t("button_previous")}
@@ -268,11 +238,7 @@ export function OnboardingWizard({
                     <Button
                       type="button"
                       onClick={handleNext}
-                      className="h-10"
-                      style={{
-                        backgroundColor: "#3BA2F8",
-                        borderRadius: "8px",
-                      }}
+                      className="bg-accent hover:bg-accent/90 text-accent-foreground"
                     >
                       {t("button_next")}
                       <ChevronRight className="ml-2 h-4 w-4" />
@@ -288,11 +254,7 @@ export function OnboardingWizard({
                         }
                       }}
                       disabled={isSubmitting}
-                      className="h-10"
-                      style={{
-                        backgroundColor: "#10B981",
-                        borderRadius: "8px",
-                      }}
+                      className="bg-accent hover:bg-accent/90 text-accent-foreground"
                     >
                       {isSubmitting
                         ? t("button_submitting")
@@ -303,59 +265,21 @@ export function OnboardingWizard({
                   )}
                 </div>
               </div>
-
-              {/* Right: Preview Panel (sticky) */}
-              <div>
-                <PreviewPanel formData={formValues} />
-              </div>
             </div>
 
             {/* Mobile/Tablet: Single column with accordion preview */}
             <div className="lg:hidden">
-              <div
-                className="rounded-lg border p-6"
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  borderColor: "#E1E5EA",
-                  borderRadius: "12px",
-                }}
-              >
+              <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
                 {renderStep()}
 
-                {/* Mobile Preview - Accordion */}
-                <div className="mt-6">
-                  <Accordion type="single" collapsible>
-                    <AccordionItem
-                      value="preview"
-                      style={{ borderColor: "#E1E5EA" }}
-                    >
-                      <AccordionTrigger
-                        className="text-sm font-medium"
-                        style={{ color: "#374151" }}
-                      >
-                        {t("preview_label")}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="pt-2">
-                          <PreviewPanel formData={formValues} />
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-
                 {/* Navigation Buttons */}
-                <div className="mt-8 flex items-center justify-between border-t pt-6">
+                <div className="mt-8 flex items-center justify-between gap-4 border-t border-border pt-6">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handlePrevious}
                     disabled={currentStep === 1}
-                    className="h-12 flex-1 sm:h-10 sm:flex-initial"
-                    style={{
-                      borderColor: "#E1E5EA",
-                      borderRadius: "8px",
-                    }}
+                    className="flex-1 sm:flex-initial"
                   >
                     <ChevronLeft className="mr-2 h-4 w-4" />
                     {t("button_previous")}
@@ -365,11 +289,7 @@ export function OnboardingWizard({
                     <Button
                       type="button"
                       onClick={handleNext}
-                      className="ml-4 h-12 flex-1 sm:h-10 sm:flex-initial"
-                      style={{
-                        backgroundColor: "#3BA2F8",
-                        borderRadius: "8px",
-                      }}
+                      className="flex-1 sm:flex-initial bg-accent hover:bg-accent/90 text-accent-foreground"
                     >
                       {t("button_next")}
                       <ChevronRight className="ml-2 h-4 w-4" />
@@ -385,11 +305,7 @@ export function OnboardingWizard({
                         }
                       }}
                       disabled={isSubmitting}
-                      className="ml-4 h-12 flex-1 sm:h-10 sm:flex-initial"
-                      style={{
-                        backgroundColor: "#10B981",
-                        borderRadius: "8px",
-                      }}
+                      className="flex-1 sm:flex-initial bg-accent hover:bg-accent/90 text-accent-foreground"
                     >
                       {isSubmitting
                         ? t("button_submitting")

@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { IconButton } from "@/components/ui/icon-button";
 import { useTranslations } from "next-intl";
 
 interface SearchSectionProps {
@@ -27,10 +28,10 @@ export function SearchSection({
   const t = useTranslations("keywords.table");
 
   return (
-    <div className="flex gap-3 mb-6">
+    <div className="flex flex-col gap-4 sm:flex-row mb-6">
       {/* Search Input */}
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="text"
           placeholder={t("searchPlaceholder")}
@@ -39,19 +40,21 @@ export function SearchSection({
           className="pl-10 pr-10"
         />
         {searchQuery && (
-          <button
+          <IconButton
             onClick={() => onSearchChange("")}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2"
+            size="sm"
+            variant="ghost"
             aria-label={t("clearSearch")}
           >
             <X className="h-4 w-4" />
-          </button>
+          </IconButton>
         )}
       </div>
 
       {/* Source Filter */}
       <Select value={sourceFilter} onValueChange={onSourceFilterChange}>
-        <SelectTrigger className="w-32">
+        <SelectTrigger className="w-full sm:w-32">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

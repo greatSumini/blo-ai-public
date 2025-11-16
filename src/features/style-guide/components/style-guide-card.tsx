@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Pencil, Trash2, Globe, User } from "lucide-react";
 import { format } from "date-fns";
@@ -37,87 +37,89 @@ export function StyleGuideCard({
       variants={cardEnterVariants}
       initial="hidden"
       animate="visible"
-      className="rounded-lg border border-[#E1E5EA] bg-white p-6 space-y-4 hover:shadow-xl hover:border-[#D1D5DB] hover:-translate-y-0.5 transition-all duration-300"
+      className="group border-b border-border py-3 px-3 hover:bg-secondary transition-colors h-[137px] flex flex-col"
     >
-      {/* Header */}
-      <div>
-        <h3 className="text-lg font-semibold text-[#1F2937] leading-tight">
-          {guide.brandName}
-        </h3>
-        <p className="text-sm text-[#6B7280] line-clamp-3 mt-2 leading-relaxed">
-          {guide.brandDescription}
-        </p>
+      {/* Main Content Area */}
+      <div className="flex items-start justify-between flex-1 min-h-0 mb-2">
+        {/* Left: Title & Description */}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-foreground font-medium text-base hover:text-[#C46849] transition-colors mb-2">
+            {guide.brandName}
+          </h3>
+          <div className="mb-2 max-w-[720px]">
+            <p className="line-clamp-2 text-base text-muted-foreground">
+              {guide.brandDescription}
+            </p>
+          </div>
+        </div>
+
+        {/* Right: Action Buttons */}
+        <div className="flex gap-1 ml-4 flex-shrink-0">
+          <IconButton
+            variant="ghost"
+            size="sm"
+            onClick={() => onPreview(guide)}
+            aria-label={t("actions.previewAria", { brand: guide.brandName })}
+          >
+            <Eye className="h-4 w-4" />
+          </IconButton>
+          <IconButton
+            variant="ghost"
+            size="sm"
+            onClick={() => onEdit(guide)}
+            aria-label={t("actions.editAria", { brand: guide.brandName })}
+          >
+            <Pencil className="h-4 w-4" />
+          </IconButton>
+          <IconButton
+            variant="ghost"
+            size="sm"
+            onClick={() => onDelete(guide.id)}
+            aria-label={t("actions.deleteAria", { brand: guide.brandName })}
+            className="hover:bg-red-50 dark:hover:bg-red-950/20 focus-visible:ring-red-500"
+          >
+            <Trash2 className="h-4 w-4 text-red-500 dark:text-red-400" />
+          </IconButton>
+        </div>
       </div>
 
-      {/* Personality Tags */}
-      <div className="flex flex-wrap gap-2">
-        {guide.personality.slice(0, 3).map((trait) => (
-          <Badge
-            key={trait}
-            variant="outline"
-            className="text-xs border-[#E1E5EA] text-[#374151]"
-          >
-            {trait}
-          </Badge>
-        ))}
-        {guide.personality.length > 3 && (
+      {/* Bottom Metadata */}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        {/* Personality Badge */}
+        <span>
           <Badge
             variant="outline"
-            className="text-xs border-[#E1E5EA] text-[#374151]"
+            className="inline-flex items-center align-middle leading-none flex-shrink-0 bg-gradient-to-bl from-secondary/30 to-secondary/70 text-muted-foreground h-6 px-2 rounded-lg text-xs font-mono border-0"
           >
-            +{guide.personality.length - 3}
+            {guide.personality.slice(0, 2).join(", ")}
+            {guide.personality.length > 2 && ` +${guide.personality.length - 2}`}
           </Badge>
-        )}
-      </div>
-
-      {/* Metadata */}
-      <div className="flex items-center gap-4 text-sm text-[#6B7280]">
-        <span className="flex items-center gap-1">
-          <Globe className="h-3.5 w-3.5" />
-          {guide.language === "ko" ? tLabels("language.korean") : tLabels("language.english")}
         </span>
+
+        <span>•</span>
+
+        {/* Language */}
         <span className="flex items-center gap-1">
-          <User className="h-3.5 w-3.5" />
+          <Globe className="h-3 w-3" aria-hidden="true" />
+          {guide.language === "ko"
+            ? tLabels("language.korean")
+            : tLabels("language.english")}
+        </span>
+
+        <span>•</span>
+
+        {/* Target Audience */}
+        <span className="flex items-center gap-1">
+          <User className="h-3 w-3" aria-hidden="true" />
           {guide.targetAudience}
         </span>
-      </div>
 
-      {/* Created Date */}
-      <div className="text-xs text-[#6B7280]">
-        {format(new Date(guide.createdAt), "PPP", { locale: dateLocale })}
-      </div>
+        <span>•</span>
 
-      {/* Actions */}
-      <div className="flex gap-2 pt-4 border-t border-[#E1E5EA]">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex-1 text-[#374151] hover:bg-[#F5F7FA] focus-visible:ring-2 focus-visible:ring-[#3BA2F8] focus-visible:ring-offset-2 transition-colors duration-200"
-          onClick={() => onPreview(guide)}
-          aria-label={t("actions.previewAria", { brand: guide.brandName })}
-        >
-          <Eye className="mr-2 h-4 w-4" />
-          {t("actions.preview")}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex-1 text-[#374151] hover:bg-[#F5F7FA] focus-visible:ring-2 focus-visible:ring-[#3BA2F8] focus-visible:ring-offset-2 transition-colors duration-200"
-          onClick={() => onEdit(guide)}
-          aria-label={t("actions.editAria", { brand: guide.brandName })}
-        >
-          <Pencil className="mr-2 h-4 w-4" />
-          {t("actions.edit")}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 transition-colors duration-200"
-          onClick={() => onDelete(guide.id)}
-          aria-label={t("actions.deleteAria", { brand: guide.brandName })}
-        >
-          <Trash2 className="h-4 w-4 text-red-500" />
-        </Button>
+        {/* Created Date */}
+        <time dateTime={guide.createdAt}>
+          {format(new Date(guide.createdAt), "PPP", { locale: dateLocale })}
+        </time>
       </div>
     </motion.div>
   );

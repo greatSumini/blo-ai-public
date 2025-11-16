@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDebounce } from "react-use";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
 import {
   Command,
   CommandEmpty,
@@ -71,14 +72,17 @@ export function KeywordPicker({
           {value.map((keyword) => (
             <Badge key={keyword} variant="secondary" className="gap-1">
               {keyword}
-              <button
+              <IconButton
                 type="button"
                 onClick={() => handleRemove(keyword)}
                 disabled={disabled}
-                className="ml-1 hover:text-red-500"
+                size="sm"
+                variant="ghost"
+                className="ml-1 h-4 w-4 hover:text-red-500"
+                aria-label={t("picker.removeKeyword", { keyword })}
               >
                 <X className="h-3 w-3" />
-              </button>
+              </IconButton>
             </Badge>
           ))}
         </div>

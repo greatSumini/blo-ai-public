@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button-v2";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Loader2 } from "lucide-react";
 
@@ -81,14 +81,14 @@ export function GenerationForm({
   };
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-12">
-      <div className="space-y-6">
+    <div className="container mx-auto max-w-3xl px-4 md:px-6 py-16 md:py-24">
+      <div className="space-y-8">
         {/* Simple Header */}
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-medium leading-tight text-text-primary">
             {t("title")}
           </h1>
-          <p className="text-sm text-muted-foreground mt-2">
+          <p className="text-lg md:text-xl leading-relaxed text-text-secondary mt-4">
             {t("subtitle")}
           </p>
         </div>
@@ -110,7 +110,7 @@ export function GenerationForm({
                       {...field}
                       placeholder={t("topicPlaceholder")}
                       disabled={isSubmitting || isLoading}
-                      className="min-h-[200px] resize-none"
+                      className="min-h-[200px] resize-none border-border-default bg-bg-primary text-text-primary placeholder:text-text-tertiary focus-visible:ring-2 focus-visible:ring-accent-brand focus-visible:ring-offset-2 transition-shadow duration-normal"
                     />
                   </FormControl>
                   <FormMessage />
@@ -131,7 +131,7 @@ export function GenerationForm({
                       disabled={isSubmitting || isLoading}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="border-border-default bg-bg-primary text-text-primary">
                           <SelectValue placeholder={t("styleGuidePlaceholder")} />
                         </SelectTrigger>
                       </FormControl>
@@ -150,6 +150,8 @@ export function GenerationForm({
 
               <Button
                 type="submit"
+                variant="primary"
+                size="lg"
                 disabled={isSubmitting || isLoading || !form.formState.isValid}
               >
                 {isSubmitting ? (

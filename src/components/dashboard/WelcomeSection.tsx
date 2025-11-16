@@ -82,12 +82,12 @@ export function WelcomeSection({
   });
 
   return (
-    <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b animate-fade-in-up">
+    <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-8 md:pb-12 border-b border-border-default animate-fade-in-up motion-reduce:animate-none">
       <div>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+        <h1 className="text-4xl md:text-5xl font-medium leading-tight text-text-primary">
           {greeting}
         </h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="text-lg leading-relaxed text-text-secondary mt-3">
           {subtext}
         </p>
       </div>
@@ -95,9 +95,9 @@ export function WelcomeSection({
       <Button
         onClick={onCreateArticle}
         size="lg"
-        className="shrink-0"
+        className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-brand focus-visible:ring-offset-2"
       >
-        <Sparkles className="w-4 h-4 mr-2" />
+        <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
         {t('createButton')}
       </Button>
     </section>

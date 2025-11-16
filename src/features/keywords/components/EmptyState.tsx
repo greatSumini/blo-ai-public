@@ -12,13 +12,15 @@ export function EmptyState({ type }: EmptyStateProps) {
 
   if (type === "no-results") {
     return (
-      <div className="flex flex-col items-center gap-3 py-12">
-        <Hash className="h-12 w-12 text-gray-300" />
+      <div className="flex flex-col items-center gap-3 py-12 animate-fade-in">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+          <Hash className="h-6 w-6 text-muted-foreground" />
+        </div>
         <div className="text-center">
-          <p className="text-base font-medium text-gray-900 mb-1">
+          <p className="text-base font-medium text-foreground mb-1">
             {t("noResultsTitle")}
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             {t("noResultsDesc")}
           </p>
         </div>
@@ -27,13 +29,15 @@ export function EmptyState({ type }: EmptyStateProps) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 py-16">
-      <Hash className="h-16 w-16 text-gray-300" />
+    <div className="flex flex-col items-center gap-4 py-16 animate-fade-in">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
+        <Hash className="h-8 w-8 text-accent" />
+      </div>
       <div className="text-center">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+        <h3 className="text-lg font-medium text-foreground mb-1">
           {t("emptyTitle")}
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground max-w-sm">
           {t("emptyDesc")}
         </p>
       </div>

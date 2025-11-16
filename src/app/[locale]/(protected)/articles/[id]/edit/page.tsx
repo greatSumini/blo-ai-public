@@ -1,30 +1,19 @@
 "use client";
 
-import { useState, useEffect, use } from 'react';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import { useTheme } from 'next-themes';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
-import { Edit, Eye, Download, Copy, Check, X } from 'lucide-react';
-import { useArticle } from '@/features/articles/hooks/useArticle';
-import { useAutoSave } from '@/features/articles/hooks/useAutoSave';
-import { EditorHeader } from '@/features/articles/components/editor-header';
-import { TitleInlineInput } from '@/features/articles/components/title-inline-input';
-import { SeoCollapsiblePanel } from '@/features/articles/components/seo-collapsible-panel';
-import { TableOfContents } from '@/features/articles/components/table-of-contents';
-import { MarkdownPreview } from '@/features/articles/components/markdown-preview';
-import {
-  extractHeadings,
-  downloadMarkdown,
-  copyToClipboard,
-} from '@/features/articles/lib/markdown-utils';
-
-const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
+import { use } from "react";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button-v2";
+import { Badge } from "@/components/ui/badge-v2";
+import { ArrowLeft, Calendar, Globe, Hash, FileText, TrendingUp } from "lucide-react";
+import { useArticle } from "@/features/articles/hooks/useArticle";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSanitize from "rehype-sanitize";
+import { format } from "date-fns";
+import { ko, enUS } from "date-fns/locale";
+import { useLocale } from "next-intl";
 
 type EditorPageProps = {
   params: Promise<{ id: string }>;
@@ -34,85 +23,18 @@ export default function EditorPage({ params }: EditorPageProps) {
   const resolvedParams = use(params);
   const articleId = resolvedParams.id;
   const router = useRouter();
-  const { toast } = useToast();
-  const t = useTranslations('editor');
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const t = useTranslations("editor");
+  const locale = useLocale();
+  const dateLocale = locale === "ko" ? ko : enUS;
 
   const { data: article, isLoading, isError } = useArticle(articleId);
 
-  const [title, setTitle] = useState('');
-  const [slug, setSlug] = useState('');
-  const [content, setContent] = useState('');
-  const [description, setDescription] = useState('');
-  const [keywords, setKeywords] = useState('');
-  const [showPreview, setShowPreview] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (article) {
-      setTitle(article.title || '');
-      setSlug(article.slug || '');
-      setContent(article.content || '');
-      setDescription(article.description || '');
-      setKeywords(Array.isArray(article.keywords) ? article.keywords.join(', ') : '');
-    }
-  }, [article]);
-
-  const autoSave = useAutoSave(articleId, {
-    title,
-    slug,
-    content,
-    description,
-    keywords: keywords
-      .split(',')
-      .map((k) => k.trim())
-      .filter((k) => k.length > 0),
-  });
-
-  const headings = extractHeadings(content);
-
-  const handleDownloadMarkdown = () => {
-    downloadMarkdown(title || 'article', content);
-    toast({
-      title: t('download_success_title'),
-      description: t('download_success_desc'),
-    });
-  };
-
-  const handleCopyMarkdown = async () => {
-    try {
-      await copyToClipboard(content);
-      setCopySuccess(true);
-      toast({
-        title: t('copy_success_title'),
-        description: t('copy_success_desc'),
-      });
-      setTimeout(() => setCopySuccess(false), 2000);
-    } catch (error) {
-      toast({
-        title: t('copy_error_title'),
-        description: t('copy_error_desc'),
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handleTitleEnterPress = () => {
-    const editorElement = document.querySelector('.w-md-editor');
-    editorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  };
-
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-bg-secondary">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-primary"></div>
-          <p className="text-muted-foreground">{t('loading')}</p>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-accent-brand border-t-transparent"></div>
+          <p className="text-sm text-text-secondary">{t("loading")}</p>
         </div>
       </div>
     );
@@ -120,229 +42,243 @@ export default function EditorPage({ params }: EditorPageProps) {
 
   if (isError) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <p className="text-destructive">{t('load_error')}</p>
-        <Button onClick={() => router.push('/dashboard')}>
-          {t('back_to_dashboard')}
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-bg-secondary">
+        <p className="text-sm text-danger">{t("load_error")}</p>
+        <Button
+          onClick={() => router.push("/dashboard")}
+          variant="secondary"
+          size="sm"
+        >
+          {t("back_to_dashboard")}
         </Button>
       </div>
     );
   }
 
+  if (!article) {
+    return null;
+  }
+
+  const getBadgeVariant = (status: string) => {
+    switch (status) {
+      case "published":
+        return "success";
+      case "archived":
+        return "default";
+      default:
+        return "warning";
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto max-w-[1600px] px-4 py-8">
-        <EditorHeader
-          onBack={() => router.back()}
-          autoSaveStatus={autoSave}
-          showPreview={showPreview}
-          onPreviewToggle={() => setShowPreview(!showPreview)}
-        />
+    <div className="min-h-screen bg-bg-secondary">
+      {/* Header */}
+      <div className="border-b border-border-default bg-bg-primary">
+        <div className="container mx-auto px-4 md:px-6 max-w-4xl py-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            {t("back")}
+          </Button>
+        </div>
+      </div>
 
-        {/* Desktop Layout */}
-        <div className="hidden lg:flex lg:gap-6">
-          {/* TOC - 항상 노출 */}
-          <div className="w-64 flex-shrink-0">
-            <div className="sticky top-8">
-              <TableOfContents headings={headings} />
-            </div>
-          </div>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 md:px-6 max-w-4xl py-16">
+        {/* Title */}
+        <h1 className="text-4xl md:text-5xl font-medium leading-tight mb-8 text-text-primary">
+          {article.title}
+        </h1>
 
-          {/* Editor Pane */}
-          <Card className="flex-1 space-y-6 p-6">
-            <TitleInlineInput
-              value={title}
-              onChange={setTitle}
-              onEnterPress={handleTitleEnterPress}
-              disabled={autoSave.isSaving}
-            />
+        {/* Metadata Table */}
+        <div className="mb-16 rounded-lg border border-border-default bg-bg-primary overflow-hidden">
+          <table className="w-full">
+            <tbody className="divide-y divide-border-default">
+              {/* Status */}
+              <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                <td className="py-3 px-4 text-sm font-medium text-text-secondary w-1/4">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    <span>Status</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-sm">
+                  <Badge variant={getBadgeVariant(article.status)}>
+                    {article.status}
+                  </Badge>
+                </td>
+              </tr>
 
-            <SeoCollapsiblePanel
-              slug={slug}
-              description={description}
-              keywords={keywords}
-              onSlugChange={setSlug}
-              onDescriptionChange={setDescription}
-              onKeywordsChange={setKeywords}
-              disabled={autoSave.isSaving}
-            />
+              {/* Slug */}
+              <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-4 w-4" />
+                    <span>Slug</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-sm text-text-primary font-mono">
+                  {article.slug}
+                </td>
+              </tr>
 
-            <div>
-              <Label htmlFor="content">{t('field_content')}</Label>
-              <div
-                data-color-mode={mounted ? resolvedTheme : 'light'}
-                className="mt-2"
-              >
-                <MDEditor
-                  value={content}
-                  onChange={(val) => setContent(val || '')}
-                  height="calc(100vh - 500px)"
-                  preview="edit"
-                />
-              </div>
-              <div className="mt-4 flex gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={handleDownloadMarkdown}
-                  className="flex-1"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  {t('download')}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={handleCopyMarkdown}
-                  className="flex-1"
-                >
-                  {copySuccess ? (
-                    <>
-                      <Check className="mr-2 h-4 w-4" />
-                      {t('copied')}
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="mr-2 h-4 w-4" />
-                      {t('copy')}
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
-          </Card>
+              {/* Keywords */}
+              {article.keywords && article.keywords.length > 0 && (
+                <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                  <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                    <div className="flex items-center gap-2">
+                      <Hash className="h-4 w-4" />
+                      <span>Keywords</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-sm">
+                    <div className="flex flex-wrap gap-2">
+                      {article.keywords.map((keyword, index) => (
+                        <Badge key={index} variant="default">
+                          {keyword}
+                        </Badge>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              )}
 
-          {/* Preview Panel - 조건부 렌더링 */}
-          {showPreview && (
-            <Card className="w-[40%] overflow-auto border">
-              <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-background p-4">
-                <h3 className="text-lg font-semibold">{t('preview_title')}</h3>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowPreview(false)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="p-6">
-                <h2 className="mb-4 text-2xl font-bold">
-                  {title || t('untitled')}
-                </h2>
-                {description && (
-                  <p className="mb-6 text-muted-foreground">{description}</p>
-                )}
-                {content ? (
-                  <MarkdownPreview content={content} />
-                ) : (
-                  <p className="text-muted-foreground">{t('no_content')}</p>
-                )}
-              </div>
-            </Card>
-          )}
+              {/* Description */}
+              {article.description && (
+                <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                  <td className="py-3 px-4 text-sm font-medium text-text-secondary align-top">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      <span>Description</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-sm text-text-primary">
+                    {article.description}
+                  </td>
+                </tr>
+              )}
+
+              {/* Tone */}
+              {article.tone && (
+                <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                  <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      <span>Tone</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-sm text-text-primary capitalize">
+                    {article.tone}
+                  </td>
+                </tr>
+              )}
+
+              {/* Content Length */}
+              {article.contentLength && (
+                <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                  <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      <span>Length</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-sm text-text-primary capitalize">
+                    {article.contentLength}
+                  </td>
+                </tr>
+              )}
+
+              {/* Reading Level */}
+              {article.readingLevel && (
+                <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                  <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4" />
+                      <span>Reading Level</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-sm text-text-primary capitalize">
+                    {article.readingLevel}
+                  </td>
+                </tr>
+              )}
+
+              {/* Views */}
+              <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    <span>Views</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-sm text-text-primary">
+                  {article.views.toLocaleString()}
+                </td>
+              </tr>
+
+              {/* Created At */}
+              <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <span>Created</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-sm text-text-primary">
+                  {format(new Date(article.createdAt), "PPP", {
+                    locale: dateLocale,
+                  })}
+                </td>
+              </tr>
+
+              {/* Updated At */}
+              <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <span>Updated</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-sm text-text-primary">
+                  {format(new Date(article.updatedAt), "PPP", {
+                    locale: dateLocale,
+                  })}
+                </td>
+              </tr>
+
+              {/* Published At */}
+              {article.publishedAt && (
+                <tr className="hover:bg-bg-hover transition-colors duration-normal">
+                  <td className="py-3 px-4 text-sm font-medium text-text-secondary">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>Published</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-sm text-text-primary">
+                    {format(new Date(article.publishedAt), "PPP", {
+                      locale: dateLocale,
+                    })}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
 
-        {/* Mobile Layout - Tabs */}
-        <div className="lg:hidden">
-          <Tabs defaultValue="edit">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="edit">
-                <Edit className="mr-2 h-4 w-4" />
-                {t('edit_tab')}
-              </TabsTrigger>
-              <TabsTrigger value="preview">
-                <Eye className="mr-2 h-4 w-4" />
-                {t('preview_tab')}
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="edit" className="mt-4">
-              <Card className="space-y-6 p-4">
-                <TitleInlineInput
-                  value={title}
-                  onChange={setTitle}
-                  onEnterPress={handleTitleEnterPress}
-                  disabled={autoSave.isSaving}
-                />
-
-                <SeoCollapsiblePanel
-                  slug={slug}
-                  description={description}
-                  keywords={keywords}
-                  onSlugChange={setSlug}
-                  onDescriptionChange={setDescription}
-                  onKeywordsChange={setKeywords}
-                  disabled={autoSave.isSaving}
-                />
-
-                <div>
-                  <Label htmlFor="content-mobile">{t('field_content_mobile')}</Label>
-                  <div
-                    data-color-mode={mounted ? resolvedTheme : 'light'}
-                    className="mt-2"
-                  >
-                    <MDEditor
-                      value={content}
-                      onChange={(val) => setContent(val || '')}
-                      height={400}
-                    />
-                  </div>
-                  <div className="mt-4 flex gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={handleDownloadMarkdown}
-                      className="flex-1"
-                    >
-                      <Download className="mr-2 h-3 w-3" />
-                      {t('download')}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={handleCopyMarkdown}
-                      className="flex-1"
-                    >
-                      {copySuccess ? (
-                        <>
-                          <Check className="mr-2 h-3 w-3" />
-                          {t('copied')}
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="mr-2 h-3 w-3" />
-                          {t('copy')}
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="preview" className="mt-4">
-              <Card className="p-4">
-                <h2 className="mb-4 text-2xl font-bold">
-                  {title || t('untitled')}
-                </h2>
-                {description && (
-                  <p className="mb-6 text-muted-foreground">{description}</p>
-                )}
-                {content ? (
-                  <MarkdownPreview content={content} />
-                ) : (
-                  <p className="text-muted-foreground">{t('no_content')}</p>
-                )}
-              </Card>
-            </TabsContent>
-          </Tabs>
+        {/* Article Content - Markdown Rendering */}
+        <div className="prose prose-slate dark:prose-invert max-w-none text-base leading-relaxed text-text-primary">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeHighlight, rehypeSanitize]}
+          >
+            {article.content}
+          </ReactMarkdown>
         </div>
       </div>
     </div>
   );
 }
-

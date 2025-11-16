@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
 import { MoreVertical, Edit, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -26,14 +26,13 @@ export function ArticleCardMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
+        <IconButton
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0"
           aria-label={t("menu.aria_label")}
         >
           <MoreVertical className="h-4 w-4" />
-        </Button>
+        </IconButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onEdit}>

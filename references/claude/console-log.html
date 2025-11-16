@@ -1,0 +1,1904 @@
+<html class="h-screen antialiased bg-bg-100 __variable_f3a9a4 __variable_02000a __variable_e4195f" lang="en"
+    data-theme="claude" data-mode="dark" data-arp="" style="">
+
+<head>
+    <meta http-equiv="origin-trial"
+        content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==">
+    <link rel="stylesheet" href="/_next/static/css/1be002f97045cca0.css" nonce="" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/67137dafa09577bf.css" nonce="" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/72024b5864fce399.css" nonce="" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/8241d63088ac77ca.css" nonce="" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/595304cd2c73d99a.css" nonce="" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/bf71b0902a17bea2.css" nonce="" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/d68bb76ad2a15964.css" nonce="" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/acdaad1d23646914.css" nonce="" data-precedence="next">
+    <link rel="preload" as="script" fetchpriority="low" nonce=""
+        href="/_next/static/chunks/webpack-7157b7ed2adb33b0.js">
+    <script type="text/javascript" async="" src="https://widget.intercom.io/widget/lupk8zyo"></script>
+    <script type="text/javascript" async="" charset="utf-8"
+        src="https://www.gstatic.com/recaptcha/releases/TkacYOdEJbdB_JjX802TMer9/recaptcha__ko.js"
+        crossorigin="anonymous" integrity="sha384-ipOitHVhh+clsBZlKNmMSlg0pRRnE7zkARvc7Aa0zkwKzGHlzJC1M7t3OaA9ues4"
+        nonce=""></script>
+    <script type="text/javascript"
+        src="https://a-cdn.anthropic.com/next-integrations/actions/reddit-plugins/58adcd77d531b09a848c.js" async=""
+        status="loaded"></script>
+    <script type="text/javascript"
+        src="https://a-cdn.anthropic.com/next-integrations/actions/amplitude-plugins/ea20d1af3c8baa2ea75e.js" async=""
+        status="loaded"></script>
+    <script src="/_next/static/chunks/87c73c54-5024f8c060d4159c.js" async="" nonce=""></script>
+    <script src="/_next/static/chunks/52291-2f896b966efb76ac.js" async="" nonce=""></script>
+    <script src="/_next/static/chunks/main-app-b29edff860d835ce.js" async="" nonce=""></script>
+    <script src="/_next/static/chunks/1113-9f5a107710c51c1a.js" async="" nonce=""></script>
+    <script src="/_next/static/chunks/app/page-8963061187b4a093.js" async="" nonce=""></script>
+    <script src="/_next/static/chunks/app/loading-287ec27e1ff52fdc.js" async="" nonce=""></script>
+    <script src="/_next/static/chunks/app/global-error-4e3b86d3f367bb3e.js" async="" nonce=""></script>
+    <title>Claude Console</title>
+    <title>Claude Console</title>
+    <meta name="description" content="Build with the Claude API">
+    <link rel="canonical" href="https://platform.claude.com">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link href="/apple-touch-icon.png" rel="apple-touch-startup-image">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" nomodule="" nonce=""></script>
+    <link rel="preload" href="/_next/static/media/18f7e26d8fc3ca09-s.p.woff2" as="font" crossorigin="" nonce=""
+        type="font/woff2">
+    <link rel="preload" href="/_next/static/media/202112071e5d7466-s.p.woff2" as="font" crossorigin="" nonce=""
+        type="font/woff2">
+    <link rel="preload" href="/_next/static/media/54e05bce7a25fe9c-s.p.woff2" as="font" crossorigin="" nonce=""
+        type="font/woff2">
+    <link rel="preload" href="/_next/static/media/73af0ef16113246e-s.p.woff2" as="font" crossorigin="" nonce=""
+        type="font/woff2">
+    <link rel="preload" href="/_next/static/media/b8c97ebabd0473a4-s.p.woff2" as="font" crossorigin="" nonce=""
+        type="font/woff2">
+    <meta name="theme-color" content="hsl(30,3.3%,11.8%)">
+    <style id="googleidentityservice_button_styles" nonce="">
+        .qJTHM {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            color: #202124;
+            direction: ltr;
+            -webkit-touch-callout: none;
+            font-family: "Roboto-Regular", arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 400;
+            margin: 0;
+            overflow: hidden;
+            -webkit-text-size-adjust: 100%
+        }
+
+        .ynRLnc {
+            left: -9999px;
+            position: absolute;
+            top: -9999px
+        }
+
+        .L6cTce {
+            display: none
+        }
+
+        .bltWBb {
+            overflow-wrap: break-word;
+            word-break: break-word
+        }
+
+        .hSRGPd {
+            color: #1a73e8;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none
+        }
+
+        .Bz112c-W3lGp {
+            height: 16px;
+            width: 16px
+        }
+
+        .Bz112c-E3DyYd {
+            height: 20px;
+            width: 20px
+        }
+
+        .Bz112c-r9oPif {
+            height: 24px;
+            width: 24px
+        }
+
+        .Bz112c-u2z5K {
+            height: 36px;
+            width: 36px
+        }
+
+        .Bz112c-uaxL4e {
+            border-radius: 10px
+        }
+
+        .LgbsSe-Bz112c {
+            display: block
+        }
+
+        .S9gUrf-YoZ4jf {
+            border: none;
+            margin: 0;
+            padding: 0
+        }
+
+        .S9gUrf-YoZ4jf * {
+            border: none;
+            margin: 0;
+            padding: 0
+        }
+
+        .fFW7wc-ibnC6b>.aZ2wEe>div {
+            border-color: #4285f4
+        }
+
+        .P1ekSe-ZMv3u {
+            -webkit-transition: height linear .2s;
+            transition: height linear .2s
+        }
+
+        .P1ekSe-ZMv3u>div:nth-child(1) {
+            background-color: #1a73e8 !important;
+            -webkit-transition: width linear .3s;
+            transition: width linear .3s
+        }
+
+        .P1ekSe-ZMv3u>div:nth-child(2) {
+            background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, .7)), to(rgba(255, 255, 255, .7))), -webkit-gradient(linear, left top, right top, from(#1a73e8), to(#1a73e8)) !important;
+            background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), -webkit-linear-gradient(left, #1a73e8, #1a73e8) !important;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), linear-gradient(to right, #1a73e8, #1a73e8) !important
+        }
+
+        .P1ekSe-ZMv3u>div:nth-child(3) {
+            background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, .7)), to(rgba(255, 255, 255, .7))), -webkit-gradient(linear, left top, right top, from(#1a73e8), to(#1a73e8)) !important;
+            background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), -webkit-linear-gradient(left, #1a73e8, #1a73e8) !important;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), linear-gradient(to right, #1a73e8, #1a73e8) !important
+        }
+
+        .haAclf {
+            display: inline-block
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe {
+            border-radius: 4px;
+            box-sizing: border-box;
+            -webkit-transition: background-color .218s, border-color .218s;
+            transition: background-color .218s, border-color .218s;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -webkit-appearance: none;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #dadce0;
+            color: #3c4043;
+            cursor: pointer;
+            font-family: "Google Sans", arial, sans-serif;
+            font-size: 14px;
+            height: 40px;
+            letter-spacing: .25px;
+            outline: none;
+            overflow: hidden;
+            padding: 0 12px;
+            position: relative;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: auto
+        }
+
+        @media screen and (-ms-high-contrast:active) {
+            .nsm7Bb-HzV7m-LgbsSe {
+                border: 2px solid windowText;
+                color: windowText
+            }
+        }
+
+        @media screen and (preferes-contrast:more) {
+            .nsm7Bb-HzV7m-LgbsSe {
+                color: #000
+            }
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe {
+            font-size: 14px;
+            height: 32px;
+            letter-spacing: .25px;
+            padding: 0 10px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe {
+            font-size: 11px;
+            height: 20px;
+            letter-spacing: .3px;
+            padding: 0 8px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe {
+            padding: 0;
+            width: 40px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.pSzOP-SxQuSe {
+            width: 32px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.purZT-SxQuSe {
+            width: 20px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK {
+            border-radius: 20px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK.pSzOP-SxQuSe {
+            border-radius: 16px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK.purZT-SxQuSe {
+            border-radius: 10px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc {
+            border: none;
+            color: #fff
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.MFS4be-v3pZbf-Ia7Qfc {
+            background-color: #1a73e8
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.MFS4be-JaPV2b-Ia7Qfc {
+            background-color: #202124;
+            color: #e8eaed
+        }
+
+        @media screen and (prefers-contrast:more) {
+            .nsm7Bb-HzV7m-LgbsSe.MFS4be-JaPV2b-Ia7Qfc {
+                color: #fff
+            }
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            height: 18px;
+            margin-right: 8px;
+            min-width: 18px;
+            width: 18px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            height: 14px;
+            min-width: 14px;
+            width: 14px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            height: 10px;
+            min-width: 10px;
+            width: 10px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            margin-left: 8px;
+            margin-right: -4px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            margin: 0;
+            padding: 10px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.pSzOP-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            padding: 8px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            padding: 4px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            background-color: #fff;
+            height: 36px;
+            margin-left: -10px;
+            margin-right: 12px;
+            min-width: 36px;
+            width: 36px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf .nsm7Bb-HzV7m-LgbsSe-Bz112c,
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+            margin: 0;
+            padding: 0
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            height: 28px;
+            margin-left: -8px;
+            margin-right: 10px;
+            min-width: 28px;
+            width: 28px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            height: 16px;
+            margin-left: -6px;
+            margin-right: 8px;
+            min-width: 16px;
+            width: 16px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            border-radius: 3px;
+            margin-left: 2px;
+            margin-right: 0;
+            padding: 0
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            border-radius: 18px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            border-radius: 14px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            border-radius: 8px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-flex-direction: row;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            flex-direction: row;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            -webkit-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            height: 100%;
+            position: relative;
+            width: 100%
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .oXtfBe-l4eHX {
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-BPrWId {
+            -webkit-flex-grow: 1;
+            -webkit-box-flex: 1;
+            flex-grow: 1;
+            font-family: "Google Sans", arial, sans-serif;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-BPrWId {
+            font-weight: 300
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .oXtfBe-l4eHX .nsm7Bb-HzV7m-LgbsSe-BPrWId {
+            -webkit-flex-grow: 0;
+            -webkit-box-flex: 0;
+            flex-grow: 0
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-MJoBVe {
+            -webkit-transition: background-color .218s;
+            transition: background-color .218s;
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe:hover,
+        .nsm7Bb-HzV7m-LgbsSe:focus {
+            box-shadow: none;
+            border-color: rgb(210, 227, 252);
+            outline: none
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe:focus-within {
+            outline: 2px solid #00639b;
+            border-color: transparent
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe:hover .nsm7Bb-HzV7m-LgbsSe-MJoBVe {
+            background: rgba(66, 133, 244, .08)
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe:active .nsm7Bb-HzV7m-LgbsSe-MJoBVe,
+        .nsm7Bb-HzV7m-LgbsSe:focus .nsm7Bb-HzV7m-LgbsSe-MJoBVe {
+            background: rgba(66, 133, 244, .1)
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc:hover .nsm7Bb-HzV7m-LgbsSe-MJoBVe {
+            background: rgba(255, 255, 255, .24)
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc:active .nsm7Bb-HzV7m-LgbsSe-MJoBVe,
+        .nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc:focus .nsm7Bb-HzV7m-LgbsSe-MJoBVe {
+            background: rgba(255, 255, 255, .32)
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe .n1UuX-DkfjY {
+            border-radius: 50%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            height: 20px;
+            margin-left: -4px;
+            margin-right: 8px;
+            min-width: 20px;
+            width: 20px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId {
+            font-family: "Roboto";
+            font-size: 12px;
+            text-align: left
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .ssJRIf,
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff .fmcmS {
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            align-items: center;
+            color: #5f6368;
+            fill: #5f6368;
+            font-size: 11px;
+            font-weight: 400
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe.MFS4be-Ia7Qfc .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff {
+            color: #e8eaed;
+            fill: #e8eaed
+        }
+
+        @media screen and (prefers-contrast:more) {
+
+            .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff,
+            .nsm7Bb-HzV7m-LgbsSe.jVeSEe.MFS4be-Ia7Qfc .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff {
+                color: #000;
+                fill: #000
+            }
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff .Bz112c {
+            height: 18px;
+            margin: -3px -3px -3px 2px;
+            min-width: 18px;
+            width: 18px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            margin-left: 12px;
+            margin-right: -10px
+        }
+
+        .nsm7Bb-HzV7m-LgbsSe.jVeSEe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf {
+            border-radius: 18px
+        }
+
+        .L5Fo6c-sM5MNb {
+            border: 0;
+            display: block;
+            left: 0;
+            position: relative;
+            top: 0
+        }
+
+        .L5Fo6c-bF1uUb {
+            border-radius: 4px;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0
+        }
+
+        .L5Fo6c-bF1uUb:focus {
+            border: none;
+            outline: none
+        }
+
+        sentinel {}
+    </style>
+    <link rel="preload" as="style" href="/_next/static/css/acdaad1d23646914.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <meta name="next-size-adjust" content="">
+    <meta name="description" content="Build with the Claude API">
+    <link rel="canonical" href="https://platform.claude.com/workspaces/default/logs">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link href="/apple-touch-icon.png" rel="apple-touch-startup-image">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+
+<body class="bg-bg-100 text-text-100 min-h-screen font-ui overflow-hidden" style="pointer-events: auto;">
+    <div hidden=""></div>
+    <div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none">
+        <ol tabindex="-1" class="fixed right-0 top-0 z-toast flex flex-col gap-4 p-4" role="status"></ol>
+    </div><!--$--><!--$--><!--/$--><!--/$-->
+    <script src="/_next/static/chunks/webpack-7157b7ed2adb33b0.js" nonce="" id="_R_" async=""></script>
+    <script nonce="">(self.__next_f = self.__next_f || []).push([0])</script>
+    <script
+        nonce="">self.__next_f.push([1, "1:\"$Sreact.fragment\"\n3:I[41012,[],\"ClientPageRoot\"]\n4:I[9008,[\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"90848\",\"static/chunks/90848-054dbb99fe57bba5.js\",\"58974\",\"static/chunks/app/page-8963061187b4a093.js\"],\"default\"]\n5:I[15104,[],\"OutletBoundary\"]\n7:I[94777,[],\"AsyncMetadataOutlet\"]\n9:I[42058,[\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"94209\",\"static/chunks/app/loading-287ec27e1ff52fdc.js\"],\"LoadingConsole\"]\na:I[15104,[],\"ViewportBoundary\"]\nc:I[15104,[],\"MetadataBoundary\"]\nd:\"$Sreact.suspense\"\nf:I[23662,[\"34219\",\"static/chunks/app/global-error-4e3b86d3f367bb3e.js\"],\"default\"]\n10:I[36505,[],\"IconMark\"]\n:HL[\"/_next/static/media/18f7e26d8fc3ca09-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/202112071e5d7466-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/54e05bce7a25fe9c-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/73af0ef16113246e-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/b8c97ebabd0473a4-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/1be002f97045cca0.css\",\"style\",{\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]\n:HL[\"/_next/static/css/67137dafa09577bf.css\",\"style\",{\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]\n:HL[\"/_next/static/css/72024b5864fce399.css\",\"style\",{\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]\n:HL[\"/_next/static/css/8241d6"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "3088ac77ca.css\",\"style\",{\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]\n:HL[\"/_next/static/css/595304cd2c73d99a.css\",\"style\",{\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]\n:HL[\"/_next/static/css/bf71b0902a17bea2.css\",\"style\",{\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]\n:HL[\"/_next/static/css/d68bb76ad2a15964.css\",\"style\",{\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "0:{\"P\":null,\"b\":\"PTH5-wCabt25h3g4Uaafn\",\"p\":\"\",\"c\":[\"\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/1be002f97045cca0.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/67137dafa09577bf.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}],[\"$\",\"link\",\"2\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/72024b5864fce399.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}],[\"$\",\"link\",\"3\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/8241d63088ac77ca.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}],[\"$\",\"link\",\"4\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/595304cd2c73d99a.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}],[\"$\",\"link\",\"5\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bf71b0902a17bea2.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}],[\"$\",\"link\",\"6\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/d68bb76ad2a15964.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]],\"$L2\"]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[[\"$\",\"$L3\",null,{\"Component\":\"$4\",\"searchParams\":{},\"params\":{}}],null,[\"$\",\"$L5\",null,{\"children\":[\"$L6\",[\"$\",\"$L7\",null,{\"promise\":\"$@8\"}]]}]]}],{},null,false]},[[\"$\",\"$L9\",\"l\",{}],[],[]],false],[\"$\",\"$1\",\"h\",{\"children\":[null,[[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]],[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$d\",null,{\"fallback\":null,\"children\":\"$Le\"}]}]}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$f\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/67137dafa09577bf.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"JcJf+Cb+Gy2TTXhlD8E7Lw==\"}]]],\"s\":false,\"S\":false}\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover\"}]]\n6:null\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "8:{\"metadata\":[[\"$\",\"title\",\"0\",{\"children\":\"Claude Console\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Build with the Claude API\"}],[\"$\",\"link\",\"2\",{\"rel\":\"canonical\",\"href\":\"https://platform.claude.com\"}],[\"$\",\"meta\",\"3\",{\"name\":\"mobile-web-app-capable\",\"content\":\"yes\"}],[\"$\",\"link\",\"4\",{\"href\":\"/apple-touch-icon.png\",\"media\":\"$undefined\",\"rel\":\"apple-touch-startup-image\"}],[\"$\",\"meta\",\"5\",{\"name\":\"apple-mobile-web-app-status-bar-style\",\"content\":\"default\"}],[\"$\",\"link\",\"6\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\"}],[\"$\",\"link\",\"7\",{\"rel\":\"icon\",\"href\":\"/favicon-16x16.png\",\"sizes\":\"16x16\",\"type\":\"image/png\"}],[\"$\",\"link\",\"8\",{\"rel\":\"icon\",\"href\":\"/favicon-32x32.png\",\"sizes\":\"32x32\",\"type\":\"image/png\"}],[\"$\",\"link\",\"9\",{\"rel\":\"apple-touch-icon\",\"href\":\"/apple-touch-icon.png\"}],[\"$\",\"$L10\",\"10\",{}]],\"error\":null,\"digest\":\"$undefined\"}\n"])</script>
+    <script nonce="">self.__next_f.push([1, "e:\"$8:metadata\"\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "12:I[45165,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "2:[\"$\",\"html\",null,{\"className\":\"h-screen antialiased bg-bg-100 __variable_f3a9a4 __variable_02000a __variable_e4195f\",\"lang\":\"en\",\"data-theme\":\"claude\",\"data-mode\":\"auto\",\"suppressHydrationWarning\":true,\"children\":[\"$\",\"body\",null,{\"className\":\"bg-bg-100 text-text-100 min-h-screen font-ui\",\"children\":[\"$L11\",[\"$\",\"$L12\",null,{\"src\":\"https://www.google.com/recaptcha/enterprise.js?render=6LcdsFgmAAAAAMfrnC1hEdmeRQRXCjpy8qT_kvfy\",\"strategy\":\"lazyOnload\"}],\"$L13\"]}]}]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "14:I[66046,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"SSRCookiesProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "16:I[708,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"SiftEvents\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "11:[\"$\",\"$L14\",null,{\"value\":[],\"children\":\"$L15\"}]\n13:[[\"$\",\"$L12\",null,{\"id\":\"sift-snippet\",\"children\":\"\\n          var _sift = (window._sift = window._sift || []);\\n          _sift.push([\\\"_setAccount\\\", \\\"99dfa2e716\\\"]);\\n          _sift.push([\\\"_setTrackerUrl\\\", \\\"s-cdn.anthropic.com\\\"]);\\n          _sift.push([\\\"_setUserId\\\", \\\"\\\"]);\\n          _sift.push([\\\"_setSessionId\\\", \\\"83a7deed-6b1a-48bf-a908-54dc826facf0\\\"]);\\n          _sift.push([\\\"_trackPageview\\\"]);\\n      \"}],[\"$\",\"$L12\",null,{\"src\":\"https://s-cdn.anthropic.com/s.js\",\"strategy\":\"lazyOnload\"}],[\"$\",\"$L16\",null,{}]]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "17:I[21266,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ClientIntlProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "18:I[10033,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ServerUserAgentProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "19:I[29670,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"LegalDocsProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "1a:I[44995,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ConfigurationProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "1b:I[35984,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ErrorsProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "1c:I[47343,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"QueryClientProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "15:[\"$\",\"$L17\",null,{\"locale\":\"en-US\",\"messages\":{},\"hideErrors\":true,\"children\":[\"$\",\"$L18\",null,{\"userAgent\":\"$undefined\",\"children\":[\"$\",\"$L19\",null,{\"value\":{\"commercial-terms\":\"7e37c9e3-af36-4555-93f0-2c677d027003\",\"service-specific-terms\":\"1d6dcbe8-a9cd-4238-943c-ee793f3e520b\",\"data-processing-addendum\":\"4712659c-d2da-4f6f-98e8-e979438a4970\",\"inbound-services-agreement\":\"78cbea28-4333-4042-a6ce-ea391e890a8a\",\"non-user-privacy-policy\":\"a2eb2e3e-fd03-4dbf-8db5-2cc0e9fb31f9\",\"cookies\":\"5c7ecf37-e2e1-4788-b718-a0d914fead48\",\"aup\":\"22742366-2ef0-4c7a-a833-6523f10d3944\",\"consumer-terms\":\"79dbc8c6-7f64-43d6-8101-207cede59a4d\",\"referral-partner-program-terms\":\"b81d2822-0089-4e37-9c91-15eb23ccb612\",\"credit-terms\":\"8a492ef8-a09b-4de4-b364-2e155b674b27\",\"privacy\":\"4281c092-0eff-40b0-aa5c-53a870c09eaf\",\"trademark-guidelines\":\"9c115f22-c012-4a0d-b88c-7452edd6a15d\"},\"children\":[\"$\",\"$L1a\",null,{\"config\":{\"backendPrivateApiUrl\":\"https://api.anthropic.com\",\"consoleAbsoluteUrl\":\"https://platform.claude.com\",\"claudeAiAbsoluteUrl\":\"https://claude.ai\",\"websiteBaseUrl\":\"https://www.anthropic.com\",\"userContentRendererUrl\":\"https://www.claudeusercontent.com\",\"mcpLocalConnectorUrl\":\"https://www.claudemcpclient.com\",\"googleOauthClientId\":\"1062961139910-l2m55cb9h51u5cuc9c56eb3fevouidh9.apps.googleusercontent.com\",\"stripePublishableKey\":\"pk_live_51MExQ9BjIQrRQnuxA9s9ahUkfIUHPoc3NFNidarWIUhEpwuc1bdjSJU9medEpVjoP4kTUrV2G8QWdxi9GjRJMUri005KO5xdyD\",\"stripePublishableKeyIreland\":\"pk_live_51REyrSBNUnCSzfs9yUvED4MEXaLQQ6pVzoRIf2DGv2SxJnmquGmGmPZaVRnvgZRX8h9gw9Mm1fq2LlRjlCTAV6hZ00cWXQZQEW\",\"stripePublishableKeySandbox\":\"\",\"statsigClientKey\":\"client-U9UUxwLKFe7SJXyDnolyBR2xZtEP8m1pN2uptqkJ5qP\",\"recaptchaKeyId\":\"6LcdsFgmAAAAAMfrnC1hEdmeRQRXCjpy8qT_kvfy\",\"segmentKey\":\"LKJN8LsLERHEOXkw487o7qCTFOrGPimI\",\"segmentCdnHost\":\"a-cdn.anthropic.com\",\"segmentApiHost\":\"a-api.anthropic.com\",\"siftBeaconKey\":\"99dfa2e716\",\"siftCdnHost\":\"s-cdn.anthropic.com\",\"arkoseKey\":\"EEA5F558-D6AC-4C03-B678-AABF639EE69A\",\"arkoseCdnHost\":\"a-cdn.claude.ai\",\"googleTagManagerId\":\"GTM-WFZF7B4C\",\"googleTagManagerAuth\":\"vTe5iDF7Dkb1BUCCeKYt0Q\",\"googleTagManagerEnvironment\":\"env-1\",\"publishedArtifactsBaseUrl\":\"https://claude.ai\",\"publishedArtifactsEmbedBaseUrl\":\"https://claude.site\",\"defaultSecureCookies\":true,\"claudeBrowserExtensionClientId\":\"dae2cad8-15c5-43d2-9046-fcaecc135fa4\",\"claudeBrowserExtensionId\":\"fcoeoabgfenejglbffodgkkbkcdhcgfn\",\"antOnlyClaudeBrowserExtensionId\":\"dngcpimnedloihjnnfngkgjoidhnaolf\",\"excelAddInClientId\":\"966eba67-8b8c-4eae-bbb3-08361d1b9292\",\"applicationType\":\"console\",\"ipCountry\":\"KR\",\"serverGateNames\":\"$undefined\"},\"children\":[\"$\",\"$L1b\",null,{\"children\":[\"$\",\"$L1c\",null,{\"state\":{\"mutations\":[],\"queries\":[{\"state\":{\"data\":{\"account\":null,\"statsig\":{\"user\":{\"country\":\"KR\",\"locale\":\"ko\",\"custom\":{\"clientPlatform\":null,\"serviceName\":\"private-api\",\"servicePlatform\":\"ant\"},\"customIDs\":{\"activitySessionID\":\"83a7deed-6b1a-48bf-a908-54dc826facf0\",\"stableID\":\"dc1b8808-dfd9-4765-b86b-6f03e8e35eec\",\"anonymousID\":\"claudedotcom.v1.a69be276-c551-4cb2-b7fb-e90a416d6fb1\",\"randomValue\":\"0.8907\"},\"privateAttributes\":{\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36\",\"ip\":\"34.96.47.41\"}},\"values\":{\"feature_gates\":{\"129880755\":{\"name\":\"129880755\",\"rule_id\":\"2YMKAbqK8Jaztq4rf3jYRk:100.00:5\",\"secondary_exposures\":[],\"value\":true},\"167784518\":{\"name\":\"167784518\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"529560408\":{\"name\":\"529560408\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"546414678\":{\"name\":\"546414678\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"690832210\":{\"name\":\"690832210\",\"rule_id\":\"2xKM5nSqcxThzVt4SUAI1S\",\"secondary_exposures\":[],\"value\":true},\"863794506\":{\"name\":\"863794506\",\"rule_id\":\"6OCo11e6q2gGg9R8kZQNcI:100.00:2\",\"secondary_exposures\":[],\"value\":true},\"900536136\":{\"name\":\"900536136\",\"rule_id\":\"5eLgRy5elYnuQj16EmIQN3\",\"secondary_exposures\":[],\"value\":true},\"1214734888\":{\"name\":\"1214734888\",\"rule_id\":\"UzH7kUL0um9GD9KrjZ0dL:0.00:1\",\"secondary_exposures\":[],\"value\":false},\"1240012697\":{\"name\":\"1240012697\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"1319782748\":{\"name\":\"1319782748\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"1374241653\":{\"name\":\"1374241653\",\"rule_id\":\"17N2iphBsCwlz8k11Qf8F3:100.00:1\",\"secondary_exposures\":[],\"value\":true},\"1851432169\":{\"name\":\"1851432169\",\"rule_id\":\"6nxj0lDbXEdc28Y35G31sD\",\"secondary_exposures\":[],\"value\":true},\"1943498851\":{\"name\":\"1943498851\",\"rule_id\":\"66LhTEPzM4kEgnQ4SuIlMM\",\"secondary_exposures\":[],\"value\":true},\"2119474141\":{\"name\":\"2119474141\",\"rule_id\":\"4VyB4KbnP54mTKitetfx55\",\"secondary_exposures\":[],\"value\":true},\"2190197109\":{\"name\":\"2190197109\",\"rule_id\":\"24Ey6W4aDw9stK8WNPIjIj:100.00:1\",\"secondary_exposures\":[],\"value\":true},\"2288098333\":{\"name\":\"2288098333\",\"rule_id\":\"SImu46mbhmXNK0ySjI4My\",\"secondary_exposures\":[],\"value\":true},\"2354948608\":{\"name\":\"2354948608\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"2705189879\":{\"name\":\"2705189879\",\"rule_id\":\"3SgUvhqO1Ijy2ER8r0ki4c\",\"secondary_exposures\":[],\"value\":true},\"2804326784\":{\"name\":\"2804326784\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"2838472889\":{\"name\":\"2838472889\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"3037557804\":{\"name\":\"3037557804\",\"rule_id\":\"3XsnmyQ2Bo64fjHOC7X3at:100.00:6\",\"secondary_exposures\":[],\"value\":true},\"3065341443\":{\"name\":\"3065341443\",\"rule_id\":\"default\",\"secondary_exposures\":[],\"value\":false},\"3070110303\":{\"name\":\"3070110303\",\"rule_id\":\"5g2213XtgA3r8zBcNcr2UM:100.00:1\",\"secondary_exposures\":[],\"value\":true},\"3638884360\":{\"name\":\"3638884360\",\"rule_id\":\"42oCXYaVEvOMnTFt33edFO\",\"secondary_exposures\":[],\"value\":true}},\"dynamic_configs\":{\"2039368958\":{\"name\":\"2039368958\",\"rule_id\":\"6gfHxVB19dMzTH8cXKJpZ3:0.00:3-6gfHxTVYGVD5AhAhmCNMG1\",\"secondary_exposures\":[],\"value\":{},\"group\":\"6gfHxVB19dMzTH8cXKJpZ3:0.00:3-6gfHxTVYGVD5AhAhmCNMG1\",\"is_device_based\":false},\"2991652422\":{\"name\":\"2991652422\",\"rule_id\":\"22z0VZ0Wtq12Yu4ppDtDkt:100.00:1\",\"secondary_exposures\":[],\"value\":{\"marble_sunrise_whisper\":\"Claude API\",\"golden_river_cascade\":\"Claude Developer Platform\",\"ocean_shimmer_dawn\":\"Same features, new name.\",\"forest_whisper_moonlight\":\"The Anthropic Console is now the Claude Console and can be accessed at [platform.claude.com](https://platform.claude.com).\",\"velvet_mountain_stream\":\"Claude Console\",\"crystal_valley_dawn\":\"If your organization uses single-sign-on (SSO), please refer your administrator to [this guide](https://support.claude.com/en/articles/10280258-setting-up-single-sign-on-on-the-api-console#h_f74055b90d) to update your SSO configuration to support the new Claude Console domain by December 16, 2025.\",\"silver_lotus_horizon\":\"platform.claude.com\",\"aurora_meadow_twilight\":\"The Anthropic Console is now the Claude Console.\"},\"group\":\"22z0VZ0Wtq12Yu4ppDtDkt:100.00:1\",\"is_device_based\":false}},\"layer_configs\":{},\"sdkParams\":{},\"has_updates\":true,\"generator\":\"statsig-python-sdk\",\"evaluated_keys\":{\"customIDs\":{\"activitySessionID\":\"83a7deed-6b1a-48bf-a908-54dc826facf0\",\"stableID\":\"dc1b8808-dfd9-4765-b86b-6f03e8e35eec\",\"anonymousID\":\"claudedotcom.v1.a69be276-c551-4cb2-b7fb-e90a416d6fb1\",\"randomValue\":\"0.8907\"}},\"time\":1763273980550,\"user\":{\"country\":\"KR\",\"locale\":\"ko\",\"custom\":{\"clientPlatform\":null,\"serviceName\":\"private-api\",\"servicePlatform\":\"ant\"},\"statsigEnvironment\":{\"tier\":\"production\"},\"customIDs\":{\"activitySessionID\":\"83a7deed-6b1a-48bf-a908-54dc826facf0\",\"stableID\":\"dc1b8808-dfd9-4765-b86b-6f03e8e35eec\",\"anonymousID\":\"claudedotcom.v1.a69be276-c551-4cb2-b7fb-e90a416d6fb1\",\"randomValue\":\"0.8907\"}},\"hash_used\":\"djb2\",\"sdkInfo\":{\"sdkType\":\"py-server\",\"sdkVersion\":\"0.32.0\"}},\"values_hash\":\"413a38ce253982e053d7f85cc694b134\"},\"intercom_account_hash\":null},\"dataUpdateCount\":1,\"dataUpdatedAt\":1763275492815,\"error\":null,\"errorUpdateCount\":0,\"errorUpdatedAt\":0,\"fetchFailureCount\":0,\"fetchFailureReason\":null,\"fetchMeta\":null,\"isInvalidated\":false,\"status\":\"success\",\"fetchStatus\":\"idle\"},\"queryKey\":[\"current_account\"],\"queryHash\":\"[\\\"current_account\\\"]\"}]},\"children\":\"$L1d\"}]}]}]}]}]}]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "1e:I[95233,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"CurrentAccountProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "1f:I[77213,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ConsentProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "20:I[78390,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"IntercomProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "21:I[80791,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"BootstrapedStatsigProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "22:I[41897,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"IsolatedMarketingPixelSegmentProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "23:I[60687,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"TierSelectorProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "24:I[28715,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"MotionConfig\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "25:I[19069,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ThemeProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "26:I[28395,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"NuqsAdapter\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "27:I[50213,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"Toasts\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "28:I[41311,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ConsentBanner\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "29:I[37640,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"AnalyticsIdentifier\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "2a:I[25832,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"IntercomTracker\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "2b:I[33560,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"FeedbackContextProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "2c:I[67747,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"FirstCreditPurchaseModalProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "2d:I[5416,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"WorkspaceProvider\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "2e:I[85341,[],\"\"]\n2f:I[90025,[],\"\"]\n30:I[39719,[\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"10797\",\"static/chunks/10797-84dab1a03852f196.js\",\"24345\",\"static/chunks/app/not-found-009e4d4798c261ff.js\"],\"default\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "31:I[55195,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"LogHiring\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "32:I[27957,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"WorkerUpdater\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "33:I[35984,[\"54129\",\"static/chunks/7bf36345-adabaeeecd1ba47b.js\",\"88939\",\"static/chunks/84ec9a9a-77c16c9394bd5ef9.js\",\"1113\",\"static/chunks/1113-9f5a107710c51c1a.js\",\"66365\",\"static/chunks/66365-b36e0f43fb8f0b7c.js\",\"2574\",\"static/chunks/2574-8c26102d98fb5073.js\",\"63916\",\"static/chunks/63916-32cf526f5e6e64bb.js\",\"82652\",\"static/chunks/82652-525cbfff62462016.js\",\"16108\",\"static/chunks/16108-86b0513cea53af91.js\",\"92491\",\"static/chunks/92491-7401d1147bbda37a.js\",\"42613\",\"static/chunks/42613-6f2f6714c9d43c35.js\",\"25482\",\"static/chunks/25482-bdcf1c861a72a6c6.js\",\"22040\",\"static/chunks/22040-442e971f1be518fb.js\",\"50422\",\"static/chunks/50422-c9b910043a5f1daf.js\",\"46596\",\"static/chunks/46596-e9b5e209228ad2b7.js\",\"93306\",\"static/chunks/93306-f1c0f2c42e91729d.js\",\"45312\",\"static/chunks/45312-d59aaceec447cbdf.js\",\"74084\",\"static/chunks/74084-0e483a47d6faeca4.js\",\"13429\",\"static/chunks/13429-4da8cb4a53439c63.js\",\"53338\",\"static/chunks/53338-b0ce6dc160e0960a.js\",\"58067\",\"static/chunks/58067-bddc3a470c16e1ec.js\",\"84847\",\"static/chunks/84847-24ffdb0ce7e9e8cf.js\",\"95233\",\"static/chunks/95233-d520378c31eb6d70.js\",\"74813\",\"static/chunks/74813-013d382b9eeec136.js\",\"14795\",\"static/chunks/14795-1c56835d4018ebd5.js\",\"58321\",\"static/chunks/58321-6867333bee671613.js\",\"63578\",\"static/chunks/63578-c6b8b70dcb36e334.js\",\"67747\",\"static/chunks/67747-7a9d7f2755073459.js\",\"7177\",\"static/chunks/app/layout-6e65424a89b896d4.js\"],\"ErrorSegmentConnector\"]\n"])</script>
+    <script
+        nonce="">self.__next_f.push([1, "1d:[\"$\",\"$L1e\",null,{\"children\":[\"$\",\"$L1f\",null,{\"requiresExplicitConsent\":false,\"children\":[\"$\",\"$L20\",null,{\"appId\":\"lupk8zyo\",\"initializeDelay\":1000,\"children\":[\"$\",\"$L21\",null,{\"children\":[\"$\",\"$L22\",null,{\"children\":[[\"$\",\"$L23\",null,{\"children\":[[\"$\",\"$L24\",null,{\"children\":[\"$\",\"$L25\",null,{\"initialTheme\":\"claude\",\"children\":[null,[\"$\",\"$L26\",null,{\"children\":[[\"$\",\"$L27\",null,{}],[\"$\",\"$L28\",null,{}],[\"$\",\"$L29\",null,{}],[\"$\",\"$L2a\",null,{}],[\"$\",\"$L2b\",null,{\"children\":[\"$\",\"$L2c\",null,{\"children\":[\"$\",\"$L2d\",null,{\"children\":[\"$\",\"$L2e\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L2f\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"$L30\",null,{}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}]]}]}],[\"$\",\"$L31\",null,{}],[\"$\",\"$L32\",null,{\"updateType\":null}]]}],[\"$\",\"$L33\",null,{}]]}]}]}]}]}]\n"])</script>
+    <script id="sift-snippet" data-nscript="afterInteractive">
+        var _sift = (window._sift = window._sift || []);
+        _sift.push(["_setAccount", "99dfa2e716"]);
+        _sift.push(["_setTrackerUrl", "s-cdn.anthropic.com"]);
+        _sift.push(["_setUserId", ""]);
+        _sift.push(["_setSessionId", "83a7deed-6b1a-48bf-a908-54dc826facf0"]);
+        _sift.push(["_trackPageview"]);
+    </script><next-route-announcer style="position: absolute;"></next-route-announcer><browser-mcp-container
+        data-wxt-shadow-root=""></browser-mcp-container>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcdsFgmAAAAAMfrnC1hEdmeRQRXCjpy8qT_kvfy"
+        data-nscript="lazyOnload"></script>
+    <script src="https://s-cdn.anthropic.com/s.js" data-nscript="lazyOnload"></script>
+    <div>
+        <div class="grecaptcha-badge" data-style="bottomright"
+            style="width: 256px; height: 60px; display: block; transition: right 0.3s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;">
+            <div class="grecaptcha-logo"><iframe title="reCAPTCHA" width="256" height="60" role="presentation"
+                    name="a-e2kp6khj1o82" frameborder="0" scrolling="no"
+                    sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                    src="https://www.google.com/recaptcha/enterprise/anchor?ar=1&amp;k=6LcdsFgmAAAAAMfrnC1hEdmeRQRXCjpy8qT_kvfy&amp;co=aHR0cHM6Ly9wbGF0Zm9ybS5jbGF1ZGUuY29tOjQ0Mw..&amp;hl=ko&amp;v=TkacYOdEJbdB_JjX802TMer9&amp;size=invisible&amp;anchor-ms=20000&amp;execute-ms=15000&amp;cb=jbp8jdfrlfkb"></iframe>
+            </div>
+            <div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response"
+                class="g-recaptcha-response"
+                style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea>
+        </div><iframe style="display: none;"></iframe>
+    </div><iframe id="intercom-frame"
+        style="position: absolute !important; opacity: 0 !important; width: 1px !important; height: 1px !important; top: 0 !important; left: 0 !important; border: none !important; display: block !important; z-index: -1 !important; pointer-events: none;"
+        aria-hidden="true" tabindex="-1" title="Intercom"></iframe>
+    <div class="intercom-lightweight-app">
+        <style id="intercom-lightweight-app-style" type="text/css">
+            @keyframes intercom-lightweight-app-launcher {
+                from {
+                    opacity: 0;
+                    transform: scale(0.5);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            @keyframes intercom-lightweight-app-gradient {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes intercom-lightweight-app-messenger {
+                0% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+
+                40% {
+                    opacity: 1;
+                }
+
+                100% {
+                    transform: scale(1);
+                }
+            }
+
+            .intercom-lightweight-app {
+                position: fixed;
+                z-index: 2147483001;
+                width: 0;
+                height: 0;
+                font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            }
+
+            .intercom-lightweight-app-gradient {
+                position: fixed;
+                z-index: 2147483002;
+                width: 500px;
+                height: 500px;
+                bottom: 0;
+                right: 0;
+                pointer-events: none;
+                background: radial-gradient(ellipse at bottom right,
+                        rgba(29, 39, 54, 0.16) 0%,
+                        rgba(29, 39, 54, 0) 72%);
+                animation: intercom-lightweight-app-gradient 200ms ease-out;
+            }
+
+            .intercom-lightweight-app-launcher {
+                position: fixed;
+                z-index: 2147483003;
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none;
+                bottom: 20px;
+                right: 20px;
+                max-width: 48px;
+                width: 48px;
+                max-height: 48px;
+                height: 48px;
+                border-radius: 50%;
+                background: #0099CC;
+                cursor: pointer;
+                box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.06), 0 2px 32px 0 rgba(0, 0, 0, 0.16);
+                transition: transform 167ms cubic-bezier(0.33, 0.00, 0.00, 1.00);
+                box-sizing: content-box;
+            }
+
+
+            .intercom-lightweight-app-launcher:hover {
+                transition: transform 250ms cubic-bezier(0.33, 0.00, 0.00, 1.00);
+                transform: scale(1.1)
+            }
+
+            .intercom-lightweight-app-launcher:active {
+                transform: scale(0.85);
+                transition: transform 134ms cubic-bezier(0.45, 0, 0.2, 1);
+            }
+
+
+            .intercom-lightweight-app-launcher:focus {
+                outline: none;
+
+
+            }
+
+            .intercom-lightweight-app-launcher-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 48px;
+                height: 48px;
+                transition: transform 100ms linear, opacity 80ms linear;
+            }
+
+            .intercom-lightweight-app-launcher-icon-open {
+
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+
+            }
+
+            .intercom-lightweight-app-launcher-icon-open svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .intercom-lightweight-app-launcher-icon-open svg path {
+                fill: rgb(255, 255, 255);
+            }
+
+            .intercom-lightweight-app-launcher-icon-self-serve {
+
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+
+            }
+
+            .intercom-lightweight-app-launcher-icon-self-serve svg {
+                height: 44px;
+            }
+
+            .intercom-lightweight-app-launcher-icon-self-serve svg path {
+                fill: rgb(255, 255, 255);
+            }
+
+            .intercom-lightweight-app-launcher-custom-icon-open {
+                max-height: 24px;
+                max-width: 24px;
+
+
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+
+            }
+
+            .intercom-lightweight-app-launcher-icon-minimize {
+
+                opacity: 0;
+                transform: rotate(-60deg) scale(0);
+
+            }
+
+            .intercom-lightweight-app-launcher-icon-minimize svg path {
+                fill: rgb(255, 255, 255);
+            }
+
+            /* Extended launcher styles */
+            .intercom-lightweight-app-launcher.intercom-launcher-extended {
+                width: calc(180px - 30px);
+                max-width: calc(180px - 30px);
+                height: calc(45px - 26px);
+                max-height: calc(45px - 26px);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 12px 16px 12px 12px !important;
+                gap: 6px;
+                /* Use theme background instead of hardcoded gradient */
+                background: #0099CC;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                box-shadow: 0px -2px 50px rgba(0, 0, 0, 0.1);
+
+            }
+
+            .intercom-lightweight-app-launcher.intercom-launcher-extended .intercom-lightweight-app-launcher-icon {
+                position: relative;
+                width: 24px;
+                height: 24px;
+            }
+
+            .intercom-lightweight-app-launcher-text {
+                /* Match text color with launcher icon */
+                color: rgb(255, 255, 255);
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 1.5;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+                opacity: 1;
+                transition: opacity 80ms linear;
+            }
+
+            .intercom-lightweight-app-messenger {
+                position: fixed;
+                z-index: 2147483003;
+                overflow: hidden;
+                background-color: #ffffff;
+                animation: intercom-lightweight-app-messenger 250ms cubic-bezier(0, 1, 1, 1);
+                transform-origin: bottom right;
+
+
+                width: 400px;
+                height: calc(100% - 40px);
+                max-height: 704px;
+                min-height: 250px;
+                right: 20px;
+                bottom: 20px;
+                box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
+
+
+                border-radius: 16px;
+            }
+
+            .intercom-lightweight-app-messenger-header {
+                height: 64px;
+                border-bottom: none;
+                background: #ffffff;
+            }
+
+            .intercom-lightweight-app-messenger-footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 80px;
+                background: #ffffff;
+                font-size: 14px;
+                line-height: 21px;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+                box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.05);
+            }
+
+            @media print {
+                .intercom-lightweight-app {
+                    display: none;
+                }
+            }
+        </style>
+    </div>
+    <div class="flex w-full min-h-screen">
+        <nav class="z-sidebar h-screen shrink-0 pointer-events-none bg-bg-200" data-testid="menu-sidebar"
+            style="width: 16rem;">
+            <div class="fixed left-2 top-3 opacity-0 pointer-events-none"><button
+                    class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none border-transparent
+          transition
+          font-base
+          duration-300
+          ease-[cubic-bezier(0.165,0.85,0.45,1)] h-8 w-8 rounded-md active:scale-95 text-text-400/60 hover:text-text-200 Button_ghost__Ywhj1" type="button"
+                    data-testid="menu-sidebar-open" data-state="closed"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                        <path
+                            d="M189.66,122.34a8,8,0,0,1,0,11.32l-72,72a8,8,0,0,1-11.32-11.32L164.69,136H32a8,8,0,0,1,0-16H164.69L106.34,61.66a8,8,0,0,1,11.32-11.32ZM216,32a8,8,0,0,0-8,8V216a8,8,0,0,0,16,0V40A8,8,0,0,0,216,32Z">
+                        </path>
+                    </svg></button></div>
+            <div class="fixed bottom-0 left-0 top-0 px-3 pb-4 pt-3" style="width: 16rem;">
+                <div class="bg-bg-200 border-border-300 absolute left-0 overflow-hidden backdrop-blur border-r-0.5 bottom-0 top-0 shadow-lg lg:shadow-[inset_-4px_0px_6px_-4px_hsl(var(--always-black)/4%)]"
+                    style="width: 16rem; transform: none; opacity: 1;"></div>
+                <div class="flex h-full flex-col">
+                    <div class="flex flex-col w-full">
+                        <div class="-mr-1 flex translate-y-px items-center justify-between w-full">
+                            <div class="flex items-center justify-between w-full pointer-events-auto"
+                                style="opacity: 1; transform: none;"><svg height="14" viewBox="0 0 726 78"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                    class="text-text-000 pl-2 h-4 text-text-300" aria-label="Claude Console">
+                                    <path
+                                        d="M91.7927 9.2157V67.5696C91.7927 71.4099 93.7597 72.2529 98.9113 72.9086V77.0299H73.4342V72.9086C78.5858 72.2529 80.5528 71.4099 80.5528 67.5696V11.1827L73.9025 8.09171V5.65639L88.8891 1.16042H92.261L91.7927 9.2157Z">
+                                    </path>
+                                    <path
+                                        d="M40.4637 71.7846C44.866 71.7846 48.519 71.129 51.4227 69.8176C57.3236 67.195 60.8829 62.2307 63.8802 53.9881H68.8445L66.7839 72.0656C58.8223 75.8123 49.8303 77.9666 38.4967 77.9666C30.5351 77.9666 23.6038 76.3743 17.7965 73.0959C6.18196 66.633 0 55.0184 0 41.9051C0 34.1309 1.77965 27.2932 5.2453 21.3923C12.1766 9.59036 24.6342 3.03374 39.2461 3.03374C49.643 3.03374 58.1666 5.28172 65.0042 9.68403L65.6599 26.0756H60.7893C56.7616 14.18 49.7367 9.2157 38.3094 9.2157C21.3559 9.2157 13.6752 21.1113 13.6752 38.2522C13.6752 44.3405 14.6119 49.8668 16.5789 54.9247C20.4192 65.1343 28.5681 71.7846 40.4637 71.7846Z">
+                                    </path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M149.772 70.567C147.056 70.567 145.744 68.4126 145.744 64.1977V44.6215C145.744 31.2272 138.626 26.0756 125.793 26.0756C114.46 26.0756 106.217 30.7589 106.217 38.5332C106.217 40.8748 107.06 42.6545 108.746 43.8721L117.364 42.7481C116.989 40.1255 116.802 38.5332 116.802 37.8775C116.802 33.4752 119.143 31.2272 123.92 31.2272C130.945 31.2272 134.504 36.1915 134.504 44.1531V46.7758L116.708 52.1147C110.807 53.7071 107.435 55.1121 105.187 58.3904C104.063 60.0764 103.501 62.3243 103.501 65.0407C103.501 72.6276 108.746 77.9666 117.645 77.9666C124.108 77.9666 129.821 75.0629 134.785 69.5366C136.565 75.0629 139.281 77.9666 144.152 77.9666C148.086 77.9666 151.645 76.3743 154.83 73.2833L153.893 70.005C152.488 70.3796 151.177 70.567 149.772 70.567ZM134.504 65.4153C129.915 68.881 127.198 70.3796 122.984 70.3796C118.113 70.3796 115.116 67.5696 115.116 62.6053C115.116 59.2334 116.708 57.2664 120.08 56.1424L134.504 51.5527V65.4153Z">
+                                    </path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M303.103 68.1316C310.316 68.1316 317.153 64.0103 320.619 57.8284L323.803 58.6714C322.399 69.724 312.376 77.9666 300.106 77.9666C285.681 77.9666 275.753 67.3823 275.753 52.1147C275.753 36.8472 286.524 26.0756 300.949 26.0756C311.721 26.0756 319.308 32.5385 321.743 43.7785L286.386 54.625C288.548 63.0175 294.546 68.1316 303.103 68.1316ZM309.473 42.3735C308.161 36.0979 304.321 32.5385 298.982 32.5385C291.02 32.5385 285.494 38.5332 285.494 47.1504C285.494 48.0571 285.532 48.9376 285.599 49.7993L309.473 42.3735Z">
+                                    </path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M265.543 65.79V9.2157L266.012 1.16042H262.64L247.653 5.65639V8.09171L254.303 11.1827V29.7286C251.025 27.2932 246.716 26.0756 241.565 26.0756C226.672 26.0756 215.057 37.4092 215.057 54.3627C215.057 68.319 223.394 77.9666 237.162 77.9666C244.281 77.9666 250.463 74.5009 254.303 69.162L253.835 77.9666H255.802L273.036 74.6883V70.4733L270.601 70.286C266.574 69.9113 265.543 69.0683 265.543 65.79ZM254.303 64.7597C251.306 67.8506 246.904 69.724 241.939 69.724C231.73 69.724 226.578 61.6687 226.578 50.8971C226.578 38.8142 232.479 31.6955 241.846 31.6955C248.964 31.6955 254.303 35.8169 254.303 43.4038V64.7597Z">
+                                    </path>
+                                    <path
+                                        d="M204.848 35.7232V65.79C204.848 69.0683 205.878 69.9113 209.906 70.286L212.341 70.4733V74.6883L195.106 77.9666H193.139L193.608 68.7873C189.205 74.1263 183.304 77.9666 176.092 77.9666C166.632 77.9666 160.731 73.0023 160.731 62.5117V37.7838C160.731 34.6929 159.42 33.4752 155.017 32.8195L153.331 32.5385V28.4172L169.629 26.0756H172.439L171.971 35.7232V60.9194C171.971 67.195 175.249 69.9113 180.588 69.9113C185.365 69.9113 189.393 67.8506 193.608 64.5723V37.7838C193.608 34.6929 192.296 33.4752 187.894 32.8195L186.302 32.5385V28.4172L202.6 26.0756H205.316L204.848 35.7232Z">
+                                    </path>
+                                    <path
+                                        d="M389.018 71.7046C393.404 71.7046 397.07 71.0466 400.016 69.7306C402.961 68.4146 405.405 66.4719 407.348 63.9026C409.29 61.3332 411.014 57.9806 412.518 53.8446H417.5L415.432 71.9866C411.421 73.8666 407.097 75.3392 402.46 76.4046C397.885 77.4072 392.746 77.9086 387.044 77.9086C379.022 77.9086 372.098 76.2792 366.27 73.0206C360.442 69.7619 355.992 65.3752 352.922 59.8606C349.914 54.3459 348.41 48.2986 348.41 41.7186C348.41 33.9479 350.133 27.1172 353.58 21.2265C357.089 15.2732 361.82 10.6986 367.774 7.50255C373.79 4.30655 380.464 2.70855 387.796 2.70855C398.198 2.70855 406.815 4.93322 413.646 9.38255L414.21 25.5505H409.322C407.316 19.6599 404.496 15.4299 400.862 12.8606C397.227 10.2286 392.558 8.91255 386.856 8.91255C378.333 8.91255 372.066 11.6386 368.056 17.0906C364.108 22.4799 362.134 29.4672 362.134 38.0526C362.134 44.1312 363.105 49.7399 365.048 54.8786C366.99 59.9546 369.967 64.0279 373.978 67.0986C378.051 70.1692 383.064 71.7046 389.018 71.7046Z">
+                                    </path>
+                                    <path
+                                        d="M449.983 77.9086C444.969 77.9086 440.551 76.8432 436.729 74.7126C432.906 72.5192 429.929 69.5426 427.799 65.7826C425.668 61.9599 424.603 57.6359 424.603 52.8106C424.603 47.4212 425.825 42.6899 428.269 38.6166C430.713 34.5432 434.003 31.4099 438.139 29.2166C442.275 26.9606 446.849 25.8326 451.863 25.8326C456.876 25.8326 461.294 26.9292 465.117 29.1226C469.002 31.2532 472.01 34.2299 474.141 38.0526C476.271 41.8752 477.337 46.1679 477.337 50.9306C477.337 56.3199 476.115 61.0512 473.671 65.1246C471.227 69.1979 467.905 72.3626 463.707 74.6186C459.571 76.8119 454.996 77.9086 449.983 77.9086ZM452.615 71.8926C456.813 71.8926 459.978 70.2946 462.109 67.0986C464.239 63.9026 465.305 59.6099 465.305 54.2206C465.305 47.7032 463.863 42.3452 460.981 38.1466C458.161 33.9479 454.244 31.8486 449.231 31.8486C445.032 31.8486 441.867 33.4466 439.737 36.6426C437.606 39.8386 436.541 44.1312 436.541 49.5206C436.541 56.0379 437.951 61.3959 440.771 65.5946C443.653 69.7932 447.601 71.8926 452.615 71.8926Z">
+                                    </path>
+                                    <path
+                                        d="M523.96 42.7525C523.96 39.6819 523.208 37.4885 521.704 36.1725C520.2 34.8565 517.913 34.1985 514.842 34.1985C512.524 34.1985 510.048 34.6999 507.416 35.7025C504.784 36.6425 502.497 37.8332 500.554 39.2745V67.4745C500.554 69.4172 501.087 70.7332 502.152 71.4225C503.28 72.0492 505.129 72.5192 507.698 72.8325V76.9685H482.13V72.8325C484.7 72.5192 486.517 72.0492 487.582 71.4225C488.71 70.7332 489.274 69.4172 489.274 67.4745V36.7365L482.6 33.0705V30.5325L497.64 25.7385H501.024L500.554 35.0445C502.873 32.5379 505.724 30.3759 509.108 28.5585C512.492 26.7412 515.939 25.8325 519.448 25.8325C524.336 25.8325 528.19 27.0859 531.01 29.5925C533.83 32.0992 535.24 35.9845 535.24 41.2485V67.4745C535.24 69.4172 535.773 70.7332 536.838 71.4225C537.966 72.0492 539.815 72.5192 542.384 72.8325V76.9685H516.816V72.8325C519.386 72.5192 521.203 72.0492 522.268 71.4225C523.396 70.7332 523.96 69.4172 523.96 67.4745V42.7525Z">
+                                    </path>
+                                    <path
+                                        d="M565.948 77.9085C562.188 77.9085 558.741 77.4699 555.608 76.5925C552.537 75.7152 549.968 74.5245 547.9 73.0205L547.336 60.5185H552.224C553.101 64.5919 554.668 67.6312 556.924 69.6365C559.18 71.6419 562.219 72.6445 566.042 72.6445C569.238 72.6445 571.713 71.9865 573.468 70.6705C575.285 69.2919 576.194 67.3492 576.194 64.8425C576.194 62.8372 575.536 61.3019 574.22 60.2365C572.904 59.1712 570.805 58.2625 567.922 57.5105L561.154 55.5365C556.767 54.2832 553.446 52.5599 551.19 50.3665C548.997 48.1105 547.9 44.8832 547.9 40.6845C547.9 36.0472 549.529 32.4125 552.788 29.7805C556.047 27.1485 560.465 25.8325 566.042 25.8325C572.434 25.8325 577.917 27.1799 582.492 29.8745V41.3425H577.792C577.04 37.7705 575.661 35.1699 573.656 33.5405C571.651 31.9112 568.956 31.0965 565.572 31.0965C563.128 31.0965 561.154 31.6919 559.65 32.8825C558.209 34.0105 557.488 35.6712 557.488 37.8645C557.488 39.6819 557.989 41.0919 558.992 42.0945C560.057 43.0345 561.781 43.8492 564.162 44.5385L571.494 46.6065C576.319 47.9225 579.891 49.7712 582.21 52.1525C584.529 54.4712 585.688 57.8552 585.688 62.3045C585.688 67.1925 583.871 71.0152 580.236 73.7725C576.664 76.5299 571.901 77.9085 565.948 77.9085Z">
+                                    </path>
+                                    <path
+                                        d="M616.496 77.9085C611.483 77.9085 607.065 76.8432 603.242 74.7125C599.419 72.5192 596.443 69.5425 594.312 65.7825C592.181 61.9599 591.116 57.6359 591.116 52.8105C591.116 47.4212 592.338 42.6899 594.782 38.6165C597.226 34.5432 600.516 31.4099 604.652 29.2165C608.788 26.9605 613.363 25.8325 618.376 25.8325C623.389 25.8325 627.807 26.9292 631.63 29.1225C635.515 31.2532 638.523 34.2299 640.654 38.0525C642.785 41.8752 643.85 46.1679 643.85 50.9305C643.85 56.3199 642.628 61.0512 640.184 65.1245C637.74 69.1979 634.419 72.3625 630.22 74.6185C626.084 76.8119 621.509 77.9085 616.496 77.9085ZM619.128 71.8925C623.327 71.8925 626.491 70.2945 628.622 67.0985C630.753 63.9025 631.818 59.6099 631.818 54.2205C631.818 47.7032 630.377 42.3452 627.494 38.1465C624.674 33.9479 620.757 31.8485 615.744 31.8485C611.545 31.8485 608.381 33.4465 606.25 36.6425C604.119 39.8385 603.054 44.1312 603.054 49.5205C603.054 56.0379 604.464 61.3959 607.284 65.5945C610.167 69.7932 614.115 71.8925 619.128 71.8925Z">
+                                    </path>
+                                    <path
+                                        d="M666.762 67.4745C666.762 69.4172 667.294 70.7332 668.36 71.4225C669.488 72.0492 671.336 72.5192 673.906 72.8325V76.9685H648.338V72.8325C650.907 72.5192 652.724 72.0492 653.79 71.4225C654.918 70.7332 655.482 69.4172 655.482 67.4745V10.8865L648.808 7.78452V5.34053L663.848 0.828522H667.232L666.762 8.91252V67.4745Z">
+                                    </path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M705.352 68.194C712.52 68.194 719.316 64.098 722.76 57.954L725.925 58.7918C724.529 69.7765 714.568 77.9685 702.373 77.9685C688.037 77.9685 678.17 67.4493 678.17 52.2755C678.17 37.1017 688.875 26.3962 703.211 26.3962C713.917 26.3962 721.457 32.8195 723.877 43.9904L688.737 54.7703C690.886 63.1112 696.847 68.194 705.352 68.194ZM711.682 42.594C710.379 36.3569 706.562 32.8195 701.256 32.8195C693.343 32.8195 687.851 38.7773 687.851 47.3417C687.851 48.2428 687.888 49.1178 687.955 49.9743L711.682 42.594Z">
+                                    </path>
+                                </svg><button
+                                    class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none border-transparent
+          transition
+          font-base
+          duration-300
+          ease-[cubic-bezier(0.165,0.85,0.45,1)] h-8 w-8 rounded-md active:scale-95 text-text-400/60 hover:text-text-200 Button_ghost__Ywhj1"
+                                    type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" viewBox="0 0 256 256">
+                                        <path
+                                            d="M232,128a8,8,0,0,1-8,8H91.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L91.31,120H224A8,8,0,0,1,232,128ZM40,32a8,8,0,0,0-8,8V216a8,8,0,0,0,16,0V40A8,8,0,0,0,40,32Z">
+                                        </path>
+                                    </svg></button></div>
+                        </div>
+                    </div>
+                    <div class="min-h-0 relative grow">
+                        <div class="absolute top-0 left-0 bottom-0 right-0 flex flex-col pointer-events-auto">
+                            <div
+                                class="overflow-y-auto overflow-x-hidden flex flex-col gap-2 px-3 -mx-3 pb-2 pt-2 h-full u-hidden-scrollbar">
+                                <ul class="flex flex-col gap-1" style="opacity: 1; transform: none;">
+                                    <li class="text-text-500 text-xs font-medium uppercase px-2 mt-3">Build</li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-dashboard-full" href="/dashboard">
+                                            <div class="min-w-0 truncate text-sm">Dashboard</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-workbench-full" href="/workbench">
+                                            <div class="min-w-0 truncate text-sm">Workbench</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-files-full" href="/workspaces/default/files">
+                                            <div class="min-w-0 truncate text-sm">Files</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-skills-full" href="/workspaces/default/skills">
+                                            <div class="min-w-0 truncate text-sm">Skills</div>
+                                        </a></li>
+                                </ul>
+                                <ul class="flex flex-col gap-1" style="opacity: 1; transform: none;">
+                                    <div class="p-1 w-full">
+                                        <div class="h-px w-full bg-border-300"></div>
+                                    </div>
+                                    <li class="text-text-500 text-xs font-medium uppercase px-2 mt-3">Analytics</li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-usage-full" href="/usage">
+                                            <div class="min-w-0 truncate text-sm">Usage</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-cost-full" href="/workspaces/default/cost">
+                                            <div class="min-w-0 truncate text-sm">Cost</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui bg-bg-400 text-text-100"
+                                            data-testid="sidebar-nav-logs-full" href="/workspaces/default/logs">
+                                            <div class="min-w-0 truncate text-sm">Logs</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-batches-full" href="/workspaces/default/batches">
+                                            <div class="min-w-0 truncate text-sm">Batches</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-metrics-full" href="/claude-code">
+                                            <div class="min-w-0 truncate text-sm">Claude Code</div>
+                                        </a></li>
+                                </ul>
+                                <ul class="flex flex-col gap-1" style="opacity: 1; transform: none;">
+                                    <div class="p-1 w-full">
+                                        <div class="h-px w-full bg-border-300"></div>
+                                    </div>
+                                    <li class="text-text-500 text-xs font-medium uppercase px-2 mt-3">Manage</li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-api-keys-full" href="/settings/keys">
+                                            <div class="min-w-0 truncate text-sm">API keys</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-limits-full" href="/settings/limits">
+                                            <div class="min-w-0 truncate text-sm">Limits</div>
+                                        </a></li>
+                                    <li><a class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                            data-testid="sidebar-nav-settings-full" href="/settings/organization">
+                                            <div class="min-w-0 truncate text-sm">Settings</div>
+                                        </a></li>
+                                    <li class="mt-2"></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <div class="mt-2" style="opacity: 1; transform: none;"><a
+                                        class="hover:bg-bg-500 group flex items-center gap-2 rounded-md px-2 py-2 transition-colors duration-200 font-ui text-text-400"
+                                        data-testid="sidebar-nav-documentation-full" href="https://docs.claude.com"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" viewBox="0 0 256 256" class="shrink-0">
+                                            <path
+                                                d="M232,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z">
+                                            </path>
+                                        </svg>
+                                        <div class="min-w-0 truncate text-sm">Documentation</div>
+                                    </a></div>
+                                <div class="flex flex-col" style="opacity: 1; transform: none;"><button
+                                        class="px-1.5 py-1.5 flex justify-between items-center gap-3 rounded-lg hover:bg-bg-400 data-[state=open]:bg-bg-400 transition-colors w-full"
+                                        type="button" id="radix-_r_1_" aria-haspopup="menu" aria-expanded="false"
+                                        data-state="closed">
+                                        <div class="flex gap-3 items-center min-w-0">
+                                            <div
+                                                class="flex-shrink-0 flex size-8 items-center justify-center rounded-md bg-bg-000/60 border-border-300 border-0.5 text-text-200">
+                                                <div class="flex items-center justify-center"
+                                                    style="width: 20px; height: 20px;"><svg width="20" height="20"
+                                                        viewBox="0 0 20 20" fill="currentColor"
+                                                        xmlns="http://www.w3.org/2000/svg" class="shrink-0"
+                                                        aria-hidden="true">
+                                                        <path
+                                                            d="M11.1357 2.07507C12.0824 1.83843 12.9999 2.55536 13 3.53113V6.99988H15.5C16.3284 6.99988 16.9999 7.67153 17 8.49988V15.4999C17 16.3283 16.3284 16.9999 15.5 16.9999H4.5C3.67157 16.9999 3 16.3283 3 15.4999V5.28113C3.00007 4.59301 3.46822 3.99212 4.13574 3.82507L11.1357 2.07507ZM11.3789 3.04578L4.37891 4.79578C4.15637 4.85141 4.00007 5.05176 4 5.28113V15.4999C4 15.776 4.22386 15.9999 4.5 15.9999H6V12.4999L6.00977 12.3993C6.05635 12.1714 6.25834 11.9999 6.5 11.9999H9.5L9.60059 12.0097C9.8285 12.0562 9.99993 12.2582 10 12.4999V15.9999H12V3.53113C11.9999 3.20597 11.6944 2.96701 11.3789 3.04578ZM7 15.9999H9V12.9999H7V15.9999ZM13 15.9999H15.5C15.7761 15.9999 16 15.776 16 15.4999V8.49988C15.9999 8.22381 15.7761 7.99988 15.5 7.99988H13V15.9999ZM9.5 8.99988C9.77609 8.99988 9.99992 9.22381 10 9.49989C10 9.77603 9.77614 9.99989 9.5 9.99989H6.5C6.22386 9.99989 6 9.77603 6 9.49989C6.00008 9.22381 6.22391 8.99988 6.5 8.99988H9.5ZM9.5 5.99988C9.77609 5.99988 9.99992 6.22381 10 6.49988C10 6.77602 9.77614 6.99988 9.5 6.99988H6.5C6.22386 6.99988 6 6.77602 6 6.49988C6.00008 6.22381 6.22391 5.99988 6.5 5.99988H9.5Z">
+                                                        </path>
+                                                    </svg></div>
+                                            </div>
+                                            <div class="flex flex-col items-start min-w-0 font-ui overflow-hidden pr-4">
+                                                <span
+                                                    class="text-sm font-medium w-full truncate text-start">sumin</span><span
+                                                    class="text-xs text-text-300 w-full truncate text-start font-normal">vooster
+                                                    ai</span></div>
+                                        </div><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                            fill="currentColor" viewBox="0 0 256 256" class="flex-shrink-0 mr-2">
+                                            <path
+                                                d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z">
+                                            </path>
+                                        </svg>
+                                    </button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div
+            class="flex flex-col min-h-screen bg-fixed grow min-w-0 relative rounded-tl-xl rounded-bl-xl h-screen overflow-hidden">
+            <div class="w-full pl-0">
+                <div class="px-3 pt-3 pb-1 text-sm flex items-center align-start"><button
+                        class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-8 rounded-md px-3 min-w-[4rem] active:scale-[0.985] whitespace-nowrap !text-xs pl-2.5 pr-2 gap-1 !font-normal !border-0.5 border-border-200 Button_secondary__x7x_y"
+                        type="button" id="radix-_r_24_" aria-haspopup="menu" aria-expanded="false" data-state="closed">
+                        <div class="inline-flex items-center gap-2" data-state="closed"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9B87F5"
+                                viewBox="0 0 256 256">
+                                <path
+                                    d="M223.68,66.15,135.68,18h0a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32h0l80.34,44L128,120,47.66,76ZM40,90l80,43.78v85.79L40,175.82Zm96,129.57V133.82L216,90v85.78Z">
+                                </path>
+                            </svg><span class="text-sm">Default</span></div><svg xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                            <path
+                                d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z">
+                            </path>
+                        </svg>
+                    </button></div>
+            </div>
+            <div class="relative grid h-full w-full grid-rows-[auto,1fr] overflow-x-hidden overflow-y-auto">
+                <div class="mx-auto px-6 pt-6 pb-8 max-w-7xl w-full">
+                    <div class="mb-4 flex w-full flex-col items-center justify-between sm:flex-row">
+                        <h1 class="font-ui text-2xl font-medium">Logs</h1>
+                        <div class="text-text-300 mt-2 text-xs sm:text-sm">Last refresh time: November 16, 2025 at 3:46
+                            PM GMT+9</div>
+                    </div>
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="divide-border-300 min-w-full divide-y pt-6">
+                            <thead class="bg-bg-100 divide-border-100 min-w-full divide-y text-xs uppercase">
+                                <tr>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">
+                                        Time (GMT+9)</th>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">ID
+                                    </th>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">
+                                        Model</th>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">
+                                        Input<br>Tokens</th>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">
+                                        Output<br>Tokens</th>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">
+                                        Type</th>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">
+                                        Service<br>Tier</th>
+                                    <th class="whitespace-nowrap p-4 text-left text-[.685rem] font-medium uppercase">
+                                        <span>Request</span></th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-border-300 bg-bg-100 divide-y">
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-13 12:54:14</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV5DChsXX5dLZrt2qWQ3S</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_27_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>7302</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">4244</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_2a_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-13 12:53:05</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV5D7vGmSGUq8WjYLz2a7</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_2c_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>4045</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">3812</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_2f_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-13 09:31:48</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV4wksHMH7gshf8JCmNgy</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_2h_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>7254</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">4917</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_2k_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-13 09:30:27</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV4wgo4FAdTSBYHTEe7uQ</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_2m_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>4742</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">2690</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_2p_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-13 09:11:57</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV4vKAX6UzfmKWRMYWwvK</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_2r_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>2978</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">1202</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_2u_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-12 11:24:13</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV3CXTtJrUmJ4FeYZKEby</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_30_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>7892</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">4864</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_33_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-12 11:23:03</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV3CSZHcfLVYZJcoWj5S4</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_35_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>3667</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">3843</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_38_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-12 11:20:32</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV3CKYneyynjwTaA3FY7u</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_3a_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>8735</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">362</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_3d_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-12 10:54:55</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV3AJQVpcPPU7QiULDRfA</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_3f_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>8104</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">3827</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_3i_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-left text-xs">2025-11-12 10:53:47</td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>req_011CV3ADUUYSkGiyWS8PPxUg</code>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs"><code>claude-sonnet-4-20250514</code></td>
+                                    <td class="px-4 py-2 text-left text-xs">
+                                        <div class="flex items-center gap-2"><button
+                                                class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                                type="button" id="radix-_r_3k_" aria-haspopup="menu"
+                                                aria-expanded="false" data-state="closed"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62ZM128,24a8,8,0,0,0-8,8v91.82L41.19,169.73a8,8,0,0,0-2.87,11A104,104,0,1,0,128,24Zm0,192a88.47,88.47,0,0,1-71.49-36.68l75.52-44a8,8,0,0,0,4-6.92V40.36A88,88,0,0,1,128,216Z">
+                                                    </path>
+                                                </svg></button><span>5405</span></div>
+                                    </td>
+                                    <td class="px-4 py-2 text-left text-xs">3326</td>
+                                    <td class="px-4 py-2 text-left text-xs">HTTP</td>
+                                    <td class="px-4 py-2 text-left text-xs">Standard</td>
+                                    <td class="px-4 py-2 text-left text-xs"><button
+                                            class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-6 w-6 rounded-md active:scale-95 rounded  py-1  px-2  max-w-full  whitespace-nowrap  text-ellipsis  overflow-hidden Button_secondary__x7x_y"
+                                            type="button" id="radix-_r_3n_" aria-haspopup="menu" aria-expanded="false"
+                                            data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                height="14" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+                                                </path>
+                                            </svg></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-between gap-2 py-4 text-xs sm:text-sm">
+                        <div class="flex gap-2"><button class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-11 w-11 rounded-[0.6rem] active:scale-95 Button_secondary__x7x_y" disabled=""
+                                type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" viewBox="0 0 256 256">
+                                    <path
+                                        d="M228,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H216A12,12,0,0,1,228,128Z">
+                                    </path>
+                                </svg></button><button class="inline-flex
+  items-center
+  justify-center
+  relative
+  shrink-0
+  can-focus
+  select-none
+  disabled:pointer-events-none
+  disabled:opacity-50
+  disabled:shadow-none
+  disabled:drop-shadow-none font-base-bold
+          border-0.5
+          relative
+          overflow-hidden
+          transition
+          duration-100
+          backface-hidden h-11 w-11 rounded-[0.6rem] active:scale-95 Button_secondary__x7x_y" type="button"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 256 256">
+                                    <path
+                                        d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z">
+                                    </path>
+                                </svg></button></div>
+                        <div class="flex gap-2">
+                            <div class="m-auto flex items-center gap-2">
+                                <p class="text-text-500 text-xs uppercase">Lines per page</p>
+                                <div class="relative w-full"><select id="8"
+                                        class="text-text-100 py-0 transition-colors can-focus cursor-pointer appearance-none w-full h-9 pl-2.5 pr-7 rounded-lg bg-bg-000 border border-border-300 hover:border-border-200 shadow-none">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute top-0 right-0 flex items-center px-2 text-text-500 h-9">
+                                        <div class="flex items-center justify-center"
+                                            style="width: 16px; height: 16px;"><svg width="20" height="20"
+                                                viewBox="0 0 20 20" fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg" class="shrink-0" aria-hidden="true">
+                                                <path
+                                                    d="M14.128 7.16482C14.3126 6.95983 14.6298 6.94336 14.835 7.12771C15.0402 7.31242 15.0567 7.62952 14.8721 7.83477L10.372 12.835L10.2939 12.9053C10.2093 12.9667 10.1063 13 9.99995 13C9.85833 12.9999 9.72264 12.9402 9.62788 12.835L5.12778 7.83477L5.0682 7.75273C4.95072 7.55225 4.98544 7.28926 5.16489 7.12771C5.34445 6.96617 5.60969 6.95939 5.79674 7.09744L5.87193 7.16482L9.99995 11.7519L14.128 7.16482Z">
+                                                </path>
+                                            </svg></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><iframe src="https://a.claude.ai/isolated-segment.html?v=dev" referrerpolicy="no-referrer"
+        sandbox="allow-scripts allow-same-origin" title="" style="display: none;"></iframe>
+</body>
+
+</html>

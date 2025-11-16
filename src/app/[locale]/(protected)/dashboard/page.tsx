@@ -10,6 +10,7 @@ import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { useDashboardStats } from "@/features/articles/hooks/useDashboardStats";
 import { useRecentArticles } from "@/features/articles/hooks/useRecentArticles";
 import { useTranslations } from "next-intl";
+import { AlertCircle } from "lucide-react";
 
 type DashboardPageProps = {
   params: Promise<Record<string, never>>;
@@ -63,16 +64,34 @@ function DashboardContent() {
 
   if (isStatsLoading || isArticlesLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-muted-foreground">{t('loading')}</p>
+      <div
+        className="flex items-center justify-center min-h-[400px]"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+      >
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-4 border-accent-brand/30 border-t-accent-brand rounded-full animate-spin" />
+          <p className="text-text-secondary text-sm">{t('loading')}</p>
+        </div>
       </div>
     );
   }
 
   if (statsError || articlesError) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-destructive">{t('error')}</p>
+      <div
+        className="flex items-center justify-center min-h-[400px]"
+        role="alert"
+        aria-live="assertive"
+      >
+        <div className="flex flex-col items-center gap-3 max-w-md text-center">
+          <div className="w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center">
+            <AlertCircle className="w-6 h-6 text-destructive" />
+          </div>
+          <p className="text-destructive font-medium">{t('error')}</p>
+          <p className="text-sm text-text-secondary">{t('error_description')}</p>
+        </div>
       </div>
     );
   }
@@ -82,7 +101,7 @@ function DashboardContent() {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-12 md:gap-16">
       {showWelcomeBanner && (
         <WelcomeBanner onDismiss={handleDismissBanner} />
       )}
@@ -110,8 +129,25 @@ export default function DashboardPage({ params }: DashboardPageProps) {
   void params;
 
   return (
-    <Suspense fallback={<div className="flex flex-col gap-8">Loading...</div>}>
-      <DashboardContent />
-    </Suspense>
+    <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+      <div className="py-8 md:py-12">
+        <Suspense
+          fallback={
+            <div
+              className="flex items-center justify-center min-h-[400px]"
+              role="status"
+              aria-live="polite"
+            >
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-4 border-accent-brand/30 border-t-accent-brand rounded-full animate-spin" />
+                <p className="text-text-secondary text-sm">Loading...</p>
+              </div>
+            </div>
+          }
+        >
+          <DashboardContent />
+        </Suspense>
+      </div>
+    </div>
   );
 }
