@@ -52,6 +52,8 @@ const mapArticleRowToResponse = (row: unknown): ArticleResponse => {
     publishedAt: rowParse.data.published_at,
     createdAt: rowParse.data.created_at,
     updatedAt: rowParse.data.updated_at,
+    views: rowParse.data.views,
+    timeSpent: rowParse.data.time_spent,
   } satisfies ArticleResponse;
 
   // Validate the response
@@ -362,10 +364,10 @@ export const getDashboardStats = async (
     return domainFailure({ code: articleErrorCodes.notFound, message: 'Profile not found' });
   }
 
-  // Get all articles for the user
+  // Get all articles for the user with views and time_spent
   const { data, error } = await client
     .from(ARTICLES_TABLE)
-    .select('status, created_at')
+    .select('status, created_at, views, time_spent')
     .eq('profile_id', profileId);
 
   if (error) {
@@ -382,6 +384,10 @@ export const getDashboardStats = async (
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
 
+  // Get previous month
+  const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+  const previousMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
   const monthlyArticles = articles.filter((article) => {
     const createdAt = new Date(article.created_at);
     return (
@@ -390,9 +396,31 @@ export const getDashboardStats = async (
     );
   }).length;
 
+  const previousMonthArticles = articles.filter((article) => {
+    const createdAt = new Date(article.created_at);
+    return (
+      createdAt.getMonth() === previousMonth &&
+      createdAt.getFullYear() === previousMonthYear
+    );
+  }).length;
+
   const totalArticles = articles.length;
   const publishedArticles = articles.filter((a) => a.status === 'published').length;
   const draftArticles = articles.filter((a) => a.status === 'draft').length;
+
+  // Calculate total views
+  const totalViews = articles.reduce((sum, article) => sum + (article.views || 0), 0);
+
+  // Calculate previous month views
+  const previousMonthViewsCount = articles
+    .filter((article) => {
+      const createdAt = new Date(article.created_at);
+      return (
+        createdAt.getMonth() === previousMonth &&
+        createdAt.getFullYear() === previousMonthYear
+      );
+    })
+    .reduce((sum, article) => sum + (article.views || 0), 0);
 
   // Estimate saved hours (assuming each article saves 2 hours on average)
   const savedHours = totalArticles * 2;
@@ -403,5 +431,9 @@ export const getDashboardStats = async (
     publishedArticles,
     draftArticles,
     savedHours,
+    monthlyGoal: 10,
+    previousMonthArticles,
+    totalViews,
+    previousMonthViews: previousMonthViewsCount,
   });
 };

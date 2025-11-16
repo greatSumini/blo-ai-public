@@ -76,10 +76,10 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
   });
 
   /**
-   * GET /api/articles/stats
+   * GET /api/articles/dashboard/stats
    * Gets dashboard statistics for the current user
    */
-  app.get('/api/articles/stats', async (c) => {
+  app.get('/api/articles/dashboard/stats', async (c) => {
     const userId = getClerkUserId(c);
 
     const supabase = getSupabase(c);
@@ -90,6 +90,37 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
 
     if (result.ok) {
       logger.info('Dashboard stats retrieved successfully', { userId });
+    }
+
+    return respondWithDomain(c, result);
+  });
+
+  /**
+   * GET /api/articles/recent
+   * Gets recent articles for the current user
+   * Query params: limit (default: 10)
+   */
+  app.get('/api/articles/recent', async (c) => {
+    const userId = getClerkUserId(c);
+    const limitParam = c.req.query('limit');
+    const limit = limitParam ? parseInt(limitParam, 10) : 10;
+
+    const supabase = getSupabase(c);
+    const logger = getLogger(c);
+
+    // List recent articles with default limit
+    const result = await listArticles(supabase, userId, {
+      limit,
+      offset: 0,
+      sortBy: 'updated_at',
+      sortOrder: 'desc',
+    });
+
+    if (result.ok) {
+      logger.info('Recent articles retrieved successfully', {
+        userId,
+        count: result.data.articles.length,
+      });
     }
 
     return respondWithDomain(c, result);

@@ -101,6 +101,8 @@ export const ArticleTableRowSchema = z.object({
   published_at: z.string().nullable(),
   created_at: z.string(),
   updated_at: z.string(),
+  views: z.number().default(0),
+  time_spent: z.number().default(0),
 });
 
 export type ArticleRow = z.infer<typeof ArticleTableRowSchema>;
@@ -124,6 +126,8 @@ export const ArticleResponseSchema = z.object({
   publishedAt: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  views: z.number().default(0),
+  timeSpent: z.number().default(0),
 });
 
 export type ArticleResponse = z.infer<typeof ArticleResponseSchema>;
@@ -190,11 +194,18 @@ export type ListArticlesResponse = z.infer<typeof ListArticlesResponseSchema>;
 
 // Dashboard Stats Response Schema
 export const DashboardStatsResponseSchema = z.object({
+  // 기존 필드 (유지)
   monthlyArticles: z.number(),
   totalArticles: z.number(),
   publishedArticles: z.number(),
   draftArticles: z.number(),
   savedHours: z.number(),
+
+  // 새로 추가되는 필드
+  monthlyGoal: z.number().default(10),
+  previousMonthArticles: z.number(),
+  totalViews: z.number(),
+  previousMonthViews: z.number(),
 });
 
 export type DashboardStatsResponse = z.infer<typeof DashboardStatsResponseSchema>;
