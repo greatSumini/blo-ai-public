@@ -29,6 +29,9 @@ importers:
       '@clerk/nextjs':
         specifier: ^6.34.5
         version: 6.35.1(next@15.2.3(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@clerk/types':
+        specifier: ^4.100.0
+        version: 4.100.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@hono/clerk-auth':
         specifier: ^3.0.3
         version: 3.0.3(hono@4.10.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
