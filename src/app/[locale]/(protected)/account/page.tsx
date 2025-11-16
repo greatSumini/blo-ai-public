@@ -1,7 +1,6 @@
 "use client";
 
-import { useTranslations } from 'next-intl';
-import { PageLayout } from "@/components/layout/page-layout";
+import { AccountPage as AccountPageComponent } from "@/features/account/components/account-page";
 
 type AccountPageProps = {
   params: Promise<Record<string, never>>;
@@ -9,15 +8,6 @@ type AccountPageProps = {
 
 export default function AccountPage({ params }: AccountPageProps) {
   void params;
-  const t = useTranslations();
 
-  return (
-    <PageLayout
-      title={t("common.account_management")}
-      description={t("common.coming_soon")}
-      maxWidthClassName="max-w-3xl"
-    >
-      <></>
-    </PageLayout>
-  );
+  return <AccountPageComponent />;
 }

@@ -1,6 +1,7 @@
 {
   "common": {
     "account_management": "계정 관리",
+    "account_management_description": "프로필, 콘텐츠 설정 및 알림을 관리하세요.",
     "coming_soon": "이 페이지는 추후 구현될 예정입니다.",
     "login": "로그인",
     "brand_name": "SEO24",
@@ -683,6 +684,66 @@
         "sitemap": "사이트맵",
         "accessibility": "접근성"
       }
+    }
+  },
+  "account": {
+    "autoSave": {
+      "saving": "저장 중...",
+      "saved": "{time} 저장됨",
+      "error": "저장 실패"
+    },
+    "profile": {
+      "title": "프로필 정보",
+      "description": "개인 정보와 아바타를 관리하세요.",
+      "loading": "프로필 정보를 불러오는 중...",
+      "fields": {
+        "fullName": "이름",
+        "fullNamePlaceholder": "이름을 입력하세요",
+        "email": "이메일",
+        "emailHint": "이메일은 인증 제공자(Clerk)에서 관리됩니다.",
+        "joinedAt": "가입일",
+        "uploadAvatar": "프로필 사진 업로드"
+      },
+      "imageUploadNotImplemented": "이미지 업로드 준비 중",
+      "imageUploadComingSoon": "곧 사용 가능합니다",
+      "imageUploadFailed": "이미지 업로드 실패",
+      "imageUploadErrorDesc": "다시 시도해주세요"
+    },
+    "contentPreferences": {
+      "title": "콘텐츠 설정",
+      "description": "AI가 생성하는 콘텐츠의 브랜드 톤과 작성 스타일을 설정하세요.",
+      "fields": {
+        "brandName": "브랜드 이름",
+        "brandNamePlaceholder": "예: 테크블로그, 우리회사",
+        "brandDescription": "브랜드 설명",
+        "brandDescriptionPlaceholder": "브랜드의 성격과 가치를 설명해주세요...",
+        "targetAudience": "타겟 독자",
+        "targetAudiencePlaceholder": "누구를 위해 글을 쓰나요? (예: 개발자, 마케터, 학생)",
+        "tone": "작성 톤",
+        "toneOptions": {
+          "friendly": "친근한 - 따뜻하고 다가가기 쉬운",
+          "professional": "전문적 - 격식 있고 권위 있는",
+          "casual": "캐주얼 - 편안하고 대화하는 듯한",
+          "formal": "정중한 - 학술적이고 정확한"
+        },
+        "language": "선호 언어",
+        "languageOptions": {
+          "ko": "한국어",
+          "en": "영어"
+        }
+      }
+    },
+    "notifications": {
+      "title": "알림 설정",
+      "description": "받고 싶은 알림을 선택하세요.",
+      "fields": {
+        "emailUpdates": "이메일 업데이트",
+        "emailUpdatesDesc": "새로운 기능과 업데이트에 대한 알림을 받습니다.",
+        "weeklyReport": "주간 리포트",
+        "weeklyReportDesc": "매주 활동 요약을 받아봅니다."
+      },
+      "updateFailed": "설정 업데이트 실패",
+      "updateErrorDesc": "네트워크를 확인하고 다시 시도해주세요"
     }
   }
 }

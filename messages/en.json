@@ -1,6 +1,7 @@
 {
   "common": {
     "account_management": "Account Management",
+    "account_management_description": "Manage your profile, content preferences, and notifications.",
     "coming_soon": "This page will be implemented soon.",
     "login": "Log in",
     "brand_name": "SEO24",
@@ -683,6 +684,66 @@
         "sitemap": "Sitemap",
         "accessibility": "Accessibility"
       }
+    }
+  },
+  "account": {
+    "autoSave": {
+      "saving": "Saving...",
+      "saved": "Saved {time}",
+      "error": "Failed to save"
+    },
+    "profile": {
+      "title": "Profile Information",
+      "description": "Manage your personal information and avatar.",
+      "loading": "Loading profile information...",
+      "fields": {
+        "fullName": "Full Name",
+        "fullNamePlaceholder": "Enter your name",
+        "email": "Email",
+        "emailHint": "Email is managed by your authentication provider (Clerk).",
+        "joinedAt": "Member Since",
+        "uploadAvatar": "Upload profile picture"
+      },
+      "imageUploadNotImplemented": "Image upload coming soon",
+      "imageUploadComingSoon": "This feature will be available soon",
+      "imageUploadFailed": "Image upload failed",
+      "imageUploadErrorDesc": "Please try again"
+    },
+    "contentPreferences": {
+      "title": "Content Preferences",
+      "description": "Set your brand voice and writing style for AI-generated content.",
+      "fields": {
+        "brandName": "Brand Name",
+        "brandNamePlaceholder": "e.g., TechBlog, MyCompany",
+        "brandDescription": "Brand Description",
+        "brandDescriptionPlaceholder": "Describe your brand's personality and values...",
+        "targetAudience": "Target Audience",
+        "targetAudiencePlaceholder": "Who are you writing for? (e.g., developers, marketers, students)",
+        "tone": "Writing Tone",
+        "toneOptions": {
+          "friendly": "Friendly - Warm and approachable",
+          "professional": "Professional - Formal and authoritative",
+          "casual": "Casual - Relaxed and conversational",
+          "formal": "Formal - Academic and precise"
+        },
+        "language": "Preferred Language",
+        "languageOptions": {
+          "ko": "Korean",
+          "en": "English"
+        }
+      }
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "description": "Choose what updates you want to receive.",
+      "fields": {
+        "emailUpdates": "Email Updates",
+        "emailUpdatesDesc": "Receive notifications about new features and updates.",
+        "weeklyReport": "Weekly Report",
+        "weeklyReportDesc": "Get a summary of your activity every week."
+      },
+      "updateFailed": "Failed to update settings",
+      "updateErrorDesc": "Please check your network and try again"
     }
   }
 }
