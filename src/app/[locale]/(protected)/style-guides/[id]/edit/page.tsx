@@ -1,41 +1,73 @@
 "use client";
 
 import { use } from "react";
-import { useRouter } from '@/i18n/navigation';
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { useRouter } from "@/i18n/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
+import { PageLayout } from "@/components/layout/page-layout";
 import { OnboardingWizard } from "@/features/onboarding/components/onboarding-wizard";
-import type { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
+import { EditSkeleton } from "@/features/style-guides/components/edit-skeleton";
+import { ErrorDisplay } from "@/components/error-display";
 import {
   useStyleGuide,
   useUpdateStyleGuide,
 } from "@/features/articles/hooks/useStyleGuideQuery";
-import { useTranslations } from 'next-intl';
-import { PageLayout } from "@/components/layout/page-layout";
+import type { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
+import type { StyleGuideResponse } from "@/features/onboarding/backend/schema";
+import { ROUTES } from "@/lib/routes";
 
 type EditStyleGuidePageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default function EditStyleGuidePage({ params }: EditStyleGuidePageProps) {
+/**
+ * StyleGuideResponse를 OnboardingFormData로 변환
+ */
+function transformGuideToFormData(
+  guide: StyleGuideResponse
+): OnboardingFormData {
+  return {
+    brandName: guide.brandName,
+    brandDescription: guide.brandDescription,
+    personality: guide.personality,
+    formality: guide.formality,
+    targetAudience: guide.targetAudience,
+    painPoints: guide.painPoints,
+    language: guide.language,
+    tone: guide.tone,
+    contentLength: guide.contentLength,
+    readingLevel: guide.readingLevel,
+    notes: guide.notes || "", // nullable 처리
+  };
+}
+
+export default function EditStyleGuidePage({
+  params,
+}: EditStyleGuidePageProps) {
   const resolvedParams = use(params);
   const guideId = resolvedParams.id;
   const router = useRouter();
   const { toast } = useToast();
   const t = useTranslations();
 
-  const { data: guide, isLoading, isError } = useStyleGuide(guideId);
+  const {
+    data: guide,
+    isLoading,
+    isError,
+    refetch,
+  } = useStyleGuide(guideId);
   const updateStyleGuide = useUpdateStyleGuide();
 
   const handleComplete = async (data: OnboardingFormData) => {
     try {
       await updateStyleGuide.mutateAsync({ guideId, data });
+
       toast({
         title: t("common.success"),
         description: t("styleGuide.update.success.desc"),
       });
-      router.push("/style-guide");
+
+      router.push(ROUTES.STYLE_GUIDES);
     } catch (error) {
       toast({
         title: t("common.error"),
@@ -48,61 +80,48 @@ export default function EditStyleGuidePage({ params }: EditStyleGuidePageProps) 
     }
   };
 
+  // 로딩 상태
   if (isLoading) {
     return (
       <PageLayout
         title={t("styleGuide.edit.title")}
-        description={t("styleGuide.edit.hint")}
-        maxWidthClassName="max-w-4xl"
+        description={t("styleGuide.edit.description")}
+        maxWidthClassName="max-w-7xl"
       >
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="flex flex-col items-center gap-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-muted-foreground">{t("styleGuide.loading")}</p>
-          </div>
-        </div>
+        <EditSkeleton />
       </PageLayout>
     );
   }
 
+  // 에러 상태
   if (isError || !guide) {
     return (
       <PageLayout
         title={t("styleGuide.edit.title")}
-        description={t("styleGuide.edit.hint")}
-        maxWidthClassName="max-w-4xl"
+        description={t("styleGuide.edit.description")}
+        maxWidthClassName="max-w-7xl"
       >
-        <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-          <p className="text-red-500">{t("styleGuide.error.load")}</p>
-          <Button onClick={() => router.back()}>{t("common.back")}</Button>
-        </div>
+        <ErrorDisplay
+          message={t("styleGuide.error.load")}
+          onRetry={() => refetch()}
+          onBack={() => router.push(ROUTES.STYLE_GUIDES)}
+        />
       </PageLayout>
     );
   }
 
+  // 메인 콘텐츠
   return (
     <PageLayout
       title={t("styleGuide.edit.title")}
-      description={t("styleGuide.edit.hint")}
-      maxWidthClassName="max-w-4xl"
-      actions={
-        <div className="flex gap-2">
-          <Button onClick={() => router.push("/style-guides/new")}>
-            {t("styleGuide.create_new")}
-          </Button>
-          <Button variant="outline" onClick={() => router.back()}>
-            {t("styleGuide.cancel")}
-          </Button>
-        </div>
-      }
+      description={guide.brandName || t("styleGuide.edit.description")}
+      maxWidthClassName="max-w-7xl"
     >
-      <div className="mb-4">
-        <Button variant="ghost" onClick={() => router.back()} className="mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          {t("common.back")}
-        </Button>
-      </div>
-      {/* TODO: 스타일 가이드 편집 폼/위저드 추가 예정 */}
+      <OnboardingWizard
+        initialData={transformGuideToFormData(guide)}
+        mode="edit"
+        onComplete={handleComplete}
+      />
     </PageLayout>
   );
 }

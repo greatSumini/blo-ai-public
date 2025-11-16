@@ -117,7 +117,8 @@
     },
     "edit": {
       "title": "스타일 가이드 편집",
-      "hint": "현재 스타일 가이드를 다시 생성하려면 새 가이드 생성 페이지로 이동하세요."
+      "hint": "현재 스타일 가이드를 다시 생성하려면 새 가이드 생성 페이지로 이동하세요.",
+      "description": "스타일 가이드의 내용을 수정합니다."
     },
     "search": {
       "placeholder": "브랜드명으로 검색...",
@@ -362,6 +363,7 @@
       "button_previous": "이전",
       "button_next": "다음",
       "button_complete": "완료",
+      "button_save": "저장",
       "button_submitting": "생성 중...",
       "step_change_announcement": "{current}/{total} 단계",
       "step_badge": "{current}/{total} 단계"

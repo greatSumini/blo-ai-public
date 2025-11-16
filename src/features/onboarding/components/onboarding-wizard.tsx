@@ -34,16 +34,33 @@ import { TOTAL_STEPS } from "../lib/constants";
 
 interface OnboardingWizardProps {
   onComplete: (data: OnboardingFormData) => Promise<void>;
+
+  /**
+   * 편집 모드에서 사용할 초기 데이터
+   * 제공되지 않으면 기본값(defaultOnboardingValues) 사용
+   */
+  initialData?: OnboardingFormData;
+
+  /**
+   * 위저드 모드
+   * - "create": 신규 생성 (기본값)
+   * - "edit": 편집
+   */
+  mode?: "create" | "edit";
 }
 
-export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
+export function OnboardingWizard({
+  onComplete,
+  initialData,
+  mode = "create",
+}: OnboardingWizardProps) {
   const t = useTranslations("onboarding.wizard");
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<OnboardingFormData>({
     resolver: zodResolver(onboardingSchema),
-    defaultValues: defaultOnboardingValues,
+    defaultValues: initialData || defaultOnboardingValues,
     mode: "onChange",
   });
 
@@ -277,7 +294,11 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         borderRadius: "8px",
                       }}
                     >
-                      {isSubmitting ? t("button_submitting") : t("button_complete")}
+                      {isSubmitting
+                        ? t("button_submitting")
+                        : mode === "edit"
+                        ? t("button_save")
+                        : t("button_complete")}
                     </Button>
                   )}
                 </div>
@@ -370,7 +391,11 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         borderRadius: "8px",
                       }}
                     >
-                      {isSubmitting ? t("button_submitting") : t("button_complete")}
+                      {isSubmitting
+                        ? t("button_submitting")
+                        : mode === "edit"
+                        ? t("button_save")
+                        : t("button_complete")}
                     </Button>
                   )}
                 </div>

@@ -117,7 +117,8 @@
     },
     "edit": {
       "title": "Edit Style Guide",
-      "hint": "To regenerate your style guide, go to the new guide creation page."
+      "hint": "To regenerate your style guide, go to the new guide creation page.",
+      "description": "Modify the content of your style guide."
     },
     "search": {
       "placeholder": "Search by brand name...",
@@ -362,6 +363,7 @@
       "button_previous": "Previous",
       "button_next": "Next",
       "button_complete": "Complete",
+      "button_save": "Save",
       "button_submitting": "Creating...",
       "step_change_announcement": "Step {current} of {total}",
       "step_badge": "Step {current} of {total}"
