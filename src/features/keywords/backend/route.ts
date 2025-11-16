@@ -12,6 +12,7 @@ import {
   CreateKeywordSchema,
   BulkCreateKeywordsSchema,
   KeywordSuggestionsSchema,
+  DeleteKeywordSchema,
 } from "./schema";
 import {
   listKeywords,
@@ -19,6 +20,7 @@ import {
   bulkCreateKeywords,
   fetchKeywordSuggestions,
   fetchLongTailSuggestions,
+  deleteKeyword,
 } from "./service";
 
 export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
@@ -138,6 +140,28 @@ export const registerKeywordsRoutes = (app: Hono<AppEnv>) => {
     }
 
     const result = await fetchLongTailSuggestions(parsedBody.data);
+    return respondWithDomain(c, result);
+  });
+
+  // DELETE /api/keywords/:id
+  app.delete("/api/keywords/:id", async (c) => {
+    const id = c.req.param("id");
+    const parsedId = DeleteKeywordSchema.safeParse({ id });
+
+    if (!parsedId.success) {
+      return c.json(
+        failure(
+          400,
+          "INVALID_KEYWORD_ID",
+          "Invalid keyword ID",
+          parsedId.error.format()
+        ),
+        400
+      );
+    }
+
+    const supabase = getSupabase(c);
+    const result = await deleteKeyword(supabase, parsedId.data);
     return respondWithDomain(c, result);
   });
 };

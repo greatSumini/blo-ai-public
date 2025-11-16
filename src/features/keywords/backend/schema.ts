@@ -24,6 +24,10 @@ export const KeywordSuggestionsSchema = z.object({
   context: z.string().max(1000).optional(),
 });
 
+export const DeleteKeywordSchema = z.object({
+  id: z.string().uuid(),
+});
+
 // ===== 응답 스키마 =====
 export const KeywordSchema = z.object({
   id: z.string().uuid(),
@@ -59,6 +63,7 @@ export type UpdateKeywordInput = z.infer<typeof UpdateKeywordSchema>;
 export type ListKeywordsInput = z.infer<typeof ListKeywordsSchema>;
 export type BulkCreateKeywordsInput = z.infer<typeof BulkCreateKeywordsSchema>;
 export type KeywordSuggestionsInput = z.infer<typeof KeywordSuggestionsSchema>;
+export type DeleteKeywordInput = z.infer<typeof DeleteKeywordSchema>;
 export type Keyword = z.infer<typeof KeywordSchema>;
 export type KeywordListResponse = z.infer<typeof KeywordListResponseSchema>;
 export type SuggestionItem = z.infer<typeof SuggestionItemSchema>;

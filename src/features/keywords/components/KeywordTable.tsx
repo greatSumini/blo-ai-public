@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDebounce } from "react-use";
 import {
   Table,
@@ -10,19 +10,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, ChevronLeft, ChevronRight, Pencil, Trash2 } from "lucide-react";
-import { useKeywordList } from "@/features/keywords/hooks/useKeywordQuery";
-import { format } from "date-fns";
-import { useTranslations } from "next-intl";
+import { Copy, Trash2 } from "lucide-react";
+import { useKeywordList, useDeleteKeyword } from "@/features/keywords/hooks/useKeywordQuery";
+import { format, formatDistanceToNow } from "date-fns";
+import { ko, enUS } from "date-fns/locale";
+import { useTranslations, useLocale } from "next-intl";
+import { useToast } from "@/hooks/use-toast";
+import { TableSkeleton } from "./TableSkeleton";
+import { EmptyState } from "./EmptyState";
+import { DeleteDialog } from "./DeleteDialog";
+import { SearchSection } from "./SearchSection";
+import { Pagination } from "./Pagination";
 
 export function KeywordTable() {
   const t = useTranslations("keywords");
+  const locale = useLocale();
+  const { toast } = useToast();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [sourceFilter, setSourceFilter] = useState<"all" | "manual" | "dataforseo">("all");
   const [page, setPage] = useState(1);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; phrase: string } | null>(null);
+
   const limit = 20;
 
   useDebounce(
@@ -35,145 +47,181 @@ export function KeywordTable() {
   );
 
   const { data, isLoading, error } = useKeywordList(debouncedQuery, page, limit);
+  const deleteMutation = useDeleteKeyword();
 
-  const handlePreviousPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
+  const dateLocale = locale === "ko" ? ko : enUS;
+
+  const handleCopy = async (phrase: string) => {
+    await navigator.clipboard.writeText(phrase);
+    toast({
+      title: t("table.copySuccess"),
+      description: t("table.copySuccessDesc", { phrase }),
+    });
+  };
+
+  const handleDeleteClick = (id: string, phrase: string) => {
+    setDeleteTarget({ id, phrase });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
+
+    try {
+      await deleteMutation.mutateAsync(deleteTarget.id);
+      toast({
+        title: t("delete.successTitle"),
+        description: t("delete.successDesc", { phrase: deleteTarget.phrase }),
+      });
+      setDeleteTarget(null);
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.error?.message ||
+        error?.message ||
+        t("delete.errorFallback");
+      toast({
+        title: t("delete.errorTitle"),
+        description: errorMessage,
+        variant: "destructive",
+      });
     }
   };
 
-  const handleNextPage = () => {
-    if (data?.hasMore) {
-      setPage(page + 1);
-    }
-  };
+  const filteredItems =
+    sourceFilter === "all"
+      ? data?.items || []
+      : data?.items.filter((item) => item.source === sourceFilter) || [];
+
+  const totalFiltered = filteredItems.length;
+  const hasData = !isLoading && !error && data && filteredItems.length > 0;
+  const isEmpty = !isLoading && !error && (!data || data.items.length === 0);
+  const isNoResults = !isLoading && !error && data && data.items.length > 0 && filteredItems.length === 0;
 
   return (
     <div className="space-y-4">
-      {/* Search Input */}
-      <div className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <Input
-            type="text"
-            placeholder={t("table.searchPlaceholder")}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-      </div>
+      {/* Search Section */}
+      <SearchSection
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        sourceFilter={sourceFilter}
+        onSourceFilterChange={setSourceFilter}
+      />
+
+      {/* Total Count */}
+      {hasData && (
+        <p className="text-sm text-gray-600">
+          {t("table.totalCount", { count: totalFiltered })}
+        </p>
+      )}
 
       {/* Table */}
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t("table.columnKeyword")}</TableHead>
-              <TableHead>{t("table.columnSource")}</TableHead>
-              <TableHead>{t("table.columnCreatedAt")}</TableHead>
-              <TableHead className="text-right">{t("table.columnActions")}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={4} className="text-center py-8">
-                  {t("table.loading")}
-                </TableCell>
+      {isLoading ? (
+        <TableSkeleton />
+      ) : error ? (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-8 text-center">
+          <p className="text-base font-medium text-red-900 mb-1">
+            {t("table.loadError")}
+          </p>
+          <p className="text-sm text-red-600">
+            {error instanceof Error ? error.message : t("table.loadErrorFallback")}
+          </p>
+        </div>
+      ) : isEmpty ? (
+        <EmptyState type="no-keywords" />
+      ) : isNoResults ? (
+        <EmptyState type="no-results" />
+      ) : (
+        <div className="rounded-lg border border-gray-200">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-gray-50">
+                <TableHead className="w-[50%]">{t("table.columnKeyword")}</TableHead>
+                <TableHead className="w-[20%]">{t("table.columnSource")}</TableHead>
+                <TableHead className="w-[20%]">{t("table.columnCreatedAt")}</TableHead>
+                <TableHead className="w-[10%] text-right">{t("table.columnActions")}</TableHead>
               </TableRow>
-            ) : error ? (
-              <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-red-500">
-                  {t("table.loadError")}
-                </TableCell>
-              </TableRow>
-            ) : !data || data.items.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-gray-500">
-                  {t("table.noResults")}
-                </TableCell>
-              </TableRow>
-            ) : (
-              data.items.map((keyword) => (
-                <TableRow key={keyword.id}>
-                  <TableCell className="font-medium">{keyword.phrase}</TableCell>
+            </TableHeader>
+            <TableBody>
+              {filteredItems.map((keyword) => (
+                <TableRow
+                  key={keyword.id}
+                  className="transition-colors hover:bg-gray-50"
+                >
+                  <TableCell>
+                    <span className="font-medium text-gray-900">
+                      {keyword.phrase}
+                    </span>
+                  </TableCell>
                   <TableCell>
                     <Badge
                       variant={keyword.source === "manual" ? "default" : "secondary"}
                     >
-                      {keyword.source === "manual" ? t("table.sourceManual") : t("table.sourceAi")}
+                      {keyword.source === "manual"
+                        ? t("table.sourceManual")
+                        : t("table.sourceAi")}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {format(new Date(keyword.createdAt), "yyyy-MM-dd")}
+                    <div className="space-y-1">
+                      <div className="text-sm text-gray-900">
+                        {format(new Date(keyword.createdAt), "yyyy-MM-dd")}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {formatDistanceToNow(new Date(keyword.createdAt), {
+                          addSuffix: true,
+                          locale: dateLocale,
+                        })}
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex items-center justify-end gap-1">
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => {
-                          // TODO: Edit functionality
-                          console.log("Edit keyword:", keyword.id);
-                        }}
+                        onClick={() => handleCopy(keyword.phrase)}
+                        className="transition-colors"
+                        aria-label={t("table.copyAria", { phrase: keyword.phrase })}
                       >
-                        <Pencil className="h-4 w-4" />
+                        <Copy className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => {
-                          // TODO: Delete functionality
-                          console.log("Delete keyword:", keyword.id);
-                        }}
+                        onClick={() => handleDeleteClick(keyword.id, keyword.phrase)}
+                        className="text-red-600 hover:text-red-700 transition-colors"
+                        aria-label={t("table.deleteAria", { phrase: keyword.phrase })}
                       >
-                        <Trash2 className="h-4 w-4 text-red-500" />
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      {/* Pagination */}
-      {data && data.items.length > 0 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-500">
-            {t("table.paginationInfo", {
-              total: data.total,
-              start: (page - 1) * limit + 1,
-              end: Math.min(page * limit, data.total)
-            })}
-          </p>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handlePreviousPage}
-              disabled={page === 1}
-            >
-              <ChevronLeft className="h-4 w-4" />
-              {t("table.previous")}
-            </Button>
-            <span className="text-sm">
-              {page} / {Math.ceil(data.total / limit)}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleNextPage}
-              disabled={!data.hasMore}
-            >
-              {t("table.next")}
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       )}
+
+      {/* Pagination */}
+      {hasData && data && (
+        <Pagination
+          page={page}
+          totalPages={Math.ceil(data.total / limit)}
+          totalItems={data.total}
+          itemsPerPage={limit}
+          onPageChange={setPage}
+          hasMore={data.hasMore}
+        />
+      )}
+
+      {/* Delete Dialog */}
+      <DeleteDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        onConfirm={handleDeleteConfirm}
+        keywordPhrase={deleteTarget?.phrase || ""}
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }

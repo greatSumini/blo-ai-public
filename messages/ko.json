@@ -225,23 +225,41 @@
   },
   "keywords": {
     "title": "키워드 관리",
-    "description": "SEO를 위한 키워드를 관리하고 추천받으세요.",
-    "suggestions": "연관 검색어 조회",
-    "new_keyword": "새 키워드",
+    "description": "블로그 콘텐츠 최적화를 위한 키워드를 관리하고 AI 추천을 받으세요.",
+    "suggestions": "AI 추천",
+    "new_keyword": "키워드 추가",
     "table": {
       "searchPlaceholder": "키워드 검색...",
+      "clearSearch": "검색어 지우기",
+      "filterAll": "전체",
+      "filterManual": "수동",
+      "filterAi": "AI",
       "columnKeyword": "키워드",
-      "columnVolume": "검색량",
-      "columnCompetition": "경쟁도",
-      "columnActions": "작업",
+      "columnSource": "소스",
+      "columnCreatedAt": "생성일",
+      "columnActions": "액션",
+      "sourceManual": "수동",
+      "sourceAi": "AI",
+      "totalCount": "총 {count}개의 키워드",
       "loading": "키워드를 불러오는 중...",
-      "noResults": "검색 결과가 없습니다.",
-      "deleteConfirm": "이 키워드를 삭제하시겠습니까?",
+      "loadError": "키워드를 불러오는 중 오류가 발생했습니다",
+      "loadErrorFallback": "서버와 통신할 수 없습니다. 잠시 후 다시 시도해주세요.",
+      "noResultsTitle": "검색 결과가 없습니다",
+      "noResultsDesc": "다른 검색어를 시도하거나 필터를 조정해보세요.",
+      "emptyTitle": "아직 키워드가 없습니다",
+      "emptyDesc": "첫 키워드를 추가하거나 AI 추천을 받아보세요.",
+      "copySuccess": "복사 완료",
+      "copySuccessDesc": "\"{phrase}\"가 클립보드에 복사되었습니다.",
+      "copyAria": "{phrase} 복사",
+      "deleteAria": "{phrase} 삭제",
       "paginationInfo": "{total}개 중 {start}-{end}",
-      "itemsPerPage": "페이지당 항목 수"
+      "previous": "이전",
+      "next": "다음"
     },
     "create": {
       "title": "새 키워드 추가",
+      "description": "블로그에 사용할 키워드를 직접 추가합니다.",
+      "trigger": "키워드 추가",
       "fieldLabel": "키워드",
       "fieldPlaceholder": "키워드를 입력하세요",
       "cancel": "취소",
@@ -249,22 +267,31 @@
       "saving": "저장 중...",
       "validation": {
         "required": "키워드를 입력해주세요.",
-        "minLength": "최소 2자 이상 입력해주세요."
+        "maxLength": "키워드는 100자 이내로 입력해주세요."
       },
       "toast": {
-        "success": {
-          "title": "키워드 추가 완료",
-          "desc": "새 키워드가 추가되었습니다."
-        },
-        "error": {
-          "title": "추가 실패",
-          "desc": "키워드 추가 중 오류가 발생했습니다."
-        }
+        "successTitle": "키워드 추가 완료",
+        "successDescription": "\"{phrase}\"가 추가되었습니다.",
+        "errorTitle": "키워드 추가 실패",
+        "errorFallback": "키워드를 추가할 수 없습니다. 잠시 후 다시 시도해주세요."
       }
+    },
+    "delete": {
+      "title": "키워드 삭제",
+      "description": "\"{phrase}\" 키워드를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "cancel": "취소",
+      "confirm": "삭제",
+      "deleting": "삭제 중...",
+      "successTitle": "키워드 삭제 완료",
+      "successDesc": "\"{phrase}\"가 삭제되었습니다.",
+      "errorTitle": "키워드 삭제 실패",
+      "errorFallback": "키워드를 삭제할 수 없습니다. 잠시 후 다시 시도해주세요."
     },
     "picker": {
       "searchPlaceholder": "키워드 검색...",
+      "searchInputPlaceholder": "키워드 검색...",
       "loading": "키워드를 불러오는 중...",
+      "searching": "검색 중...",
       "noResults": "키워드가 없습니다.",
       "selectKeyword": "키워드 선택",
       "selected": "선택됨"
@@ -272,36 +299,73 @@
     "suggestions": {
       "title": "AI 키워드 추천",
       "subtitle": "주제와 관련된 롱테일 키워드를 추천받으세요.",
+      "trigger": "추천받기",
+      "stepInput": "키워드 입력",
+      "stepResults": "결과",
       "keywordLabel": "주제 키워드",
       "keywordPlaceholder": "예: 블로그 작성법",
-      "fetchButton": "추천 받기",
+      "keywordHelp": "추천받고 싶은 주 키워드를 입력하세요",
+      "contextLabel": "컨텍스트 (선택)",
+      "contextPlaceholder": "추가 정보를 입력하면 더 정확한 추천을 받을 수 있습니다",
+      "contextHelp": "추가 정보를 입력하면 더 정확한 추천을 받을 수 있습니다",
+      "fetchButton": "추천받기",
       "fetching": "추천 중...",
+      "fetchHint": "잠시만 기다려주세요...",
+      "generate": "추천받기",
+      "generating": "추천 중...",
       "close": "닫기",
+      "loadingTitle": "추천을 가져오는 중...",
+      "loadingDescription": "잠시만 기다려주세요",
+      "listTitle": "추천 키워드 ({count}개)",
+      "selectedCount": "선택됨: {count}개",
+      "addSelected": "선택한 키워드 추가",
+      "addAll": "전체 추가",
       "addKeyword": "키워드 추가",
       "adding": "추가 중...",
-      "results": {
-        "title": "추천 키워드",
-        "empty": "추천 결과가 없습니다."
+      "emptyResults": "추천 결과가 없습니다. 다른 키워드로 시도해보세요.",
+      "notFetchedYet": "키워드를 입력하고 \"추천받기\"를 클릭하여 시작하세요",
+      "noResults": "추천 결과가 없습니다.",
+      "competition": "경쟁도",
+      "competition_details": {
+        "high": "높음",
+        "medium": "중간",
+        "low": "낮음"
       },
       "errors": {
         "validation": {
           "required": "키워드를 입력해주세요.",
-          "minLength": "최소 2자 이상 입력해주세요."
+          "minLength": "키워드는 2자 이상이어야 합니다.",
+          "keywordRequired": "키워드를 입력해주세요",
+          "keywordMaxLength": "키워드는 100자 이내여야 합니다",
+          "contextMaxLength": "컨텍스트는 1000자 이내여야 합니다"
         },
+        "invalidCredentials": "유효하지 않은 DataForSEO 자격증명",
+        "rateLimit": "요청 제한 초과. 잠시 후 다시 시도하세요",
+        "timeout": "요청 시간 초과. 다시 시도하세요",
+        "apiError": "키워드 추천을 가져오는 중 오류가 발생했습니다",
+        "fallback": "예기치 않은 오류가 발생했습니다",
         "fetch": {
           "title": "추천 실패",
           "desc": "키워드 추천 중 오류가 발생했습니다."
         },
         "add": {
           "title": "추가 실패",
-          "desc": "키워드 추가 중 오류가 발생했습니다."
+          "desc": "키워드를 추가하는 중 오류가 발생했습니다."
         }
       },
       "toast": {
-        "success": {
-          "title": "키워드 추가 완료",
-          "desc": "\"{keyword}\" 키워드가 추가되었습니다."
-        }
+        "fetchSuccessTitle": "추천 완료",
+        "fetchSuccessDescription": "{count}개의 키워드 추천을 받았습니다",
+        "fetchErrorTitle": "추천 실패",
+        "noSelectionTitle": "선택된 키워드 없음",
+        "noSelectionDescription": "추가할 키워드를 최소 1개 이상 선택해주세요",
+        "addSuccessTitle": "키워드 추가 완료",
+        "addSuccessDescription": "{created}개의 키워드가 추가되었습니다 ({skipped}개는 이미 존재)",
+        "addErrorTitle": "추가 실패",
+        "successTitle": "키워드 추가 완료",
+        "successDescription": "{count}개의 키워드가 추가되었습니다.",
+        "errorTitle": "추천 실패",
+        "errorFallback": "키워드 추천 중 오류가 발생했습니다."
       }
     }
   },

@@ -26,19 +26,19 @@ export default function KeywordsPage({ params }: KeywordsPageProps) {
           <SuggestionsDialog>
             <Button variant="outline">
               <Lightbulb className="mr-2 h-4 w-4" />
-              {t('suggestions')}
+              {t('suggestions.title')}
             </Button>
           </SuggestionsDialog>
           <KeywordCreateDialog>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              {t('new_keyword')}
+              {t('create.trigger')}
             </Button>
           </KeywordCreateDialog>
         </>
       }
     >
-      <Card className="p-6" style={{ borderColor: "#E1E5EA", borderRadius: "12px" }}>
+      <Card className="p-6 border-gray-200 rounded-xl">
         <KeywordTable />
       </Card>
     </PageLayout>

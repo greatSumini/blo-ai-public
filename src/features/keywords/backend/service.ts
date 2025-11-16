@@ -17,6 +17,7 @@ import type {
   KeywordSuggestionsInput,
   KeywordSuggestionsResponse,
   SuggestionItem,
+  DeleteKeywordInput,
 } from "./schema";
 import { d4seo } from "../lib/dataforseo";
 
@@ -295,6 +296,44 @@ export async function fetchLongTailSuggestions(input: KeywordSuggestionsInput) {
     cached: false,
     cacheExpiresAt: null,
   });
+}
+
+// ===== 키워드 삭제 =====
+export async function deleteKeyword(
+  supabase: SupabaseClient,
+  input: DeleteKeywordInput
+): Promise<DomainResult<{ deleted: true; id: string }, KeywordDomainError>> {
+  try {
+    const { data, error } = await supabase
+      .from('keywords')
+      .delete()
+      .eq('id', input.id)
+      .select()
+      .single();
+
+    if (error) {
+      return domainFailure({
+        code: keywordErrorCodes.deleteError,
+        message: `Failed to delete keyword: ${error.message}`,
+        details: error,
+      });
+    }
+
+    if (!data) {
+      return domainFailure({
+        code: keywordErrorCodes.notFound,
+        message: 'Keyword not found',
+      });
+    }
+
+    return domainSuccess({ deleted: true, id: input.id });
+  } catch (err) {
+    return domainFailure({
+      code: keywordErrorCodes.deleteError,
+      message: "Unexpected error deleting keyword",
+      details: err
+    });
+  }
 }
 
 function buildSuggestionsPrompt(keyword: string, context?: string): string {

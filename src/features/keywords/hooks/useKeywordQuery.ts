@@ -72,3 +72,18 @@ export function useBulkCreateKeywords() {
     },
   });
 }
+
+// ===== 키워드 삭제 =====
+export function useDeleteKeyword() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiClient.delete(`/api/keywords/${id}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["keywords", "list"] });
+    },
+  });
+}

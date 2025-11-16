@@ -225,23 +225,39 @@
   },
   "keywords": {
     "title": "Keywords",
-    "description": "Manage and get suggestions for SEO keywords.",
-    "suggestions": "Keyword Suggestions",
-    "new_keyword": "New Keyword",
+    "description": "Manage keywords and get AI recommendations to optimize your blog content.",
     "table": {
       "searchPlaceholder": "Search keywords...",
+      "clearSearch": "Clear search",
+      "filterAll": "All",
+      "filterManual": "Manual",
+      "filterAi": "AI",
       "columnKeyword": "Keyword",
-      "columnVolume": "Search Volume",
-      "columnCompetition": "Competition",
+      "columnSource": "Source",
+      "columnCreatedAt": "Created At",
       "columnActions": "Actions",
+      "sourceManual": "Manual",
+      "sourceAi": "AI",
+      "totalCount": "Total {count} keywords",
+      "loadError": "Failed to load keywords",
+      "loadErrorFallback": "An unexpected error occurred",
       "loading": "Loading keywords...",
-      "noResults": "No results found.",
-      "deleteConfirm": "Are you sure you want to delete this keyword?",
-      "paginationInfo": "{start}-{end} of {total}",
-      "itemsPerPage": "Items per page"
+      "noResultsTitle": "No keywords found",
+      "noResultsDesc": "Try adjusting your search or filter.",
+      "emptyTitle": "No registered keywords yet",
+      "emptyDesc": "Add your first keyword to optimize SEO.",
+      "copySuccess": "Copied to clipboard",
+      "copySuccessDesc": "\"{phrase}\" has been copied to clipboard.",
+      "copyAria": "Copy {phrase} to clipboard",
+      "deleteAria": "Delete {phrase} keyword",
+      "paginationInfo": "Showing {start}-{end} of {total}",
+      "previous": "Previous",
+      "next": "Next"
     },
     "create": {
       "title": "Add New Keyword",
+      "description": "Add keywords to use for SEO content optimization.",
+      "trigger": "Add Keyword",
       "fieldLabel": "Keyword",
       "fieldPlaceholder": "Enter keyword",
       "cancel": "Cancel",
@@ -249,45 +265,83 @@
       "saving": "Saving...",
       "validation": {
         "required": "Please enter a keyword.",
-        "minLength": "Please enter at least 2 characters."
+        "minLength": "Please enter at least 2 characters.",
+        "maxLength": "Keyword cannot exceed 100 characters."
       },
       "toast": {
-        "success": {
-          "title": "Keyword Added",
-          "desc": "The new keyword has been added."
-        },
-        "error": {
-          "title": "Add Failed",
-          "desc": "An error occurred while adding the keyword."
-        }
+        "successTitle": "Keyword Added",
+        "successDescription": "The keyword \"{phrase}\" has been added.",
+        "errorTitle": "Add Failed",
+        "errorFallback": "An unexpected error occurred."
       }
+    },
+    "delete": {
+      "title": "Delete Keyword",
+      "description": "Are you sure you want to delete \"{phrase}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting...",
+      "successTitle": "Keyword Deleted",
+      "successDesc": "\"{phrase}\" has been deleted.",
+      "errorTitle": "Delete Failed",
+      "errorFallback": "An unexpected error occurred."
     },
     "picker": {
       "searchPlaceholder": "Search keywords...",
+      "searchInputPlaceholder": "Search keywords...",
       "loading": "Loading keywords...",
+      "searching": "Searching...",
       "noResults": "No keywords found.",
       "selectKeyword": "Select Keyword",
       "selected": "Selected"
     },
     "suggestions": {
       "title": "AI Keyword Suggestions",
-      "subtitle": "Get long-tail keyword suggestions related to your topic.",
+      "subtitle": "Get long-tail keyword suggestions to optimize your blog's SEO.",
+      "trigger": "Get Suggestions",
+      "stepInput": "Input Keyword",
+      "stepResults": "Results",
       "keywordLabel": "Topic Keyword",
       "keywordPlaceholder": "e.g., blog writing tips",
+      "keywordHelp": "Enter the main keyword you want suggestions for",
+      "contextLabel": "Additional Context (Optional)",
+      "contextPlaceholder": "Provide additional context to get more relevant recommendations",
+      "contextHelp": "Add additional context to get more relevant suggestions",
       "fetchButton": "Get Suggestions",
       "fetching": "Fetching...",
+      "fetchHint": "This may take a moment...",
+      "generate": "Generate Suggestions",
+      "generating": "Generating suggestions...",
       "close": "Close",
+      "loadingTitle": "Fetching suggestions...",
+      "loadingDescription": "This may take a moment",
+      "listTitle": "Suggested Keywords ({count})",
+      "selectedCount": "Selected: {count}",
+      "addSelected": "Add Selected",
+      "addAll": "Add All",
       "addKeyword": "Add Keyword",
       "adding": "Adding...",
-      "results": {
-        "title": "Suggested Keywords",
-        "empty": "No suggestions found."
+      "emptyResults": "No suggestions found. Try different keywords.",
+      "notFetchedYet": "Enter a keyword and click \"Get Suggestions\" to start",
+      "competition": "Competition",
+      "competition_details": {
+        "high": "High competition",
+        "medium": "Medium competition",
+        "low": "Low competition"
       },
       "errors": {
         "validation": {
           "required": "Please enter a keyword.",
-          "minLength": "Please enter at least 2 characters."
+          "minLength": "Please enter at least 2 characters.",
+          "keywordRequired": "Please enter a keyword",
+          "keywordMaxLength": "Keyword must not exceed 100 characters",
+          "contextMaxLength": "Context must not exceed 1000 characters"
         },
+        "invalidCredentials": "Invalid DataForSEO credentials",
+        "rateLimit": "Rate limit exceeded. Please try again later",
+        "timeout": "Request timeout. Please try again",
+        "apiError": "An error occurred while fetching suggestions",
+        "fallback": "An unexpected error occurred",
         "fetch": {
           "title": "Suggestion Failed",
           "desc": "An error occurred while fetching keyword suggestions."
@@ -298,6 +352,14 @@
         }
       },
       "toast": {
+        "fetchSuccessTitle": "Suggestions Retrieved",
+        "fetchSuccessDescription": "Found {count} keyword suggestions",
+        "fetchErrorTitle": "Suggestion Failed",
+        "noSelectionTitle": "No Keywords Selected",
+        "noSelectionDescription": "Please select at least one keyword to add",
+        "addSuccessTitle": "Keywords Added",
+        "addSuccessDescription": "Added {created} keywords ({skipped} already exist)",
+        "addErrorTitle": "Add Failed",
         "success": {
           "title": "Keyword Added",
           "desc": "The keyword \"{keyword}\" has been added."
