@@ -170,6 +170,10 @@
         "beginner": "초보자도 쉽게 이해할 수 있는",
         "intermediate": "중급 수준의",
         "advanced": "전문적이고 심화된"
+      },
+      "language": {
+        "korean": "한국어",
+        "english": "영어"
       }
     }
   },

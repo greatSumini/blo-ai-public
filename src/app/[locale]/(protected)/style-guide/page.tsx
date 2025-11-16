@@ -1,29 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from "@/i18n/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { Plus, Loader2, Eye, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { StyleGuidePreviewModal } from "@/features/onboarding/components/style-guide-preview-modal";
-import type { StyleGuideResponse } from "@/features/onboarding/backend/schema";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import { PageLayout } from "@/components/layout/page-layout";
+import type { StyleGuideResponse } from "@/features/style-guide/types";
 import {
   useListStyleGuides,
   useDeleteStyleGuide,
 } from "@/features/articles/hooks/useStyleGuideQuery";
-import { useTranslations } from 'next-intl';
-import { PageLayout } from "@/components/layout/page-layout";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import { SearchBar } from "@/features/style-guide/components/search-bar";
+import { StyleGuideGrid } from "@/features/style-guide/components/style-guide-grid";
+import { EmptyState } from "@/features/style-guide/components/empty-state";
+import { StyleGuidePreviewModalImproved } from "@/features/style-guide/components/style-guide-preview-modal-improved";
+import { filterStyleGuidesBySearch } from "@/features/style-guide/lib/utils";
 
 type StyleGuidePageProps = {
   params: Promise<Record<string, never>>;
@@ -34,13 +28,25 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
   const router = useRouter();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const t = useTranslations();
+  const t = useTranslations("styleGuide");
 
+  // State
+  const [searchQuery, setSearchQuery] = useState("");
   const [previewGuide, setPreviewGuide] = useState<StyleGuideResponse | null>(
     null
   );
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
+  // React Query
+  const {
+    data: guides = [],
+    isLoading,
+    isError,
+  } = useListStyleGuides();
+
+  const deleteStyleGuide = useDeleteStyleGuide();
+
+  // Window focus 시 데이터 갱신
   useEffect(() => {
     const handleFocus = () => {
       queryClient.invalidateQueries({ queryKey: ["styleGuides"] });
@@ -49,13 +55,10 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
     return () => window.removeEventListener("focus", handleFocus);
   }, [queryClient]);
 
-  const {
-    data: guides = [],
-    isLoading,
-    isError,
-  } = useListStyleGuides();
-
-  const deleteStyleGuide = useDeleteStyleGuide();
+  // Handlers
+  const handleCreateNew = () => {
+    router.push("/style-guides/new");
+  };
 
   const handlePreview = (guide: StyleGuideResponse) => {
     setPreviewGuide(guide);
@@ -67,64 +70,88 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm(t("styleGuide.delete.confirm"))) return;
+    if (!window.confirm(t("delete.confirm"))) return;
+
     try {
       await deleteStyleGuide.mutateAsync(id);
       toast({
-        title: t("common.success"),
-        description: t("styleGuide.delete.success.desc"),
+        title: t("delete.success.title"),
+        description: t("delete.success.desc"),
       });
     } catch (error) {
       toast({
-        title: t("styleGuide.delete.error.title"),
+        title: t("delete.error.title"),
         description:
-          error instanceof Error
-            ? error.message
-            : t("styleGuide.delete.error.desc"),
+          error instanceof Error ? error.message : t("delete.error.desc"),
         variant: "destructive",
       });
     }
   };
 
-  const handleCreateNew = () => {
-    router.push("/style-guides/new");
-  };
+  // Filtered guides
+  const filteredGuides = filterStyleGuidesBySearch(guides, searchQuery);
 
-  const title = t("styleGuide.title");
-  const description = t("styleGuide.subtitle");
+  // Actions 버튼
   const actions = (
-    <Button onClick={handleCreateNew} size="lg">
-      <Plus className="mr-2 h-4 w-4" />
-      {t("styleGuide.create_new")}
+    <Button
+      onClick={handleCreateNew}
+      size="lg"
+      className="bg-[#3BA2F8] hover:bg-[#2E91E6]"
+    >
+      <Plus className="mr-2 h-5 w-5" />
+      {t("create_new")}
     </Button>
   );
 
+  // Loading state
   if (isLoading) {
     return (
       <PageLayout
-        title={title}
-        description={description}
+        title={t("title")}
+        description={t("subtitle")}
         actions={actions}
         maxWidthClassName="max-w-6xl"
       >
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="flex flex-col items-center gap-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-muted-foreground">{t("styleGuide.loading")}</p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div
+              key={i}
+              className="rounded-lg border border-[#E1E5EA] bg-white p-6 space-y-4 animate-pulse"
+            >
+              <div className="space-y-2">
+                <div className="h-5 bg-[#E5E7EB] rounded w-3/4"></div>
+                <div className="h-4 bg-[#E5E7EB] rounded w-full"></div>
+                <div className="h-4 bg-[#E5E7EB] rounded w-5/6"></div>
+              </div>
+              <div className="flex gap-2">
+                <div className="h-6 bg-[#E5E7EB] rounded w-16"></div>
+                <div className="h-6 bg-[#E5E7EB] rounded w-16"></div>
+                <div className="h-6 bg-[#E5E7EB] rounded w-16"></div>
+              </div>
+              <div className="flex gap-2 pt-4 border-t border-[#E1E5EA]">
+                <div className="h-8 bg-[#E5E7EB] rounded flex-1"></div>
+                <div className="h-8 bg-[#E5E7EB] rounded flex-1"></div>
+                <div className="h-8 bg-[#E5E7EB] rounded w-10"></div>
+              </div>
+            </div>
+          ))}
         </div>
       </PageLayout>
     );
   }
 
+  // Error state
   if (isError) {
     return (
-      <PageLayout title={title} description={description} actions={actions}>
+      <PageLayout
+        title={t("title")}
+        description={t("subtitle")}
+        actions={actions}
+        maxWidthClassName="max-w-6xl"
+      >
         <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-          <p className="text-red-500">{t("styleGuide.error.load")}</p>
-          <Button onClick={() => router.refresh()}>
-            {t("styleGuide.retry")}
-          </Button>
+          <p className="text-red-500">{t("error.load")}</p>
+          <Button onClick={() => router.refresh()}>{t("retry")}</Button>
         </div>
       </PageLayout>
     );
@@ -132,85 +159,46 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
 
   return (
     <PageLayout
-      title={title}
-      description={description}
+      title={t("title")}
+      description={t("subtitle")}
       actions={actions}
       maxWidthClassName="max-w-6xl"
     >
-      {guides.length > 0 ? (
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>브랜드명</TableHead>
-                <TableHead>타겟 오디언스</TableHead>
-                <TableHead>톤앤매너</TableHead>
-                <TableHead>언어</TableHead>
-                <TableHead>생성일</TableHead>
-                <TableHead className="text-right">작업</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {guides.map((guide) => (
-                <TableRow key={guide.id}>
-                  <TableCell className="font-medium">
-                    {guide.brandName}
-                  </TableCell>
-                  <TableCell>{guide.targetAudience}</TableCell>
-                  <TableCell>
-                    {guide.personality.slice(0, 2).join(", ")}
-                    {guide.personality.length > 2 && "..."}
-                  </TableCell>
-                  <TableCell>
-                    {guide.language === "ko" ? "한국어" : "English"}
-                  </TableCell>
-                  <TableCell>
-                    {format(new Date(guide.createdAt), "PPP", { locale: ko })}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handlePreview(guide)}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(guide)}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(guide.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      ) : (
-        <div
-          className="rounded-lg border border-dashed p-12 text-center"
-          style={{ borderColor: "#E1E5EA" }}
-        >
-          <p className="mb-4 text-muted-foreground">{t("styleGuide.empty")}</p>
-          <Button onClick={handleCreateNew}>{t("styleGuide.create")}</Button>
+      {/* Search Bar (조건부: 10개 이상) */}
+      {guides.length >= 10 && (
+        <div className="mb-6">
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
         </div>
       )}
 
-      <StyleGuidePreviewModal
+      {/* Content */}
+      {guides.length > 0 ? (
+        filteredGuides.length > 0 ? (
+          <StyleGuideGrid
+            guides={filteredGuides}
+            onPreview={handlePreview}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        ) : (
+          // 검색 결과 없음
+          <div className="text-center py-12 space-y-4">
+            <p className="text-[#6B7280]">{t("noResults")}</p>
+            <Button variant="link" onClick={() => setSearchQuery("")}>
+              {t("clearSearch")}
+            </Button>
+          </div>
+        )
+      ) : (
+        <EmptyState onCreateNew={handleCreateNew} />
+      )}
+
+      {/* Preview Modal */}
+      <StyleGuidePreviewModalImproved
         guide={previewGuide}
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
+        onEdit={handleEdit}
       />
     </PageLayout>
   );

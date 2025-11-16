@@ -170,6 +170,10 @@
         "beginner": "Beginner-friendly",
         "intermediate": "Intermediate level",
         "advanced": "Advanced and in-depth"
+      },
+      "language": {
+        "korean": "Korean",
+        "english": "English"
       }
     }
   },
