@@ -21,6 +21,7 @@ const ERROR_STATUS_MAP: Record<string, ContentfulStatusCode> = {
   'STYLE_GUIDE_NOT_FOUND': 404,
   'EXAMPLE_NOT_FOUND': 404,
   'PROFILE_NOT_FOUND': 404,
+  'SETTINGS_NOT_FOUND': 404,
 
   // 4xx Client Errors - Duplicate
   'DUPLICATE': 409,
@@ -70,6 +71,10 @@ const ERROR_STATUS_MAP: Record<string, ContentfulStatusCode> = {
   // 5xx Server Errors - Profile
   'profile_upsert_failed': 500,
   'profile_delete_failed': 500,
+
+  // 5xx Server Errors - Account
+  'PROFILE_UPDATE_FAILED': 500,
+  'SETTINGS_UPDATE_FAILED': 500,
 };
 
 /**

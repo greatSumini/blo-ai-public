@@ -2,6 +2,7 @@
 
 import { UseFormReturn } from "react-hook-form";
 import { useTranslations } from "next-intl";
+import { Megaphone } from "lucide-react";
 import {
   FormField,
   FormItem,
@@ -15,7 +16,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { OnboardingFormData } from "../lib/onboarding-schema";
-import { PERSONALITY_OPTIONS, FORMALITY_OPTIONS } from "../lib/constants";
+import { PERSONALITY_VALUES, FORMALITY_VALUES } from "../lib/constants";
+import { StepHeader } from "./step-header";
 
 interface StepBrandVoiceProps {
   form: UseFormReturn<OnboardingFormData>;
@@ -24,19 +26,33 @@ interface StepBrandVoiceProps {
 export function StepBrandVoice({ form }: StepBrandVoiceProps) {
   const t = useTranslations("onboarding.brand_voice");
 
+  // Watch for character counts
+  const brandDescription = form.watch("brandDescription") || "";
+  const selectedPersonalities = form.watch("personality") || [];
+
+  // Generate personality options with i18n
+  const personalityOptions = PERSONALITY_VALUES.map((value) => ({
+    value,
+    label: t(`personality_${value}` as any),
+  }));
+
+  // Generate formality options with i18n
+  const formalityOptions = FORMALITY_VALUES.map((value) => ({
+    value,
+    label: t(`formality_${value}` as any),
+    description: t(`formality_${value}_desc` as any),
+  }));
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2
-          className="text-2xl font-semibold"
-          style={{ color: "#111827" }}
-        >
-          {t("title")}
-        </h2>
-        <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          {t("subtitle")}
-        </p>
-      </div>
+      {/* Step Header */}
+      <StepHeader
+        stepNumber={1}
+        totalSteps={5}
+        title={t("title")}
+        description={t("subtitle")}
+        icon={Megaphone}
+      />
 
       {/* Brand Name */}
       <FormField
@@ -50,10 +66,6 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
                 placeholder={t("placeholder_brand_name")}
                 {...field}
                 className="h-10"
-                style={{
-                  borderColor: "#E1E5EA",
-                  borderRadius: "6px",
-                }}
               />
             </FormControl>
             <FormMessage />
@@ -73,15 +85,19 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
                 placeholder={t("placeholder_brand_description")}
                 {...field}
                 className="min-h-[120px] resize-y"
-                style={{
-                  borderColor: "#E1E5EA",
-                  borderRadius: "6px",
-                }}
               />
             </FormControl>
-            <FormDescription>
-              {t("description_brand_description")}
-            </FormDescription>
+            <div className="flex items-center justify-between text-xs text-muted-foreground mt-1">
+              <FormDescription>
+                {t("description_brand_description")}
+              </FormDescription>
+              <span>
+                {t("char_count", {
+                  current: brandDescription.length,
+                  max: 500,
+                })}
+              </span>
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -96,11 +112,12 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
             <div className="mb-4">
               <FormLabel>{t("field_personality")}</FormLabel>
               <FormDescription>
-                {t("description_personality")}
+                {t("description_personality")} ({selectedPersonalities.length}
+                /3)
               </FormDescription>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {PERSONALITY_OPTIONS.map((option) => (
+              {personalityOptions.map((option) => (
                 <FormField
                   key={option.value}
                   control={form.control}
@@ -128,10 +145,7 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
                             }}
                           />
                         </FormControl>
-                        <Label
-                          className="cursor-pointer font-normal"
-                          style={{ color: "#374151" }}
-                        >
+                        <Label className="cursor-pointer font-normal">
                           {option.label}
                         </Label>
                       </FormItem>
@@ -152,35 +166,24 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t("field_formality")}</FormLabel>
-            <FormDescription>
-              {t("description_formality")}
-            </FormDescription>
+            <FormDescription>{t("description_formality")}</FormDescription>
             <div className="space-y-3">
-              {FORMALITY_OPTIONS.map((option) => (
-                <div
-                  key={option.value}
-                  className="flex items-start space-x-3"
-                >
+              {formalityOptions.map((option) => (
+                <div key={option.value} className="flex items-start space-x-3">
                   <FormControl>
                     <input
                       type="radio"
                       value={option.value}
                       checked={field.value === option.value}
                       onChange={() => field.onChange(option.value)}
-                      className="mt-1 h-4 w-4 cursor-pointer"
-                      style={{
-                        accentColor: "#3BA2F8",
-                      }}
+                      className="mt-1 h-4 w-4 cursor-pointer accent-primary"
                     />
                   </FormControl>
                   <div className="flex-1">
-                    <Label
-                      className="cursor-pointer font-medium"
-                      style={{ color: "#111827" }}
-                    >
+                    <Label className="cursor-pointer font-medium">
                       {option.label}
                     </Label>
-                    <p className="text-sm" style={{ color: "#6B7280" }}>
+                    <p className="text-sm text-muted-foreground">
                       {option.description}
                     </p>
                   </div>
