@@ -391,16 +391,19 @@
         "features": "기능",
         "how_it_works": "사용 방법",
         "pricing": "가격",
-        "use_cases": "활용 사례"
+        "faq": "FAQ"
       },
       "cta": {
         "login": "로그인",
         "get_started": "시작하기"
+      },
+      "aria": {
+        "toggle_menu": "네비게이션 메뉴 토글"
       }
     },
     "hero": {
       "badge": "AI 기반 콘텐츠 생성",
-      "heading": "AI로 SEO에 최적화된 블로그 글을 생성하세요",
+      "heading": "블로그 글 작성 시간을 90% 줄이고, SEO 순위를 높이세요",
       "subheading": "스타일 가이드를 한 번 설정하면, AI가 브랜드 일관성을 유지하며 고품질 콘텐츠를 자동 생성합니다.",
       "cta": {
         "primary": "무료로 시작하기",
@@ -412,20 +415,22 @@
       "section_title": "강력한 기능",
       "section_subtitle": "AI 기술로 콘텐츠 제작 프로세스를 혁신하세요.",
       "ai_generation": {
-        "title": "AI 글 생성",
-        "description": "주제만 입력하면 SEO에 최적화된 완성도 높은 글을 자동으로 생성합니다."
+        "title": "AI 글 생성 (5분 완성)",
+        "description": "주제만 입력하면 SEO에 최적화된 완성도 높은 글을 자동으로 생성합니다.",
+        "stat": "평균 생성 시간 3분 42초"
       },
       "seo_keywords": {
-        "title": "키워드 관리",
-        "description": "검색량과 경쟁도를 분석하여 효과적인 키워드 전략을 세우세요."
+        "title": "키워드 관리 (SEO 최적화)",
+        "description": "검색량과 경쟁도를 분석하여 효과적인 키워드 전략을 세우세요.",
+        "stat": "평균 키워드 순위 상승률 42%"
       },
-      "style_guide": {
-        "title": "스타일 가이드",
+      "brand_voice": {
+        "title": "브랜드 보이스 설정",
         "description": "브랜드 고유의 톤과 스타일을 정의하여 일관된 콘텐츠를 생성하세요."
       },
-      "multi_language": {
-        "title": "다국어 지원",
-        "description": "한국어와 영어를 포함한 다양한 언어로 콘텐츠를 생성할 수 있습니다."
+      "realtime_edit": {
+        "title": "실시간 편집",
+        "description": "생성된 글을 바로 편집하고 마크다운으로 다운로드하세요."
       }
     },
     "how_it_works": {
@@ -442,23 +447,8 @@
       "step3": {
         "title": "AI 생성 및 편집",
         "description": "AI가 생성한 글을 확인하고 필요한 부분을 수정하세요."
-      }
-    },
-    "use_cases": {
-      "section_title": "활용 사례",
-      "section_subtitle": "다양한 상황에서 SEO24를 활용하세요.",
-      "product_launch": {
-        "title": "제품 런칭",
-        "description": "신제품 소개 글을 빠르게 작성하고 SEO 최적화하세요."
       },
-      "content_marketing": {
-        "title": "콘텐츠 마케팅",
-        "description": "블로그 콘텐츠를 대량으로 생성하여 검색 노출을 높이세요."
-      },
-      "thought_leadership": {
-        "title": "사고 리더십",
-        "description": "전문성을 드러내는 인사이트 글을 손쉽게 작성하세요."
-      }
+      "cta": "지금 시작하기"
     },
     "pricing": {
       "section_title": "합리적인 가격",
@@ -480,7 +470,8 @@
         "price": "₩29,000",
         "period": "/월",
         "description": "전문 블로거 및 소규모 팀을 위한 플랜",
-        "popular": "인기",
+        "badge": "인기",
+        "roi": "외주 비용 대비 80% 절감",
         "features": {
           "articles": "월 50개 글 생성",
           "keywords": "고급 키워드 분석",
@@ -488,6 +479,34 @@
           "priority_support": "우선 지원"
         },
         "cta": "프로 시작하기"
+      }
+    },
+    "faq": {
+      "section_title": "자주 묻는 질문",
+      "section_subtitle": "궁금한 점이 있으신가요?",
+      "q1": {
+        "question": "어떤 유형의 블로그에 적합한가요?",
+        "answer": "테크 블로그, 마케팅 블로그, 개인 블로그 등 모든 유형에 적합합니다. SEO24는 브랜드 보이스를 학습하여 일관된 스타일로 콘텐츠를 생성합니다."
+      },
+      "q2": {
+        "question": "무료로 시작하려면 어떻게 하나요?",
+        "answer": "상단의 '무료로 시작하기' 버튼을 클릭하여 가입하시면 됩니다. 신용카드 등록 없이 바로 사용할 수 있습니다."
+      },
+      "q3": {
+        "question": "생성된 글의 저작권은 누구에게 있나요?",
+        "answer": "생성된 모든 콘텐츠의 저작권은 사용자에게 있습니다. 자유롭게 수정, 배포, 상업적 사용이 가능합니다."
+      },
+      "q4": {
+        "question": "SEO 최적화는 어떻게 이루어지나요?",
+        "answer": "키워드 밀도, 메타 태그, 구조화된 헤딩, 내부 링크 등 SEO 요소를 자동으로 분석하고 최적화합니다."
+      },
+      "q5": {
+        "question": "환불 정책은 어떻게 되나요?",
+        "answer": "Pro 플랜은 언제든 해지 가능하며, 위약금은 없습니다. 결제일로부터 7일 이내 전액 환불이 가능합니다."
+      },
+      "q6": {
+        "question": "다른 도구와 통합할 수 있나요?",
+        "answer": "마크다운 다운로드를 통해 워드프레스, 노션, 티스토리 등 모든 플랫폼과 호환됩니다. API 연동도 지원합니다."
       }
     },
     "cta": {
@@ -503,8 +522,9 @@
       "product": {
         "title": "제품",
         "features": "기능",
+        "how_it_works": "사용 방법",
         "pricing": "가격",
-        "use_cases": "활용 사례"
+        "faq": "FAQ"
       },
       "company": {
         "title": "회사",
@@ -517,7 +537,17 @@
         "privacy": "개인정보처리방침",
         "terms": "이용약관"
       },
-      "copyright": "© 2024 SEO24. All rights reserved."
+      "social": {
+        "title": "SNS",
+        "github_label": "GitHub 방문하기",
+        "twitter_label": "트위터 팔로우",
+        "email_label": "이메일 보내기"
+      },
+      "bottom": {
+        "copyright": "© 2024 SEO24. All rights reserved.",
+        "sitemap": "사이트맵",
+        "accessibility": "접근성"
+      }
     }
   }
 }

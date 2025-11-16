@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 
 export function Header() {
   const t = useTranslations("landing.header");
+  const brandName = useTranslations("common");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -40,12 +41,12 @@ export function Header() {
           >
             <Image
               src="/images/icon.svg"
-              alt="SEO24 Logo"
+              alt={`${brandName("brand_name")} Logo`}
               width={32}
               height={32}
               className="h-8 w-8"
             />
-            <span className="text-xl font-bold text-[#111827]">SEO24</span>
+            <span className="text-xl font-bold text-[#111827]">{brandName("brand_name")}</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -63,10 +64,10 @@ export function Header() {
               {t("nav.how_it_works")}
             </Link>
             <Link
-              href="#use-cases"
+              href="#faq"
               className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors"
             >
-              {t("nav.use_cases")}
+              {t("nav.faq")}
             </Link>
             <Link
               href="#pricing"
@@ -128,11 +129,11 @@ export function Header() {
                 {t("nav.how_it_works")}
               </Link>
               <Link
-                href="#use-cases"
+                href="#faq"
                 className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors py-2"
                 onClick={toggleMenu}
               >
-                {t("nav.use_cases")}
+                {t("nav.faq")}
               </Link>
               <Link
                 href="#pricing"

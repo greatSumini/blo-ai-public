@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 export function Footer() {
   const t = useTranslations("landing.footer");
+  const brandName = useTranslations("common");
   const currentYear = new Date().getFullYear();
 
   return (
@@ -18,7 +19,7 @@ export function Footer() {
               href="/"
               className="text-xl font-bold text-[#111827] hover:text-[#3BA2F8] transition-colors inline-block"
             >
-              SEO24
+              {brandName("brand_name")}
             </Link>
             <p className="text-sm text-[#6B7280] leading-relaxed">
               {t("brand.description")}
@@ -42,10 +43,10 @@ export function Footer() {
                 {t("product.how_it_works")}
               </Link>
               <Link
-                href="#use-cases"
+                href="#faq"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                {t("product.use_cases")}
+                {t("product.faq")}
               </Link>
               <Link
                 href="#pricing"
@@ -108,7 +109,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#6B7280] hover:text-[#111827] transition-colors"
-                  aria-label="GitHub"
+                  aria-label={t("social.github_label")}
                 >
                   <Github className="h-5 w-5" />
                 </a>
@@ -117,7 +118,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#6B7280] hover:text-[#111827] transition-colors"
-                  aria-label="Twitter"
+                  aria-label={t("social.twitter_label")}
                 >
                   <Twitter className="h-5 w-5" />
                 </a>
@@ -137,7 +138,7 @@ export function Footer() {
         <div className="mt-10 md:mt-12 pt-6 md:pt-8 border-t border-[#E1E5EA]">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
             <p className="text-xs md:text-sm text-[#6B7280] text-center md:text-left">
-              {t("bottom.copyright", { year: currentYear })}
+              {t("bottom.copyright")}
             </p>
             <div className="flex items-center gap-4 md:gap-6">
               <Link

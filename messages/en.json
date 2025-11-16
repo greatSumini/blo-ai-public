@@ -391,16 +391,19 @@
         "features": "Features",
         "how_it_works": "How It Works",
         "pricing": "Pricing",
-        "use_cases": "Use Cases"
+        "faq": "FAQ"
       },
       "cta": {
         "login": "Log in",
         "get_started": "Get Started"
+      },
+      "aria": {
+        "toggle_menu": "Toggle navigation menu"
       }
     },
     "hero": {
       "badge": "AI-Powered Content Generation",
-      "heading": "Generate SEO-Optimized Blog Posts with AI",
+      "heading": "Reduce Blog Writing Time by 90% and Boost SEO Rankings",
       "subheading": "Set up your style guide once, and AI will automatically generate high-quality content while maintaining brand consistency.",
       "cta": {
         "primary": "Start for Free",
@@ -412,20 +415,22 @@
       "section_title": "Powerful Features",
       "section_subtitle": "Revolutionize your content creation process with AI technology.",
       "ai_generation": {
-        "title": "AI Article Generation",
-        "description": "Simply enter a topic and automatically generate high-quality, SEO-optimized articles."
+        "title": "AI Article Generation (5 min)",
+        "description": "Simply enter a topic and automatically generate high-quality, SEO-optimized articles.",
+        "stat": "Average generation time: 3 min 42 sec"
       },
       "seo_keywords": {
-        "title": "Keyword Management",
-        "description": "Analyze search volume and competition to build effective keyword strategies."
+        "title": "Keyword Management (SEO Optimized)",
+        "description": "Analyze search volume and competition to build effective keyword strategies.",
+        "stat": "Average keyword ranking increase: 42%"
       },
-      "style_guide": {
-        "title": "Style Guide",
+      "brand_voice": {
+        "title": "Brand Voice Settings",
         "description": "Define your brand's unique tone and style to generate consistent content."
       },
-      "multi_language": {
-        "title": "Multi-Language Support",
-        "description": "Generate content in various languages including Korean and English."
+      "realtime_edit": {
+        "title": "Real-time Editing",
+        "description": "Edit generated articles immediately and download as markdown."
       }
     },
     "how_it_works": {
@@ -442,23 +447,8 @@
       "step3": {
         "title": "AI Generation and Editing",
         "description": "Review the AI-generated article and make any necessary edits."
-      }
-    },
-    "use_cases": {
-      "section_title": "Use Cases",
-      "section_subtitle": "Leverage SEO24 in various situations.",
-      "product_launch": {
-        "title": "Product Launch",
-        "description": "Quickly write and SEO-optimize new product introduction articles."
       },
-      "content_marketing": {
-        "title": "Content Marketing",
-        "description": "Generate blog content at scale to increase search visibility."
-      },
-      "thought_leadership": {
-        "title": "Thought Leadership",
-        "description": "Easily write insightful articles that showcase your expertise."
-      }
+      "cta": "Get Started Now"
     },
     "pricing": {
       "section_title": "Reasonable Pricing",
@@ -480,7 +470,8 @@
         "price": "$29",
         "period": "/month",
         "description": "Plan for professional bloggers and small teams",
-        "popular": "Popular",
+        "badge": "Popular",
+        "roi": "80% savings vs. outsourcing",
         "features": {
           "articles": "50 articles per month",
           "keywords": "Advanced keyword analysis",
@@ -488,6 +479,34 @@
           "priority_support": "Priority support"
         },
         "cta": "Start Pro"
+      }
+    },
+    "faq": {
+      "section_title": "Frequently Asked Questions",
+      "section_subtitle": "Have questions? We've got answers.",
+      "q1": {
+        "question": "What types of blogs is this suitable for?",
+        "answer": "SEO24 is suitable for all types of blogs including tech, marketing, and personal blogs. It learns your brand voice to generate content in a consistent style."
+      },
+      "q2": {
+        "question": "How do I get started for free?",
+        "answer": "Click the 'Start for Free' button at the top to sign up. No credit card required to start using immediately."
+      },
+      "q3": {
+        "question": "Who owns the copyright of generated content?",
+        "answer": "You own the copyright of all generated content. You can freely modify, distribute, and use it commercially."
+      },
+      "q4": {
+        "question": "How does SEO optimization work?",
+        "answer": "We automatically analyze and optimize SEO elements including keyword density, meta tags, structured headings, and internal links."
+      },
+      "q5": {
+        "question": "What is the refund policy?",
+        "answer": "Pro plan can be cancelled anytime with no penalty. Full refund available within 7 days of payment."
+      },
+      "q6": {
+        "question": "Can I integrate with other tools?",
+        "answer": "Compatible with all platforms including WordPress, Notion, and Tistory via markdown download. API integration also supported."
       }
     },
     "cta": {
@@ -503,8 +522,9 @@
       "product": {
         "title": "Product",
         "features": "Features",
+        "how_it_works": "How It Works",
         "pricing": "Pricing",
-        "use_cases": "Use Cases"
+        "faq": "FAQ"
       },
       "company": {
         "title": "Company",
@@ -517,7 +537,17 @@
         "privacy": "Privacy Policy",
         "terms": "Terms of Service"
       },
-      "copyright": "© 2024 SEO24. All rights reserved."
+      "social": {
+        "title": "Follow Us",
+        "github_label": "Visit our GitHub",
+        "twitter_label": "Follow us on Twitter",
+        "email_label": "Email us"
+      },
+      "bottom": {
+        "copyright": "© 2024 SEO24. All rights reserved.",
+        "sitemap": "Sitemap",
+        "accessibility": "Accessibility"
+      }
     }
   }
 }

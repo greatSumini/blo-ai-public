@@ -1,31 +1,39 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { fadeIn } from "@/features/landing/lib/animations";
 
 export function FinalCtaSection() {
   const t = useTranslations("landing.cta");
+
   return (
-    <section className="w-full bg-[#1E2A38] py-16 md:py-20 px-4">
+    <section className="w-full bg-[#3BA2F8] py-20 md:py-28 lg:py-32 px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="space-y-6 md:space-y-8">
+        <motion.div
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {/* Heading */}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 md:mb-6 px-4">
             {t("heading")}
           </h2>
 
           {/* Subheading */}
-          <p className="text-base md:text-lg lg:text-xl text-[#D1D5DB] max-w-2xl mx-auto px-4">
+          <p className="text-base md:text-lg text-white/90 mb-8 md:mb-10 max-w-2xl mx-auto px-4">
             {t("subheading")}
           </p>
 
-          {/* CTA Button */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          {/* Primary CTA */}
+          <div className="mb-6">
             <Button
               size="lg"
-              className="px-8 py-6 text-base font-medium bg-[#3BA2F8] hover:bg-[#3BA2F8]/90 text-white rounded-lg shadow-lg"
+              className="rounded-lg px-8 py-6 text-base font-medium bg-white hover:bg-[#F5F7FA] hover:shadow-xl transition-all duration-200 text-[#111827] shadow-lg w-full sm:w-auto"
               asChild
             >
               <Link href="/signup">
@@ -33,24 +41,11 @@ export function FinalCtaSection() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-
-            <Button
-              size="lg"
-              variant="outline"
-              className="px-8 py-6 text-base font-medium bg-transparent hover:bg-white/10 text-white border-2 border-white/20 rounded-lg"
-              asChild
-            >
-              <Link href="/login">{t("secondary_cta")}</Link>
-            </Button>
           </div>
 
-          {/* Trust Badge */}
-          <div className="pt-8">
-            <p className="text-sm text-[#9CA3AF]">
-              {t("trust_badge")}
-            </p>
-          </div>
-        </div>
+          {/* No credit card required */}
+          <p className="text-sm text-white/80">{t("no_credit_card")}</p>
+        </motion.div>
       </div>
     </section>
   );

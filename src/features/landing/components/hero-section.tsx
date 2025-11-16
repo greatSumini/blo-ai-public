@@ -1,37 +1,28 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { fadeUpStagger } from "@/features/landing/lib/animations";
+import { TRUST_BADGE_LOGOS } from "@/features/landing/lib/constants";
 
 export function HeroSection() {
   const t = useTranslations("landing.hero");
-  const fadeUpVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: i * 0.15,
-        ease: [0.25, 0.4, 0.25, 1],
-      },
-    }),
-  };
 
   return (
     <section className="relative min-h-[calc(100vh-4rem)] w-full flex items-center justify-center overflow-hidden bg-[#FCFCFD]">
       {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(30,42,56,0.03),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,162,248,0.05),transparent_50%)]" />
 
       <div className="relative z-10 container mx-auto px-4 md:px-6 max-w-4xl py-12 md:py-20">
         <div className="text-center">
           {/* Badge */}
           <motion.div
             custom={0}
-            variants={fadeUpVariants}
+            variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
             className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-full border border-[#E1E5EA] bg-[#F5F7FA]/50 mb-6 md:mb-8"
@@ -44,11 +35,11 @@ export function HeroSection() {
           {/* Main Heading */}
           <motion.div
             custom={1}
-            variants={fadeUpVariants}
+            variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 tracking-tight text-[#111827] leading-tight px-2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 md:mb-6 tracking-tighter text-[#111827] leading-[1.1] px-2">
               {t("heading")}
             </h1>
           </motion.div>
@@ -56,7 +47,7 @@ export function HeroSection() {
           {/* Subheading */}
           <motion.div
             custom={2}
-            variants={fadeUpVariants}
+            variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
           >
@@ -65,29 +56,65 @@ export function HeroSection() {
             </p>
           </motion.div>
 
-          {/* CTA Button */}
+          {/* CTA Buttons */}
           <motion.div
             custom={3}
-            variants={fadeUpVariants}
+            variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-center gap-3"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
           >
+            {/* Primary CTA */}
             <Button
               size="lg"
-              className="rounded-lg px-8 py-6 text-base font-medium bg-[#3BA2F8] hover:bg-[#3BA2F8]/90 text-white shadow-sm"
+              className="rounded-lg px-8 py-6 text-base font-medium bg-[#3BA2F8] hover:bg-[#2E91E6] hover:shadow-md transition-all duration-200 text-white shadow-sm w-full sm:w-auto"
               asChild
             >
               <Link href="/signup">
-                {t("cta_text")}
+                {t("cta.primary")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
 
-            {/* Secondary text */}
-            <p className="text-sm text-[#6B7280]">
-              {t("secondary_text")}
-            </p>
+            {/* Secondary CTA */}
+            <Button
+              size="lg"
+              variant="outline"
+              className="rounded-lg px-8 py-6 text-base font-medium border-[#E1E5EA] bg-white hover:bg-[#F5F7FA] text-[#374151] w-full sm:w-auto"
+              asChild
+            >
+              <Link href="#demo">
+                <Play className="mr-2 h-5 w-5" />
+                {t("cta.secondary")}
+              </Link>
+            </Button>
+          </motion.div>
+
+          {/* Trust Badge */}
+          <motion.div
+            custom={4}
+            variants={fadeUpStagger}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col items-center gap-6"
+          >
+            <p className="text-sm text-[#6B7280]">{t("trust_badge")}</p>
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              {TRUST_BADGE_LOGOS.map((logo, index) => (
+                <div
+                  key={index}
+                  className="opacity-50 hover:opacity-100 transition-opacity"
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={120}
+                    height={60}
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
