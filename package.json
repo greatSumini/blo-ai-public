@@ -25,6 +25,7 @@
     "@blocknote/core": "^0.42.0",
     "@blocknote/mantine": "^0.42.0",
     "@blocknote/react": "^0.42.0",
+    "@clerk/backend": "^2.22.0",
     "@clerk/nextjs": "^6.34.5",
     "@hono/clerk-auth": "^3.0.3",
     "@hookform/resolvers": "^4",
