@@ -174,3 +174,58 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+/* MDEditor Dark Mode Customization */
+[data-color-mode="dark"] .w-md-editor {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border-color: hsl(var(--border));
+}
+
+[data-color-mode="dark"] .w-md-editor-toolbar {
+  background-color: hsl(var(--muted));
+  border-color: hsl(var(--border));
+}
+
+[data-color-mode="dark"] .w-md-editor-toolbar button {
+  color: hsl(var(--muted-foreground));
+}
+
+[data-color-mode="dark"] .w-md-editor-toolbar button:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+[data-color-mode="dark"] .w-md-editor-text-pre,
+[data-color-mode="dark"] .w-md-editor-text-input {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+}
+
+[data-color-mode="dark"] .w-md-editor-text-pre > code,
+[data-color-mode="dark"] .w-md-editor-text-input {
+  color: hsl(var(--foreground));
+}
+
+/* Scrollbar Styling */
+.w-md-editor-text-pre::-webkit-scrollbar,
+.w-md-editor-text-input::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.w-md-editor-text-pre::-webkit-scrollbar-track,
+.w-md-editor-text-input::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+.w-md-editor-text-pre::-webkit-scrollbar-thumb,
+.w-md-editor-text-input::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+.w-md-editor-text-pre::-webkit-scrollbar-thumb:hover,
+.w-md-editor-text-input::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground));
+}

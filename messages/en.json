@@ -517,8 +517,8 @@
     },
     "autoSave": {
       "saving": "Saving...",
-      "saved": "Saved",
-      "error": "Save failed"
+      "saved": "Saved {time}",
+      "error": "Failed to save"
     },
     "tableOfContents": {
       "title": "Table of Contents"
@@ -551,23 +551,34 @@
     "loading": "Loading article...",
     "load_error": "Failed to load the article.",
     "back": "Go back",
+    "back_to_dashboard": "Back to Dashboard",
     "title": "Edit Article",
     "field_title": "Title",
     "placeholder_title": "Enter article title",
+    "inline_title_placeholder": "Untitled",
     "field_slug": "Slug",
     "placeholder_slug": "URL slug",
+    "slug_invalid_message": "Slug must be lowercase letters, numbers, and hyphens only.",
+    "slug_valid_message": "Valid slug format.",
     "field_keywords": "Keywords",
     "placeholder_keywords": "Select keywords (optional)",
+    "keywords_hint": "Separate multiple keywords with commas (e.g., SEO, blog, writing)",
     "field_description": "Summary",
     "placeholder_description": "Enter article summary",
+    "description_optimal_message": "Optimal length for SEO (120-160 characters).",
     "field_content": "Content",
     "placeholder_content": "Enter article content",
+    "field_content_mobile": "Content",
     "download": "Download",
     "copy": "Copy",
     "copied": "Copied!",
     "hide_toc": "Hide Table of Contents",
     "show_toc": "Show Table of Contents",
+    "hide_preview": "Hide Preview",
+    "show_preview": "Show Preview",
+    "preview_title": "Preview",
     "untitled": "Untitled",
+    "no_content": "No content to preview.",
     "edit_tab": "Edit",
     "preview_tab": "Preview",
     "download_success_title": "Download Complete",
@@ -575,7 +586,8 @@
     "copy_success_title": "Copy Complete",
     "copy_success_desc": "The markdown has been copied to the clipboard.",
     "copy_error_title": "Copy Failed",
-    "copy_error_desc": "An error occurred while copying to the clipboard."
+    "copy_error_desc": "An error occurred while copying to the clipboard.",
+    "seo_settings_title": "SEO Settings"
   },
   "onboarding": {
     "wizard": {
