@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { FileText } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { ArticleFormData } from "../lib/article-form-schema";
 
 interface ArticlePreviewProps {
@@ -9,6 +10,7 @@ interface ArticlePreviewProps {
 }
 
 export function ArticlePreview({ formData }: ArticlePreviewProps) {
+  const t = useTranslations("articles.preview");
   const hasContent = formData.title || formData.content;
 
   return (
@@ -25,7 +27,7 @@ export function ArticlePreview({ formData }: ArticlePreviewProps) {
       >
         <h3 className="flex items-center gap-2 text-lg font-semibold">
           <FileText className="h-5 w-5" style={{ color: "#3BA2F8" }} />
-          미리보기
+          {t("title")}
         </h3>
       </div>
 
@@ -38,9 +40,7 @@ export function ArticlePreview({ formData }: ArticlePreviewProps) {
             <div>
               <FileText className="mx-auto mb-3 h-12 w-12" />
               <p className="text-sm">
-                글을 작성하면
-                <br />
-                미리보기가 표시됩니다
+                {t("emptyMessage")}
               </p>
             </div>
           </div>
@@ -102,7 +102,7 @@ export function ArticlePreview({ formData }: ArticlePreviewProps) {
                   className="mb-2 text-xs font-semibold uppercase"
                   style={{ color: "#6B7280" }}
                 >
-                  키워드
+                  {t("keywordsLabel")}
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
                   {formData.keywords.map((keyword) => (
@@ -143,7 +143,7 @@ export function ArticlePreview({ formData }: ArticlePreviewProps) {
                   className="mb-3 text-xs font-semibold uppercase"
                   style={{ color: "#6B7280" }}
                 >
-                  본문
+                  {t("contentLabel")}
                 </h4>
                 <div
                   className="prose prose-sm max-w-none"

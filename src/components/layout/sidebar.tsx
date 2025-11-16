@@ -15,6 +15,7 @@ function SidebarContent() {
   const menuItems = [
     { icon: LayoutDashboard, label: t("sidebar.dashboard"), href: "/dashboard" },
     { icon: PenTool, label: t("sidebar.new_article"), href: "/new-article" },
+    { icon: FileText, label: t("sidebar.articles"), href: "/articles" },
     { icon: Tag, label: t("sidebar.keywords"), href: "/keywords" },
     { icon: FileText, label: t("sidebar.style_guide"), href: "/style-guide" },
     { icon: User, label: t("sidebar.account"), href: "/account" },
