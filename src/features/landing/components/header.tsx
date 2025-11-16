@@ -5,8 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export function Header() {
+  const t = useTranslations("landing.header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -52,25 +54,25 @@ export function Header() {
               href="#features"
               className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors"
             >
-              주요 기능
+              {t("nav.features")}
             </Link>
             <Link
               href="#how-it-works"
               className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors"
             >
-              사용 방법
+              {t("nav.how_it_works")}
             </Link>
             <Link
               href="#use-cases"
               className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors"
             >
-              활용 사례
+              {t("nav.use_cases")}
             </Link>
             <Link
               href="#pricing"
               className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors"
             >
-              가격
+              {t("nav.pricing")}
             </Link>
           </nav>
 
@@ -82,14 +84,14 @@ export function Header() {
               className="text-[#6B7280] hover:text-[#111827]"
               asChild
             >
-              <Link href="/login">로그인</Link>
+              <Link href="/login">{t("cta.login")}</Link>
             </Button>
             <Button
               size="sm"
               className="bg-[#3BA2F8] hover:bg-[#3BA2F8]/90 text-white rounded-lg"
               asChild
             >
-              <Link href="/signup">무료로 시작하기</Link>
+              <Link href="/signup">{t("cta.get_started")}</Link>
             </Button>
           </div>
 
@@ -97,7 +99,7 @@ export function Header() {
           <button
             onClick={toggleMenu}
             className="md:hidden p-2 text-[#6B7280] hover:text-[#111827] transition-colors"
-            aria-label="메뉴 토글"
+            aria-label={t("aria.toggle_menu")}
           >
             {isMenuOpen ? (
               <X className="h-6 w-6" />
@@ -116,28 +118,28 @@ export function Header() {
                 className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors py-2"
                 onClick={toggleMenu}
               >
-                주요 기능
+                {t("nav.features")}
               </Link>
               <Link
                 href="#how-it-works"
                 className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors py-2"
                 onClick={toggleMenu}
               >
-                사용 방법
+                {t("nav.how_it_works")}
               </Link>
               <Link
                 href="#use-cases"
                 className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors py-2"
                 onClick={toggleMenu}
               >
-                활용 사례
+                {t("nav.use_cases")}
               </Link>
               <Link
                 href="#pricing"
                 className="text-sm font-medium text-[#6B7280] hover:text-[#111827] transition-colors py-2"
                 onClick={toggleMenu}
               >
-                가격
+                {t("nav.pricing")}
               </Link>
               <div className="flex flex-col gap-2 pt-4 border-t border-[#E1E5EA]">
                 <Button
@@ -146,14 +148,14 @@ export function Header() {
                   className="w-full text-[#6B7280] hover:text-[#111827]"
                   asChild
                 >
-                  <Link href="/login" onClick={toggleMenu}>로그인</Link>
+                  <Link href="/login" onClick={toggleMenu}>{t("cta.login")}</Link>
                 </Button>
                 <Button
                   size="sm"
                   className="w-full bg-[#3BA2F8] hover:bg-[#3BA2F8]/90 text-white rounded-lg"
                   asChild
                 >
-                  <Link href="/signup" onClick={toggleMenu}>무료로 시작하기</Link>
+                  <Link href="/signup" onClick={toggleMenu}>{t("cta.get_started")}</Link>
                 </Button>
               </div>
             </nav>

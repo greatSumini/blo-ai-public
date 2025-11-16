@@ -16,8 +16,10 @@ import { Badge } from "@/components/ui/badge";
 import { Search, ChevronLeft, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { useKeywordList } from "@/features/keywords/hooks/useKeywordQuery";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 
 export function KeywordTable() {
+  const t = useTranslations("keywords");
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -54,7 +56,7 @@ export function KeywordTable() {
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
             type="text"
-            placeholder="키워드 검색..."
+            placeholder={t("table.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -67,29 +69,29 @@ export function KeywordTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>키워드</TableHead>
-              <TableHead>출처</TableHead>
-              <TableHead>생성일</TableHead>
-              <TableHead className="text-right">작업</TableHead>
+              <TableHead>{t("table.columnKeyword")}</TableHead>
+              <TableHead>{t("table.columnSource")}</TableHead>
+              <TableHead>{t("table.columnCreatedAt")}</TableHead>
+              <TableHead className="text-right">{t("table.columnActions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-8">
-                  로딩 중...
+                  {t("table.loading")}
                 </TableCell>
               </TableRow>
             ) : error ? (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-8 text-red-500">
-                  데이터를 불러오는데 실패했습니다
+                  {t("table.loadError")}
                 </TableCell>
               </TableRow>
             ) : !data || data.items.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-8 text-gray-500">
-                  검색 결과가 없습니다
+                  {t("table.noResults")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -100,7 +102,7 @@ export function KeywordTable() {
                     <Badge
                       variant={keyword.source === "manual" ? "default" : "secondary"}
                     >
-                      {keyword.source === "manual" ? "직접 입력" : "AI 추천"}
+                      {keyword.source === "manual" ? t("table.sourceManual") : t("table.sourceAi")}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -141,8 +143,11 @@ export function KeywordTable() {
       {data && data.items.length > 0 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-500">
-            총 {data.total}개 중 {(page - 1) * limit + 1}-
-            {Math.min(page * limit, data.total)}개 표시
+            {t("table.paginationInfo", {
+              total: data.total,
+              start: (page - 1) * limit + 1,
+              end: Math.min(page * limit, data.total)
+            })}
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -152,7 +157,7 @@ export function KeywordTable() {
               disabled={page === 1}
             >
               <ChevronLeft className="h-4 w-4" />
-              이전
+              {t("table.previous")}
             </Button>
             <span className="text-sm">
               {page} / {Math.ceil(data.total / limit)}
@@ -163,7 +168,7 @@ export function KeywordTable() {
               onClick={handleNextPage}
               disabled={!data.hasMore}
             >
-              다음
+              {t("table.next")}
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

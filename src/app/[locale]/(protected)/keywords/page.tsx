@@ -7,6 +7,7 @@ import { KeywordCreateDialog } from "@/features/keywords/components/KeywordCreat
 import { SuggestionsDialog } from "@/features/keywords/components/SuggestionsDialog";
 import { Plus, Lightbulb } from "lucide-react";
 import { PageLayout } from "@/components/layout/page-layout";
+import { useTranslations } from 'next-intl';
 
 type KeywordsPageProps = {
   params: Promise<Record<string, never>>;
@@ -14,23 +15,24 @@ type KeywordsPageProps = {
 
 export default function KeywordsPage({ params }: KeywordsPageProps) {
   void params;
+  const t = useTranslations('keywords');
 
   return (
     <PageLayout
-      title="키워드 관리"
-      description="새 글 작성에서 사용할 키워드를 미리 저장하고, 연관 검색어도 함께 찾아보세요"
+      title={t('title')}
+      description={t('description')}
       actions={
         <>
           <SuggestionsDialog>
             <Button variant="outline">
               <Lightbulb className="mr-2 h-4 w-4" />
-              연관 검색어 조회
+              {t('suggestions')}
             </Button>
           </SuggestionsDialog>
           <KeywordCreateDialog>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              새 키워드
+              {t('new_keyword')}
             </Button>
           </KeywordCreateDialog>
         </>

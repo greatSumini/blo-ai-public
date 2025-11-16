@@ -1,6 +1,7 @@
 "use client";
 
 import { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import {
   FormField,
   FormItem,
@@ -32,6 +33,7 @@ interface ArticleFormProps {
 }
 
 export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) {
+  const t = useTranslations("articles");
   const [keywordInput, setKeywordInput] = useState("");
 
   const handleAddKeyword = () => {
@@ -70,10 +72,10 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold" style={{ color: "#1F2937" }}>
-          글 작성
+          {t("articleForm.title")}
         </h2>
         <p className="mt-1 text-sm" style={{ color: "#6B7280" }}>
-          새로운 블로그 글을 작성해주세요
+          {t("articleForm.subtitle")}
         </p>
       </div>
 
@@ -84,13 +86,13 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-base font-semibold">
-              제목 <span style={{ color: "#DC2626" }}>*</span>
+              {t("articleForm.titleLabel")} <span style={{ color: "#DC2626" }}>*</span>
             </FormLabel>
             <FormControl>
               <Input
                 {...field}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder="글의 제목을 입력하세요"
+                placeholder={t("articleForm.titlePlaceholder")}
                 disabled={isLoading}
                 className="h-12 text-base"
                 style={{
@@ -100,7 +102,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
               />
             </FormControl>
             <FormDescription>
-              명확하고 간결한 제목을 입력해주세요
+              {t("articleForm.titleDescription")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -114,12 +116,12 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-base font-semibold">
-              URL 슬러그 <span style={{ color: "#DC2626" }}>*</span>
+              {t("articleForm.slugLabel")} <span style={{ color: "#DC2626" }}>*</span>
             </FormLabel>
             <FormControl>
               <Input
                 {...field}
-                placeholder="url-slug-example"
+                placeholder={t("articleForm.slugPlaceholder")}
                 disabled={isLoading}
                 className="h-12 font-mono text-sm"
                 style={{
@@ -129,7 +131,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
               />
             </FormControl>
             <FormDescription>
-              소문자, 숫자, 하이픈(-)만 사용 가능합니다
+              {t("articleForm.slugDescription")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -142,7 +144,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
         name="keywords"
         render={() => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">키워드</FormLabel>
+            <FormLabel className="text-base font-semibold">{t("articleForm.keywordsLabel")}</FormLabel>
             <div className="space-y-3">
               <div className="flex gap-2">
                 <Input
@@ -154,7 +156,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
                       handleAddKeyword();
                     }
                   }}
-                  placeholder="키워드 입력 후 Enter"
+                  placeholder={t("articleForm.keywordsPlaceholder")}
                   disabled={isLoading}
                   className="h-10"
                   style={{
@@ -204,7 +206,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
               )}
             </div>
             <FormDescription>
-              글의 주요 키워드를 입력해주세요
+              {t("articleForm.keywordsDescription")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -218,12 +220,12 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-base font-semibold">
-              요약 설명
+              {t("articleForm.descriptionLabel")}
             </FormLabel>
             <FormControl>
               <Textarea
                 {...field}
-                placeholder="글의 요약 설명을 입력하세요"
+                placeholder={t("articleForm.descriptionPlaceholder")}
                 disabled={isLoading}
                 rows={3}
                 className="resize-none"
@@ -234,7 +236,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
               />
             </FormControl>
             <FormDescription>
-              최대 500자까지 입력 가능합니다
+              {t("articleForm.descriptionDescription")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -248,12 +250,12 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-base font-semibold">
-              본문 <span style={{ color: "#DC2626" }}>*</span>
+              {t("articleForm.contentLabel")} <span style={{ color: "#DC2626" }}>*</span>
             </FormLabel>
             <FormControl>
               <Textarea
                 {...field}
-                placeholder="글의 본문을 입력하세요 (Markdown 지원)"
+                placeholder={t("articleForm.contentPlaceholder")}
                 disabled={isLoading}
                 rows={12}
                 className="resize-none font-mono text-sm"
@@ -264,7 +266,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
               />
             </FormControl>
             <FormDescription>
-              Markdown 문법을 사용할 수 있습니다
+              {t("articleForm.contentDescription")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -279,7 +281,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-base font-semibold">
-                스타일 가이드
+                {t("articleForm.styleGuideLabel")}
               </FormLabel>
               <Select
                 onValueChange={field.onChange}
@@ -294,7 +296,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
                       borderRadius: "8px",
                     }}
                   >
-                    <SelectValue placeholder="스타일 가이드 선택 (선택사항)" />
+                    <SelectValue placeholder={t("articleForm.styleGuidePlaceholder")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -306,7 +308,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
                 </SelectContent>
               </Select>
               <FormDescription>
-                글 작성 시 참고할 스타일 가이드를 선택하세요
+                {t("articleForm.styleGuideDescription")}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -320,7 +322,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
         name="tone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">톤</FormLabel>
+            <FormLabel className="text-base font-semibold">{t("articleForm.toneLabel")}</FormLabel>
             <Select
               onValueChange={field.onChange}
               value={field.value}
@@ -334,18 +336,18 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
                     borderRadius: "8px",
                   }}
                 >
-                  <SelectValue placeholder="글의 톤을 선택하세요" />
+                  <SelectValue placeholder={t("articleForm.tonePlaceholder")} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                <SelectItem value="professional">Professional (전문적)</SelectItem>
-                <SelectItem value="friendly">Friendly (친근함)</SelectItem>
-                <SelectItem value="inspirational">Inspirational (영감적)</SelectItem>
-                <SelectItem value="educational">Educational (교육적)</SelectItem>
+                <SelectItem value="professional">{t("articleForm.toneProfessional")}</SelectItem>
+                <SelectItem value="friendly">{t("articleForm.toneFriendly")}</SelectItem>
+                <SelectItem value="inspirational">{t("articleForm.toneInspirational")}</SelectItem>
+                <SelectItem value="educational">{t("articleForm.toneEducational")}</SelectItem>
               </SelectContent>
             </Select>
             <FormDescription>
-              글의 분위기와 스타일을 선택하세요
+              {t("articleForm.toneDescription")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -360,7 +362,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-base font-semibold">
-                글 길이
+                {t("articleForm.contentLengthLabel")}
               </FormLabel>
               <Select
                 onValueChange={field.onChange}
@@ -375,13 +377,13 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
                       borderRadius: "8px",
                     }}
                   >
-                    <SelectValue placeholder="선택" />
+                    <SelectValue placeholder={t("articleForm.contentLengthPlaceholder")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="short">짧음 (Short)</SelectItem>
-                  <SelectItem value="medium">중간 (Medium)</SelectItem>
-                  <SelectItem value="long">김 (Long)</SelectItem>
+                  <SelectItem value="short">{t("articleForm.contentLengthShort")}</SelectItem>
+                  <SelectItem value="medium">{t("articleForm.contentLengthMedium")}</SelectItem>
+                  <SelectItem value="long">{t("articleForm.contentLengthLong")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -396,7 +398,7 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-base font-semibold">
-                난이도
+                {t("articleForm.readingLevelLabel")}
               </FormLabel>
               <Select
                 onValueChange={field.onChange}
@@ -411,13 +413,13 @@ export function ArticleForm({ form, styleGuides, isLoading }: ArticleFormProps) 
                       borderRadius: "8px",
                     }}
                   >
-                    <SelectValue placeholder="선택" />
+                    <SelectValue placeholder={t("articleForm.readingLevelPlaceholder")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="beginner">초급 (Beginner)</SelectItem>
-                  <SelectItem value="intermediate">중급 (Intermediate)</SelectItem>
-                  <SelectItem value="advanced">고급 (Advanced)</SelectItem>
+                  <SelectItem value="beginner">{t("articleForm.readingLevelBeginner")}</SelectItem>
+                  <SelectItem value="intermediate">{t("articleForm.readingLevelIntermediate")}</SelectItem>
+                  <SelectItem value="advanced">{t("articleForm.readingLevelAdvanced")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

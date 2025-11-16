@@ -20,6 +20,7 @@ import {
 import { useKeywordList } from "@/features/keywords/hooks/useKeywordQuery";
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface KeywordPickerProps {
   value: string[];
@@ -31,12 +32,14 @@ interface KeywordPickerProps {
 export function KeywordPicker({
   value,
   onChange,
-  placeholder = "키워드 검색...",
+  placeholder,
   disabled = false,
 }: KeywordPickerProps) {
+  const t = useTranslations("keywords");
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const actualPlaceholder = placeholder || t("picker.searchPlaceholder");
 
   useDebounce(
     () => {
@@ -91,22 +94,22 @@ export function KeywordPicker({
             className="w-full justify-between"
             disabled={disabled}
           >
-            {placeholder}
+            {actualPlaceholder}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0" align="start">
           <Command>
             <CommandInput
-              placeholder="키워드 검색..."
+              placeholder={t("picker.searchInputPlaceholder")}
               value={searchQuery}
               onValueChange={setSearchQuery}
             />
             <CommandList>
               {isLoading ? (
-                <CommandEmpty>검색 중...</CommandEmpty>
+                <CommandEmpty>{t("picker.searching")}</CommandEmpty>
               ) : !data || data.items.length === 0 ? (
-                <CommandEmpty>검색 결과가 없습니다</CommandEmpty>
+                <CommandEmpty>{t("picker.noResults")}</CommandEmpty>
               ) : (
                 <CommandGroup>
                   {data.items.map((keyword) => (

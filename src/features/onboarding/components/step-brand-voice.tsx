@@ -1,6 +1,7 @@
 "use client";
 
 import { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import {
   FormField,
   FormItem,
@@ -21,6 +22,8 @@ interface StepBrandVoiceProps {
 }
 
 export function StepBrandVoice({ form }: StepBrandVoiceProps) {
+  const t = useTranslations("onboarding.brand_voice");
+
   return (
     <div className="space-y-6">
       <div>
@@ -28,10 +31,10 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
           className="text-2xl font-semibold"
           style={{ color: "#111827" }}
         >
-          브랜드 보이스 설정
+          {t("title")}
         </h2>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          브랜드의 개성과 목소리를 정의해주세요
+          {t("subtitle")}
         </p>
       </div>
 
@@ -41,10 +44,10 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
         name="brandName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>브랜드 이름</FormLabel>
+            <FormLabel>{t("field_brand_name")}</FormLabel>
             <FormControl>
               <Input
-                placeholder="예: SEO24"
+                placeholder={t("placeholder_brand_name")}
                 {...field}
                 className="h-10"
                 style={{
@@ -64,10 +67,10 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
         name="brandDescription"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>브랜드 설명</FormLabel>
+            <FormLabel>{t("field_brand_description")}</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="브랜드가 무엇을 하는지, 어떤 가치를 제공하는지 설명해주세요"
+                placeholder={t("placeholder_brand_description")}
                 {...field}
                 className="min-h-[120px] resize-y"
                 style={{
@@ -77,7 +80,7 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
               />
             </FormControl>
             <FormDescription>
-              최소 10자 이상 입력해주세요
+              {t("description_brand_description")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -91,9 +94,9 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
         render={() => (
           <FormItem>
             <div className="mb-4">
-              <FormLabel>브랜드 성격 (최대 3개)</FormLabel>
+              <FormLabel>{t("field_personality")}</FormLabel>
               <FormDescription>
-                브랜드의 개성을 가장 잘 나타내는 단어를 선택하세요
+                {t("description_personality")}
               </FormDescription>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -148,9 +151,9 @@ export function StepBrandVoice({ form }: StepBrandVoiceProps) {
         name="formality"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>격식 수준</FormLabel>
+            <FormLabel>{t("field_formality")}</FormLabel>
             <FormDescription>
-              브랜드 커뮤니케이션의 격식 수준을 선택하세요
+              {t("description_formality")}
             </FormDescription>
             <div className="space-y-3">
               {FORMALITY_OPTIONS.map((option) => (

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { List } from 'lucide-react';
@@ -14,6 +15,8 @@ export function TableOfContents({
   headings,
   currentHeadingId,
 }: TableOfContentsProps) {
+  const t = useTranslations("articles");
+
   if (headings.length === 0) {
     return null;
   }
@@ -22,7 +25,7 @@ export function TableOfContents({
     <Card className="p-4">
       <div className="flex items-center gap-2 mb-4">
         <List className="h-4 w-4" />
-        <h3 className="font-semibold">목차</h3>
+        <h3 className="font-semibold">{t("tableOfContents.title")}</h3>
       </div>
       <nav className="space-y-1">
         {headings.map((heading) => (

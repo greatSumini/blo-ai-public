@@ -1,6 +1,7 @@
 "use client";
 
 import { PageLayout } from "@/components/layout/page-layout";
+import { useTranslations } from 'next-intl';
 
 type ArticlesPageProps = {
   params: Promise<Record<string, never>>;
@@ -8,17 +9,18 @@ type ArticlesPageProps = {
 
 export default function ArticlesPage({ params }: ArticlesPageProps) {
   void params;
+  const t = useTranslations('articles');
 
   return (
     <PageLayout
-      title="글 목록"
-      description="작성한 글들을 한 눈에 확인하고 관리할 수 있어요."
+      title={t('title')}
+      description={t('description')}
     >
       <div
         className="rounded-lg border border-dashed p-8 text-center text-muted-foreground"
         style={{ borderColor: "#E1E5EA" }}
       >
-        글 목록 기능은 준비 중입니다.
+        {t('coming_soon')}
       </div>
     </PageLayout>
   );

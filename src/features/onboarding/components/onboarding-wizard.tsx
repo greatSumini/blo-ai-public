@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +37,7 @@ interface OnboardingWizardProps {
 }
 
 export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
+  const t = useTranslations("onboarding.wizard");
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -194,7 +196,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                 ← / →
               </kbd>
               {" "}
-              키로 이동 가능
+              {t("keyboard_shortcut_hint")}
             </p>
           </div>
         </div>
@@ -242,7 +244,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                     }}
                   >
                     <ChevronLeft className="mr-2 h-4 w-4" />
-                    이전
+                    {t("button_previous")}
                   </Button>
 
                   {currentStep < TOTAL_STEPS ? (
@@ -255,7 +257,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         borderRadius: "8px",
                       }}
                     >
-                      다음
+                      {t("button_next")}
                       <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>
                   ) : (
@@ -275,7 +277,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         borderRadius: "8px",
                       }}
                     >
-                      {isSubmitting ? "처리 중..." : "완료"}
+                      {isSubmitting ? t("button_submitting") : t("button_complete")}
                     </Button>
                   )}
                 </div>
@@ -310,7 +312,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         className="text-sm font-medium"
                         style={{ color: "#374151" }}
                       >
-                        미리보기
+                        {t("preview_label")}
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="pt-2">
@@ -335,7 +337,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                     }}
                   >
                     <ChevronLeft className="mr-2 h-4 w-4" />
-                    이전
+                    {t("button_previous")}
                   </Button>
 
                   {currentStep < TOTAL_STEPS ? (
@@ -348,7 +350,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         borderRadius: "8px",
                       }}
                     >
-                      다음
+                      {t("button_next")}
                       <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>
                   ) : (
@@ -368,7 +370,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         borderRadius: "8px",
                       }}
                     >
-                      {isSubmitting ? "처리 중..." : "완료"}
+                      {isSubmitting ? t("button_submitting") : t("button_complete")}
                     </Button>
                   )}
                 </div>

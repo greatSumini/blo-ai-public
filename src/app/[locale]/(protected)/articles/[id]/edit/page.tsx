@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +29,7 @@ export default function EditorPage({ params }: EditorPageProps) {
   const articleId = resolvedParams.id;
   const router = useRouter();
   const { toast } = useToast();
+  const t = useTranslations('editor');
 
   const { data: article, isLoading, isError } = useArticle(articleId);
 
@@ -64,17 +66,17 @@ export default function EditorPage({ params }: EditorPageProps) {
 
   const handleDownloadMarkdown = () => {
     downloadMarkdown(title || 'article', content);
-    toast({ title: '다운로드 완료', description: '마크다운 파일이 다운로드되었습니다.' });
+    toast({ title: t('download_success_title'), description: t('download_success_desc') });
   };
 
   const handleCopyMarkdown = async () => {
     try {
       await copyToClipboard(content);
       setCopySuccess(true);
-      toast({ title: '복사 완료', description: '마크다운이 클립보드에 복사되었습니다.' });
+      toast({ title: t('copy_success_title'), description: t('copy_success_desc') });
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (error) {
-      toast({ title: '복사 실패', description: '마크다운을 복사하는 중 오류가 발생했습니다.', variant: 'destructive' });
+      toast({ title: t('copy_error_title'), description: t('copy_error_desc'), variant: 'destructive' });
     }
   };
 
@@ -83,7 +85,7 @@ export default function EditorPage({ params }: EditorPageProps) {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">로딩 중...</p>
+          <p className="text-muted-foreground">{t('loading')}</p>
         </div>
       </div>
     );
@@ -92,8 +94,8 @@ export default function EditorPage({ params }: EditorPageProps) {
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-        <p className="text-red-500">글을 불러오는 데 실패했습니다.</p>
-        <Button onClick={() => router.push('/dashboard')}>대시보드로 돌아가기</Button>
+        <p className="text-red-500">{t('load_error')}</p>
+        <Button onClick={() => router.push('/dashboard')}>{t('back_to_dashboard')}</Button>
       </div>
     );
   }
@@ -105,10 +107,10 @@ export default function EditorPage({ params }: EditorPageProps) {
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => router.back()}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              뒤로
+              {t('back')}
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">글 편집</h1>
+              <h1 className="text-2xl font-bold">{t('title')}</h1>
               <AutoSaveIndicator {...autoSave} />
             </div>
           </div>
@@ -116,12 +118,12 @@ export default function EditorPage({ params }: EditorPageProps) {
             {showToc ? (
               <>
                 <X className="mr-2 h-4 w-4" />
-                목차 숨기기
+                {t('hide_toc')}
               </>
             ) : (
               <>
                 <List className="mr-2 h-4 w-4" />
-                목차 보기
+                {t('show_toc')}
               </>
             )}
           </Button>
@@ -138,41 +140,41 @@ export default function EditorPage({ params }: EditorPageProps) {
 
           <Card className="flex-1 p-6 space-y-4">
             <div>
-              <Label htmlFor="title">제목</Label>
-              <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="글 제목을 입력하세요" className="mt-1" />
+              <Label htmlFor="title">{t('field_title')}</Label>
+              <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t('placeholder_title')} className="mt-1" />
             </div>
             <div>
-              <Label htmlFor="slug">슬러그 (URL)</Label>
-              <Input id="slug" value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="url-friendly-slug" className="mt-1" />
+              <Label htmlFor="slug">{t('field_slug')}</Label>
+              <Input id="slug" value={slug} onChange={(e) => setSlug(e.target.value)} placeholder={t('placeholder_slug')} className="mt-1" />
             </div>
             <div>
-              <Label htmlFor="keywords">키워드 (쉼표로 구분)</Label>
-              <Input id="keywords" value={keywords} onChange={(e) => setKeywords(e.target.value)} placeholder="키워드1, 키워드2, 키워드3" className="mt-1" />
+              <Label htmlFor="keywords">{t('field_keywords')}</Label>
+              <Input id="keywords" value={keywords} onChange={(e) => setKeywords(e.target.value)} placeholder={t('placeholder_keywords')} className="mt-1" />
             </div>
             <div>
-              <Label htmlFor="description">요약</Label>
-              <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="글 요약을 입력하세요" className="mt-1" />
+              <Label htmlFor="description">{t('field_description')}</Label>
+              <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t('placeholder_description')} className="mt-1" />
             </div>
             <div>
-              <Label htmlFor="content">본문 (마크다운)</Label>
+              <Label htmlFor="content">{t('field_content')}</Label>
               <div data-color-mode="light" className="mt-1">
                 <MDEditor value={content} onChange={(val) => setContent(val || '')} height={500} preview="edit" />
               </div>
               <div className="flex gap-2 mt-4">
                 <Button type="button" variant="outline" size="sm" onClick={handleDownloadMarkdown} className="flex-1">
                   <Download className="mr-2 h-4 w-4" />
-                  다운로드
+                  {t('download')}
                 </Button>
                 <Button type="button" variant="outline" size="sm" onClick={handleCopyMarkdown} className="flex-1">
                   {copySuccess ? (
                     <>
                       <Check className="mr-2 h-4 w-4" />
-                      복사됨
+                      {t('copied')}
                     </>
                   ) : (
                     <>
                       <Copy className="mr-2 h-4 w-4" />
-                      복사
+                      {t('copy')}
                     </>
                   )}
                 </Button>
@@ -181,7 +183,7 @@ export default function EditorPage({ params }: EditorPageProps) {
           </Card>
 
           <Card className="flex-1 p-6 overflow-auto" style={{ maxHeight: '800px' }}>
-            <h2 className="text-xl font-bold mb-4">{title || '제목 없음'}</h2>
+            <h2 className="text-xl font-bold mb-4">{title || t('untitled')}</h2>
             {description && <p className="text-muted-foreground mb-6">{description}</p>}
             <MarkdownPreview content={content} />
           </Card>
@@ -192,51 +194,51 @@ export default function EditorPage({ params }: EditorPageProps) {
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="edit">
                 <Edit className="mr-2 h-4 w-4" />
-                편집
+                {t('edit_tab')}
               </TabsTrigger>
               <TabsTrigger value="preview">
                 <Eye className="mr-2 h-4 w-4" />
-                미리보기
+                {t('preview_tab')}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="edit" className="mt-4">
               <Card className="p-4 space-y-4">
                 <div>
-                  <Label htmlFor="title-mobile">제목</Label>
-                  <Input id="title-mobile" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="글 제목을 입력하세요" className="mt-1" />
+                  <Label htmlFor="title-mobile">{t('field_title')}</Label>
+                  <Input id="title-mobile" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t('placeholder_title')} className="mt-1" />
                 </div>
                 <div>
-                  <Label htmlFor="slug-mobile">슬러그</Label>
-                  <Input id="slug-mobile" value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="url-friendly-slug" className="mt-1" />
+                  <Label htmlFor="slug-mobile">{t('field_slug')}</Label>
+                  <Input id="slug-mobile" value={slug} onChange={(e) => setSlug(e.target.value)} placeholder={t('placeholder_slug')} className="mt-1" />
                 </div>
                 <div>
-                  <Label htmlFor="keywords-mobile">키워드</Label>
-                  <Input id="keywords-mobile" value={keywords} onChange={(e) => setKeywords(e.target.value)} placeholder="키워드1, 키워드2" className="mt-1" />
+                  <Label htmlFor="keywords-mobile">{t('field_keywords')}</Label>
+                  <Input id="keywords-mobile" value={keywords} onChange={(e) => setKeywords(e.target.value)} placeholder={t('placeholder_keywords')} className="mt-1" />
                 </div>
                 <div>
-                  <Label htmlFor="description-mobile">요약</Label>
-                  <Input id="description-mobile" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="글 요약" className="mt-1" />
+                  <Label htmlFor="description-mobile">{t('field_description')}</Label>
+                  <Input id="description-mobile" value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t('placeholder_description')} className="mt-1" />
                 </div>
                 <div>
-                  <Label htmlFor="content-mobile">본문</Label>
+                  <Label htmlFor="content-mobile">{t('field_content_mobile')}</Label>
                   <div data-color-mode="light" className="mt-1">
                     <MDEditor value={content} onChange={(val) => setContent(val || '')} height={400} />
                   </div>
                   <div className="flex gap-2 mt-4">
                     <Button type="button" variant="outline" size="sm" onClick={handleDownloadMarkdown} className="flex-1">
                       <Download className="mr-2 h-3 w-3" />
-                      다운로드
+                      {t('download')}
                     </Button>
                     <Button type="button" variant="outline" size="sm" onClick={handleCopyMarkdown} className="flex-1">
                       {copySuccess ? (
                         <>
                           <Check className="mr-2 h-3 w-3" />
-                          복사됨
+                          {t('copied')}
                         </>
                       ) : (
                         <>
                           <Copy className="mr-2 h-3 w-3" />
-                          복사
+                          {t('copy')}
                         </>
                       )}
                     </Button>
@@ -246,7 +248,7 @@ export default function EditorPage({ params }: EditorPageProps) {
             </TabsContent>
             <TabsContent value="preview" className="mt-4">
               <Card className="p-4">
-                <h2 className="text-xl font-bold mb-4">{title || '제목 없음'}</h2>
+                <h2 className="text-xl font-bold mb-4">{title || t('untitled')}</h2>
                 {description && <p className="text-muted-foreground mb-6">{description}</p>}
                 <MarkdownPreview content={content} />
               </Card>

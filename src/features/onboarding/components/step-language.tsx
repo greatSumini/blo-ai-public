@@ -1,6 +1,7 @@
 "use client";
 
 import { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import {
   FormField,
   FormItem,
@@ -18,6 +19,8 @@ interface StepLanguageProps {
 }
 
 export function StepLanguage({ form }: StepLanguageProps) {
+  const t = useTranslations("onboarding.language");
+
   return (
     <div className="space-y-6">
       <div>
@@ -25,10 +28,10 @@ export function StepLanguage({ form }: StepLanguageProps) {
           className="text-2xl font-semibold"
           style={{ color: "#111827" }}
         >
-          언어 설정
+          {t("title")}
         </h2>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          주로 사용할 언어를 선택해주세요
+          {t("subtitle")}
         </p>
       </div>
 
@@ -38,9 +41,9 @@ export function StepLanguage({ form }: StepLanguageProps) {
         name="language"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>콘텐츠 언어</FormLabel>
+            <FormLabel>{t("field_language")}</FormLabel>
             <FormDescription>
-              생성될 콘텐츠의 기본 언어를 선택하세요
+              {t("description_language")}
             </FormDescription>
             <div className="grid gap-4 sm:grid-cols-2">
               {LANGUAGE_OPTIONS.map((option) => (
@@ -109,11 +112,10 @@ export function StepLanguage({ form }: StepLanguageProps) {
         }}
       >
         <p className="text-sm font-medium" style={{ color: "#111827" }}>
-          💡 팁
+          {t("tip_icon")}
         </p>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          기본 언어를 설정한 후에도 콘텐츠 생성 시 다른 언어를 선택할 수
-          있습니다. 이 설정은 기본값으로만 사용됩니다.
+          {t("tip_text")}
         </p>
       </div>
     </div>

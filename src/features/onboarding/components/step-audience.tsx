@@ -1,6 +1,7 @@
 "use client";
 
 import { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import {
   FormField,
   FormItem,
@@ -17,6 +18,8 @@ interface StepAudienceProps {
 }
 
 export function StepAudience({ form }: StepAudienceProps) {
+  const t = useTranslations("onboarding.audience");
+
   return (
     <div className="space-y-6">
       <div>
@@ -24,10 +27,10 @@ export function StepAudience({ form }: StepAudienceProps) {
           className="text-2xl font-semibold"
           style={{ color: "#111827" }}
         >
-          타겟 독자 정의
+          {t("title")}
         </h2>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          어떤 독자를 위한 콘텐츠인지 알려주세요
+          {t("subtitle")}
         </p>
       </div>
 
@@ -37,10 +40,10 @@ export function StepAudience({ form }: StepAudienceProps) {
         name="targetAudience"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>타겟 독자</FormLabel>
+            <FormLabel>{t("field_target_audience")}</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="예: 스타트업 창업자, 프리랜서 개발자, 마케팅 담당자 등&#10;&#10;독자의 특성, 관심사, 직업 등을 자세히 설명해주세요"
+                placeholder={t("placeholder_target_audience")}
                 {...field}
                 className="min-h-[150px] resize-y"
                 style={{
@@ -50,7 +53,7 @@ export function StepAudience({ form }: StepAudienceProps) {
               />
             </FormControl>
             <FormDescription>
-              타겟 독자의 특성을 구체적으로 설명할수록 더 맞춤화된 콘텐츠를 생성할 수 있습니다
+              {t("description_target_audience")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -63,10 +66,10 @@ export function StepAudience({ form }: StepAudienceProps) {
         name="painPoints"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>해결하려는 문제</FormLabel>
+            <FormLabel>{t("field_pain_points")}</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="예: 시간 부족, 콘텐츠 작성의 어려움, 일관성 유지 등&#10;&#10;독자들이 겪고 있는 문제나 니즈를 설명해주세요"
+                placeholder={t("placeholder_pain_points")}
                 {...field}
                 className="min-h-[150px] resize-y"
                 style={{
@@ -76,7 +79,7 @@ export function StepAudience({ form }: StepAudienceProps) {
               />
             </FormControl>
             <FormDescription>
-              독자가 해결하고 싶어하는 문제나 달성하고 싶은 목표를 설명해주세요
+              {t("description_pain_points")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -91,12 +94,10 @@ export function StepAudience({ form }: StepAudienceProps) {
         }}
       >
         <p className="text-sm font-medium" style={{ color: "#111827" }}>
-          💡 팁
+          {t("tip_icon")}
         </p>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          타겟 독자를 구체적으로 정의할수록 더 효과적인 콘텐츠를 만들 수 있습니다.
-          인구통계학적 정보(나이, 직업)와 심리학적 정보(관심사, 가치관)를 모두
-          고려해보세요.
+          {t("tip_text")}
         </p>
       </div>
     </div>

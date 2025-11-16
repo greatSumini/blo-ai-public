@@ -1,6 +1,7 @@
 "use client";
 
 import { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import {
   FormField,
   FormItem,
@@ -28,6 +29,8 @@ interface StepStyleProps {
 }
 
 export function StepStyle({ form }: StepStyleProps) {
+  const t = useTranslations("onboarding.style");
+
   return (
     <div className="space-y-6">
       <div>
@@ -35,10 +38,10 @@ export function StepStyle({ form }: StepStyleProps) {
           className="text-2xl font-semibold"
           style={{ color: "#111827" }}
         >
-          스타일 설정
+          {t("title")}
         </h2>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          콘텐츠의 톤과 길이를 설정해주세요
+          {t("subtitle")}
         </p>
       </div>
 
@@ -48,7 +51,7 @@ export function StepStyle({ form }: StepStyleProps) {
         name="tone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>콘텐츠 톤</FormLabel>
+            <FormLabel>{t("field_tone")}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger
@@ -58,7 +61,7 @@ export function StepStyle({ form }: StepStyleProps) {
                     borderRadius: "6px",
                   }}
                 >
-                  <SelectValue placeholder="톤을 선택하세요" />
+                  <SelectValue placeholder={t("placeholder_tone")} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -78,7 +81,7 @@ export function StepStyle({ form }: StepStyleProps) {
               </SelectContent>
             </Select>
             <FormDescription>
-              콘텐츠의 전반적인 분위기와 어조를 결정합니다
+              {t("description_tone")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -91,7 +94,7 @@ export function StepStyle({ form }: StepStyleProps) {
         name="contentLength"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>콘텐츠 길이</FormLabel>
+            <FormLabel>{t("field_content_length")}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger
@@ -101,7 +104,7 @@ export function StepStyle({ form }: StepStyleProps) {
                     borderRadius: "6px",
                   }}
                 >
-                  <SelectValue placeholder="길이를 선택하세요" />
+                  <SelectValue placeholder={t("placeholder_content_length")} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -121,7 +124,7 @@ export function StepStyle({ form }: StepStyleProps) {
               </SelectContent>
             </Select>
             <FormDescription>
-              생성될 콘텐츠의 평균 길이를 설정합니다
+              {t("description_content_length")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -134,7 +137,7 @@ export function StepStyle({ form }: StepStyleProps) {
         name="readingLevel"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>읽기 수준</FormLabel>
+            <FormLabel>{t("field_reading_level")}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger
@@ -144,7 +147,7 @@ export function StepStyle({ form }: StepStyleProps) {
                     borderRadius: "6px",
                   }}
                 >
-                  <SelectValue placeholder="수준을 선택하세요" />
+                  <SelectValue placeholder={t("placeholder_reading_level")} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -164,7 +167,7 @@ export function StepStyle({ form }: StepStyleProps) {
               </SelectContent>
             </Select>
             <FormDescription>
-              독자의 전문성 수준에 맞는 용어와 표현을 사용합니다
+              {t("description_reading_level")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -179,11 +182,10 @@ export function StepStyle({ form }: StepStyleProps) {
         }}
       >
         <p className="text-sm font-medium" style={{ color: "#111827" }}>
-          💡 팁
+          {t("tip_icon")}
         </p>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          이 설정은 기본값으로 사용되며, 각 콘텐츠 생성 시 개별적으로 조정할 수
-          있습니다.
+          {t("tip_text")}
         </p>
       </div>
     </div>

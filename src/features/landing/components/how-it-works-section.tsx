@@ -1,46 +1,41 @@
 "use client";
 
 import { Keyboard, Sparkles, FileEdit, ArrowRight } from "lucide-react";
-
-interface Step {
-  number: string;
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-const steps: Step[] = [
-  {
-    number: "01",
-    icon: <Keyboard className="w-8 h-8" />,
-    title: "키워드 입력",
-    description: "주제 키워드와 간단한 설명을 입력하고 원하는 브랜드 보이스를 선택합니다.",
-  },
-  {
-    number: "02",
-    icon: <Sparkles className="w-8 h-8" />,
-    title: "AI 생성",
-    description: "AI가 5분 내에 SEO 최적화된 초안, 제목, 메타데이터를 자동으로 생성합니다.",
-  },
-  {
-    number: "03",
-    icon: <FileEdit className="w-8 h-8" />,
-    title: "편집 & 완성",
-    description: "원스크린 편집기에서 문단별 수정 및 재생성을 통해 완벽한 글을 완성합니다.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function HowItWorksSection() {
+  const t = useTranslations("landing.how_it_works");
+
+  const steps = [
+    {
+      number: "01",
+      icon: <Keyboard className="w-8 h-8" />,
+      titleKey: "step1.title" as const,
+      descriptionKey: "step1.description" as const,
+    },
+    {
+      number: "02",
+      icon: <Sparkles className="w-8 h-8" />,
+      titleKey: "step2.title" as const,
+      descriptionKey: "step2.description" as const,
+    },
+    {
+      number: "03",
+      icon: <FileEdit className="w-8 h-8" />,
+      titleKey: "step3.title" as const,
+      descriptionKey: "step3.description" as const,
+    },
+  ];
   return (
     <section id="how-it-works" className="w-full bg-white py-16 md:py-20 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111827] mb-3 md:mb-4 px-4">
-            3단계로 완성하는 블로그 글
+            {t("heading")}
           </h2>
           <p className="text-base md:text-lg text-[#6B7280] max-w-2xl mx-auto px-4">
-            복잡한 과정 없이 간단한 3단계만으로 전문적인 블로그 글을 완성할 수 있습니다
+            {t("subheading")}
           </p>
         </div>
 
@@ -63,10 +58,10 @@ export function HowItWorksSection() {
                 {/* Content */}
                 <div className="space-y-3">
                   <h3 className="text-xl font-semibold text-[#111827]">
-                    {step.title}
+                    {t(step.titleKey)}
                   </h3>
                   <p className="text-base text-[#6B7280] leading-relaxed">
-                    {step.description}
+                    {t(step.descriptionKey)}
                   </p>
                 </div>
               </div>
@@ -84,8 +79,8 @@ export function HowItWorksSection() {
         {/* Time Badge */}
         <div className="mt-12 text-center">
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F5F7FA] border border-[#E1E5EA]">
-            <span className="text-2xl font-bold text-[#3BA2F8]">5분</span>
-            <span className="text-base text-[#6B7280]">이내 완성</span>
+            <span className="text-2xl font-bold text-[#3BA2F8]">{t("time_badge.value")}</span>
+            <span className="text-base text-[#6B7280]">{t("time_badge.label")}</span>
           </div>
         </div>
       </div>

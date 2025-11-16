@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -22,10 +23,12 @@ interface SeoPanelProps {
 }
 
 export function SeoPanel({ formData }: SeoPanelProps) {
+  const t = useTranslations("articles");
+
   const checks: SeoCheckItem[] = [
     // Title checks
     {
-      label: "제목 길이",
+      label: t("seoPanel.titleLengthLabel"),
       status: formData.title
         ? formData.title.length >= 30 && formData.title.length <= 60
           ? "pass"
@@ -34,24 +37,24 @@ export function SeoPanel({ formData }: SeoPanelProps) {
             : "info"
         : "info",
       message: formData.title
-        ? `${formData.title.length}자 (권장: 30-60자)`
-        : "제목을 입력하세요",
+        ? t("seoPanel.titleLengthMessage", { count: formData.title.length })
+        : t("seoPanel.titleLengthEmpty"),
     },
     // Meta title
     {
-      label: "Meta 제목",
+      label: t("seoPanel.metaTitleLabel"),
       status: formData.metaTitle
         ? formData.metaTitle.length <= 60
           ? "pass"
           : "warning"
         : "info",
       message: formData.metaTitle
-        ? `${formData.metaTitle.length}자 (최대: 60자)`
-        : "Meta 제목을 입력하면 검색 결과에 표시됩니다",
+        ? t("seoPanel.metaTitleMessage", { count: formData.metaTitle.length })
+        : t("seoPanel.metaTitleEmpty"),
     },
     // Meta description
     {
-      label: "Meta 설명",
+      label: t("seoPanel.metaDescriptionLabel"),
       status: formData.metaDescription
         ? formData.metaDescription.length >= 120 &&
           formData.metaDescription.length <= 160
@@ -61,12 +64,12 @@ export function SeoPanel({ formData }: SeoPanelProps) {
             : "info"
         : "info",
       message: formData.metaDescription
-        ? `${formData.metaDescription.length}자 (권장: 120-160자)`
-        : "Meta 설명을 입력하면 검색 결과에 표시됩니다",
+        ? t("seoPanel.metaDescriptionMessage", { count: formData.metaDescription.length })
+        : t("seoPanel.metaDescriptionEmpty"),
     },
     // Slug
     {
-      label: "URL 슬러그",
+      label: t("seoPanel.slugLabel"),
       status: formData.slug
         ? /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(formData.slug)
           ? "pass"
@@ -74,13 +77,13 @@ export function SeoPanel({ formData }: SeoPanelProps) {
         : "info",
       message: formData.slug
         ? /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(formData.slug)
-          ? "올바른 형식입니다"
-          : "소문자, 숫자, 하이픈만 사용 가능합니다"
-        : "URL 슬러그를 입력하세요",
+          ? t("seoPanel.slugValid")
+          : t("seoPanel.slugInvalid")
+        : t("seoPanel.slugEmpty"),
     },
     // Keywords
     {
-      label: "키워드",
+      label: t("seoPanel.keywordsLabel"),
       status:
         formData.keywords && formData.keywords.length > 0
           ? formData.keywords.length >= 3 && formData.keywords.length <= 10
@@ -89,20 +92,20 @@ export function SeoPanel({ formData }: SeoPanelProps) {
           : "info",
       message:
         formData.keywords && formData.keywords.length > 0
-          ? `${formData.keywords.length}개 키워드 (권장: 3-10개)`
-          : "키워드를 3-10개 추가하세요",
+          ? t("seoPanel.keywordsMessage", { count: formData.keywords.length })
+          : t("seoPanel.keywordsEmpty"),
     },
     // Content length
     {
-      label: "본문 길이",
+      label: t("seoPanel.contentLengthLabel"),
       status: formData.content
         ? formData.content.length >= 300
           ? "pass"
           : "info"
         : "info",
       message: formData.content
-        ? `${formData.content.length}자 (최소 권장: 300자)`
-        : "본문을 입력하세요",
+        ? t("seoPanel.contentLengthMessage", { count: formData.content.length })
+        : t("seoPanel.contentLengthEmpty"),
     },
   ];
 
@@ -157,7 +160,7 @@ export function SeoPanel({ formData }: SeoPanelProps) {
         <div className="flex items-center justify-between">
           <h3 className="flex items-center gap-2 text-lg font-semibold">
             <Search className="h-5 w-5" style={{ color: "#3BA2F8" }} />
-            SEO 점검
+            {t("seoPanel.title")}
           </h3>
           <Badge
             variant="secondary"
@@ -167,11 +170,11 @@ export function SeoPanel({ formData }: SeoPanelProps) {
               color: getScoreColor(score),
             }}
           >
-            {score}점
+            {t("seoPanel.scoreLabel", { score })}
           </Badge>
         </div>
         <p className="mt-1 text-xs" style={{ color: "#6B7280" }}>
-          {passCount}/{totalCount} 항목 통과
+          {t("seoPanel.itemsPassed", { passed: passCount, total: totalCount })}
         </p>
       </div>
 
@@ -210,16 +213,16 @@ export function SeoPanel({ formData }: SeoPanelProps) {
             className="text-xs font-semibold uppercase"
             style={{ color: "#6B7280" }}
           >
-            SEO 개선 팁
+            {t("seoPanel.tipsTitle")}
           </h4>
           <ul
             className="space-y-1.5 text-xs leading-relaxed"
             style={{ color: "#6B7280" }}
           >
-            <li>• 제목은 주요 키워드를 포함하고 30-60자로 작성</li>
-            <li>• Meta 설명은 클릭을 유도하는 내용으로 120-160자</li>
-            <li>• URL은 짧고 의미있는 키워드로 구성</li>
-            <li>• 키워드는 자연스럽게 본문에 포함</li>
+            <li>• {t("seoPanel.tip1")}</li>
+            <li>• {t("seoPanel.tip2")}</li>
+            <li>• {t("seoPanel.tip3")}</li>
+            <li>• {t("seoPanel.tip4")}</li>
           </ul>
         </div>
       </div>

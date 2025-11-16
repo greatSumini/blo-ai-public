@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslations } from "next-intl";
 import {
   Form,
   FormField,
@@ -48,6 +49,7 @@ export function GenerationForm({
   onSubmit,
   isLoading,
 }: GenerationFormProps) {
+  const t = useTranslations("articles");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<GenerationFormData>({
@@ -75,10 +77,10 @@ export function GenerationForm({
         {/* Header */}
         <div className="text-center space-y-3">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-            3분만에 완성하는 고품질 컨텐츠
+            {t("generationForm.title")}
           </h1>
           <p className="text-lg text-gray-600">
-            SEO 최적화된, 사람이 쓴 것 같은 컨텐츠를 생성해보세요
+            {t("generationForm.subtitle")}
           </p>
         </div>
 
@@ -98,7 +100,7 @@ export function GenerationForm({
                     <div className="relative">
                       <Textarea
                         {...field}
-                        placeholder="작성할 컨텐츠를 설명해주세요"
+                        placeholder={t("generationForm.topicPlaceholder")}
                         disabled={isSubmitting || isLoading}
                         rows={4}
                         className="resize-none rounded-2xl border-gray-200 px-6 py-5 text-base shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
@@ -117,7 +119,7 @@ export function GenerationForm({
                               >
                                 <FormControl>
                                   <SelectTrigger className="h-8 w-[180px] rounded-lg border-gray-300 bg-white/90 backdrop-blur-sm text-sm shadow-sm hover:bg-white">
-                                    <SelectValue placeholder="스타일 가이드" />
+                                    <SelectValue placeholder={t("generationForm.styleGuidePlaceholder")} />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -143,7 +145,7 @@ export function GenerationForm({
                           className="h-8 rounded-lg bg-blue-500 px-5 text-sm font-medium shadow-sm hover:bg-blue-600 transition-colors"
                         >
                           <Sparkles className="mr-2 h-4 w-4" />
-                          {isSubmitting ? "생성 중..." : "생성하기"}
+                          {isSubmitting ? t("generationForm.generating") : t("generationForm.generate")}
                         </Button>
                       </div>
                     </div>

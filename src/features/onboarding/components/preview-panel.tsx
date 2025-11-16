@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { OnboardingFormData } from "../lib/onboarding-schema";
 import {
@@ -15,6 +16,7 @@ interface PreviewPanelProps {
 }
 
 export function PreviewPanel({ formData }: PreviewPanelProps) {
+  const t = useTranslations("onboarding.preview");
   const {
     brandName,
     personality,
@@ -29,9 +31,7 @@ export function PreviewPanel({ formData }: PreviewPanelProps) {
   // Generate preview text
   const generatePreviewText = () => {
     if (!brandName || !personality || !formality || !targetAudience) {
-      return language === "ko"
-        ? "브랜드 정보를 입력하면 여기에 미리보기가 표시됩니다."
-        : "Fill in your brand information to see a preview here.";
+      return t("empty_state");
     }
 
     const template =
@@ -74,10 +74,10 @@ export function PreviewPanel({ formData }: PreviewPanelProps) {
             className="text-lg font-semibold"
             style={{ color: "#111827" }}
           >
-            미리보기
+            {t("title")}
           </h3>
           <p className="text-sm" style={{ color: "#6B7280" }}>
-            설정에 따른 콘텐츠 스타일
+            {t("subtitle")}
           </p>
         </div>
 
@@ -106,13 +106,13 @@ export function PreviewPanel({ formData }: PreviewPanelProps) {
             className="text-sm font-medium"
             style={{ color: "#374151" }}
           >
-            설정 요약
+            {t("summary_title")}
           </h4>
 
           <div className="space-y-2">
             {brandName && (
               <div className="flex items-center justify-between text-sm">
-                <span style={{ color: "#6B7280" }}>브랜드</span>
+                <span style={{ color: "#6B7280" }}>{t("label_brand")}</span>
                 <span
                   className="font-medium"
                   style={{ color: "#111827" }}
@@ -124,19 +124,19 @@ export function PreviewPanel({ formData }: PreviewPanelProps) {
 
             {language && (
               <div className="flex items-center justify-between text-sm">
-                <span style={{ color: "#6B7280" }}>언어</span>
+                <span style={{ color: "#6B7280" }}>{t("label_language")}</span>
                 <span
                   className="font-medium"
                   style={{ color: "#111827" }}
                 >
-                  {language === "ko" ? "한국어" : "English"}
+                  {language === "ko" ? t("language_ko") : t("language_en")}
                 </span>
               </div>
             )}
 
             {tone && (
               <div className="flex items-center justify-between text-sm">
-                <span style={{ color: "#6B7280" }}>톤</span>
+                <span style={{ color: "#6B7280" }}>{t("label_tone")}</span>
                 <span
                   className="font-medium"
                   style={{ color: "#111827" }}
@@ -148,7 +148,7 @@ export function PreviewPanel({ formData }: PreviewPanelProps) {
 
             {contentLength && (
               <div className="flex items-center justify-between text-sm">
-                <span style={{ color: "#6B7280" }}>길이</span>
+                <span style={{ color: "#6B7280" }}>{t("label_length")}</span>
                 <span
                   className="font-medium"
                   style={{ color: "#111827" }}
@@ -160,7 +160,7 @@ export function PreviewPanel({ formData }: PreviewPanelProps) {
 
             {readingLevel && (
               <div className="flex items-center justify-between text-sm">
-                <span style={{ color: "#6B7280" }}>수준</span>
+                <span style={{ color: "#6B7280" }}>{t("label_level")}</span>
                 <span
                   className="font-medium"
                   style={{ color: "#111827" }}

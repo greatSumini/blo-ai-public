@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { Github, Twitter, Mail } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("landing.footer");
   const currentYear = new Date().getFullYear();
 
   return (
@@ -19,87 +21,87 @@ export function Footer() {
               SEO24
             </Link>
             <p className="text-sm text-[#6B7280] leading-relaxed">
-              인디해커와 솔로 창업자를 위한 AI 블로그 작성 도구. 5분 안에 SEO 최적화된 블로그 글을 완성하세요.
+              {t("brand.description")}
             </p>
           </div>
 
           {/* Product Links */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-[#111827]">제품</h3>
+            <h3 className="text-sm font-semibold text-[#111827]">{t("product.title")}</h3>
             <nav className="flex flex-col gap-3">
               <Link
                 href="#features"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                주요 기능
+                {t("product.features")}
               </Link>
               <Link
                 href="#how-it-works"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                사용 방법
+                {t("product.how_it_works")}
               </Link>
               <Link
                 href="#use-cases"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                활용 사례
+                {t("product.use_cases")}
               </Link>
               <Link
                 href="#pricing"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                가격
+                {t("product.pricing")}
               </Link>
             </nav>
           </div>
 
           {/* Company Links */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-[#111827]">회사</h3>
+            <h3 className="text-sm font-semibold text-[#111827]">{t("company.title")}</h3>
             <nav className="flex flex-col gap-3">
               <Link
                 href="/about"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                회사 소개
+                {t("company.about")}
               </Link>
               <Link
                 href="/blog"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                블로그
+                {t("company.blog")}
               </Link>
               <Link
                 href="/contact"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                문의하기
+                {t("company.contact")}
               </Link>
             </nav>
           </div>
 
           {/* Legal & Social */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-[#111827]">법적 고지</h3>
+            <h3 className="text-sm font-semibold text-[#111827]">{t("legal.title")}</h3>
             <nav className="flex flex-col gap-3">
               <Link
                 href="/privacy"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                개인정보처리방침
+                {t("legal.privacy")}
               </Link>
               <Link
                 href="/terms"
                 className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                이용약관
+                {t("legal.terms")}
               </Link>
             </nav>
 
             {/* Social Links */}
             <div className="pt-2">
-              <h4 className="text-sm font-semibold text-[#111827] mb-3">소셜</h4>
+              <h4 className="text-sm font-semibold text-[#111827] mb-3">{t("social.title")}</h4>
               <div className="flex items-center gap-4">
                 <a
                   href="https://github.com"
@@ -122,7 +124,7 @@ export function Footer() {
                 <a
                   href="mailto:contact@seo24.blog"
                   className="text-[#6B7280] hover:text-[#111827] transition-colors"
-                  aria-label="이메일"
+                  aria-label={t("social.email_label")}
                 >
                   <Mail className="h-5 w-5" />
                 </a>
@@ -135,20 +137,20 @@ export function Footer() {
         <div className="mt-10 md:mt-12 pt-6 md:pt-8 border-t border-[#E1E5EA]">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
             <p className="text-xs md:text-sm text-[#6B7280] text-center md:text-left">
-              © {currentYear} SEO24. All rights reserved.
+              {t("bottom.copyright", { year: currentYear })}
             </p>
             <div className="flex items-center gap-4 md:gap-6">
               <Link
                 href="/sitemap"
                 className="text-xs md:text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                사이트맵
+                {t("bottom.sitemap")}
               </Link>
               <Link
                 href="/accessibility"
                 className="text-xs md:text-sm text-[#6B7280] hover:text-[#111827] transition-colors"
               >
-                접근성
+                {t("bottom.accessibility")}
               </Link>
             </div>
           </div>

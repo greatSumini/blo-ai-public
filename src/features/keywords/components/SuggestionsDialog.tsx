@@ -31,25 +31,12 @@ import { useToast } from "@/hooks/use-toast";
 import { Lightbulb, Loader2 } from "lucide-react";
 import type { SuggestionItem } from "@/features/keywords/lib/dto";
 import { isAxiosError } from "@/lib/remote/api-client";
+import { useTranslations } from "next-intl";
 
 interface SuggestionsDialogProps {
   children?: React.ReactNode;
   onKeywordsAdded?: (keywords: string[]) => void;
 }
-
-const formSchema = z.object({
-  keyword: z
-    .string()
-    .trim()
-    .min(1, "기준 키워드를 입력해주세요")
-    .max(100, "기준 키워드는 100자 이내여야 합니다"),
-  context: z
-    .string()
-    .max(1000, "추가 맥락은 1000자 이내여야 합니다")
-    .optional(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
 
 type SuggestionsErrorPayload = {
   error?: {
@@ -59,43 +46,8 @@ type SuggestionsErrorPayload = {
   message?: string;
 };
 
-const SUGGESTIONS_ERROR_MESSAGES: Record<string, string> = {
-  DATAFORSEO_INVALID_CREDENTIALS:
-    "연관 검색어 서비스를 사용할 수 없는 상태입니다. 관리자에게 문의해주세요.",
-  DATAFORSEO_RATE_LIMIT:
-    "오늘 연관 검색어 조회 한도를 초과했을 수 있어요. 잠시 후 다시 시도해주세요.",
-  DATAFORSEO_TIMEOUT:
-    "응답이 너무 오래 걸리고 있습니다. 키워드를 조금 더 구체적으로 줄이거나, 잠시 후 다시 시도해주세요.",
-  DATAFORSEO_API_ERROR:
-    "연관 검색어 조회 중 외부 서비스 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
-};
-
-function mapSuggestionsError(error: unknown): string {
-  if (isAxiosError(error)) {
-    const payload = error.response?.data as SuggestionsErrorPayload | undefined;
-    const code = payload?.error?.code;
-
-    if (code && SUGGESTIONS_ERROR_MESSAGES[code]) {
-      return SUGGESTIONS_ERROR_MESSAGES[code];
-    }
-
-    if (typeof payload?.error?.message === "string") {
-      return payload.error.message;
-    }
-
-    if (typeof payload?.message === "string") {
-      return payload.message;
-    }
-  }
-
-  if (error instanceof Error && error.message) {
-    return error.message;
-  }
-
-  return "연관 검색어 조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
-}
-
 export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDialogProps) {
+  const t = useTranslations("keywords");
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<SuggestionItem[]>([]);
   const [selectedKeywords, setSelectedKeywords] = useState<Set<string>>(new Set());
@@ -105,6 +57,52 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
   const { toast } = useToast();
   const suggestionsMutation = useKeywordSuggestions();
   const bulkCreateMutation = useBulkCreateKeywords();
+
+  const SUGGESTIONS_ERROR_MESSAGES: Record<string, string> = {
+    DATAFORSEO_INVALID_CREDENTIALS: t("suggestions.errors.invalidCredentials"),
+    DATAFORSEO_RATE_LIMIT: t("suggestions.errors.rateLimit"),
+    DATAFORSEO_TIMEOUT: t("suggestions.errors.timeout"),
+    DATAFORSEO_API_ERROR: t("suggestions.errors.apiError"),
+  };
+
+  function mapSuggestionsError(error: unknown): string {
+    if (isAxiosError(error)) {
+      const payload = error.response?.data as SuggestionsErrorPayload | undefined;
+      const code = payload?.error?.code;
+
+      if (code && SUGGESTIONS_ERROR_MESSAGES[code]) {
+        return SUGGESTIONS_ERROR_MESSAGES[code];
+      }
+
+      if (typeof payload?.error?.message === "string") {
+        return payload.error.message;
+      }
+
+      if (typeof payload?.message === "string") {
+        return payload.message;
+      }
+    }
+
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+
+    return t("suggestions.errors.fallback");
+  }
+
+  const formSchema = z.object({
+    keyword: z
+      .string()
+      .trim()
+      .min(1, t("suggestions.validation.keywordRequired"))
+      .max(100, t("suggestions.validation.keywordMaxLength")),
+    context: z
+      .string()
+      .max(1000, t("suggestions.validation.contextMaxLength"))
+      .optional(),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -134,13 +132,13 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
       setHasFetched(true);
 
       toast({
-        title: "연관 검색어 조회 완료",
-        description: `${result.suggestions.length}개의 연관 검색어를 찾았습니다.`,
+        title: t("suggestions.toast.fetchSuccessTitle"),
+        description: t("suggestions.toast.fetchSuccessDescription", { count: result.suggestions.length }),
       });
     } catch (error: any) {
       const errorMessage = mapSuggestionsError(error);
       toast({
-        title: "조회 실패",
+        title: t("suggestions.toast.fetchErrorTitle"),
         description: errorMessage,
         variant: "destructive",
       });
@@ -160,8 +158,8 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
   const handleAddSelected = async () => {
     if (selectedKeywords.size === 0) {
       toast({
-        title: "키워드 미선택",
-        description: "추가할 키워드를 선택해주세요.",
+        title: t("suggestions.toast.noSelectionTitle"),
+        description: t("suggestions.toast.noSelectionDescription"),
         variant: "destructive",
       });
       return;
@@ -171,8 +169,11 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
       const addedKeywords = Array.from(selectedKeywords);
       const result = await bulkCreateMutation.mutateAsync(addedKeywords);
       toast({
-        title: "키워드 추가 완료",
-        description: `${result.created}개 추가, ${result.skipped}개 중복 건너뜀`,
+        title: t("suggestions.toast.addSuccessTitle"),
+        description: t("suggestions.toast.addSuccessDescription", {
+          created: result.created,
+          skipped: result.skipped
+        }),
       });
 
       // Reset state
@@ -188,7 +189,7 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
     } catch (error: any) {
       const errorMessage = mapSuggestionsError(error);
       toast({
-        title: "추가 실패",
+        title: t("suggestions.toast.addErrorTitle"),
         description: errorMessage,
         variant: "destructive",
       });
@@ -210,15 +211,15 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
         {children || (
           <Button variant="outline">
             <Lightbulb className="mr-2 h-4 w-4" />
-            연관 검색어 조회
+            {t("suggestions.trigger")}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>연관 검색어 조회</DialogTitle>
+          <DialogTitle>{t("suggestions.title")}</DialogTitle>
           <DialogDescription>
-            기준이 될 키워드와 추가 맥락을 입력하면, 실제로 사람들이 검색창에 입력할 법한 연관 검색어를 AI가 추천해 드려요. (최대 10개)
+            {t("suggestions.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -238,7 +239,7 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                 <span className="mr-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary-foreground/20 text-[10px]">
                   1
                 </span>
-                조건 입력
+                {t("suggestions.stepInput")}
               </button>
               <div className="h-px flex-1 bg-muted" />
               <button
@@ -253,7 +254,7 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                 <span className="mr-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary-foreground/20 text-[10px]">
                   2
                 </span>
-                결과 확인
+                {t("suggestions.stepResults")}
               </button>
             </div>
 
@@ -268,14 +269,14 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                   name="keyword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>기준 키워드</FormLabel>
+                      <FormLabel>{t("suggestions.keywordLabel")}</FormLabel>
                       <p className="text-xs text-gray-500">
-                        예: &quot;블로그 마케팅&quot;, &quot;인스타그램 릴스&quot;처럼 글의 핵심 주제어를 1개만 입력해 주세요.
+                        {t("suggestions.keywordHelp")}
                       </p>
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="기준 키워드 입력 (예: 블로그 마케팅)"
+                          placeholder={t("suggestions.keywordPlaceholder")}
                           disabled={suggestionsMutation.isPending}
                         />
                       </FormControl>
@@ -289,14 +290,14 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                   name="context"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>추가 맥락 (선택)</FormLabel>
+                      <FormLabel>{t("suggestions.contextLabel")}</FormLabel>
                       <p className="text-xs text-gray-500">
-                        타겟 독자, 글의 목적, 상황 등을 자유롭게 적어주세요. 연관 검색어의 방향을 더 정확하게 잡는 데 도움이 됩니다.
+                        {t("suggestions.contextHelp")}
                       </p>
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder="예: 1인 마케터가 블로그를 활용해 리드(잠재고객)를 안정적으로 확보할 수 있는 방법을 찾고 있습니다."
+                          placeholder={t("suggestions.contextPlaceholder")}
                           disabled={suggestionsMutation.isPending}
                           className="h-24"
                         />
@@ -314,10 +315,10 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                   }
                   className="w-full"
                 >
-                  {suggestionsMutation.isPending ? "조회 중..." : "연관 검색어 조회"}
+                  {suggestionsMutation.isPending ? t("suggestions.fetching") : t("suggestions.fetchButton")}
                 </Button>
                 <p className="mt-1 text-xs text-gray-400">
-                  AI가 연관 검색어를 생성하는 데 최대 10초 정도 걸릴 수 있어요.
+                  {t("suggestions.fetchHint")}
                 </p>
               </form>
             )}
@@ -328,9 +329,9 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                 {suggestionsMutation.isPending && (
                   <div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed p-6 text-sm text-gray-500">
                     <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                    <p className="font-medium">연관 검색어를 불러오는 중입니다...</p>
+                    <p className="font-medium">{t("suggestions.loadingTitle")}</p>
                     <p className="text-xs text-gray-400 text-center">
-                      사람들이 실제로 검색창에 입력할 법한 검색어를 생성하고 있어요.
+                      {t("suggestions.loadingDescription")}
                     </p>
                   </div>
                 )}
@@ -340,10 +341,10 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label className="text-sm font-medium">
-                        연관 검색어 목록 ({suggestions.length}개)
+                        {t("suggestions.listTitle", { count: suggestions.length })}
                       </label>
                       <span className="text-xs text-gray-500">
-                        {selectedKeywords.size}개 선택됨
+                        {t("suggestions.selectedCount", { count: selectedKeywords.size })}
                       </span>
                     </div>
                     <div className="border rounded-md max-h-96 overflow-y-auto">
@@ -362,7 +363,7 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                           <p className="font-medium">{suggestion.keyword}</p>
                           {suggestion.competition && (
                             <div className="flex gap-3 text-xs text-gray-500">
-                              <span>경쟁도: {suggestion.competition}</span>
+                              <span>{t("suggestions.competition")}: {suggestion.competition}</span>
                             </div>
                           )}
                         </div>
@@ -378,13 +379,13 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
                   hasFetched &&
                   suggestions.length === 0 && (
                     <div className="rounded-md border border-dashed p-4 text-sm text-gray-500">
-                      입력한 기준 키워드와 직접적으로 연관된 검색어를 찾지 못했어요. 조금 더 일반적인 키워드로 다시 시도해 보세요.
+                      {t("suggestions.emptyResults")}
                     </div>
                   )}
 
                 {!suggestionsMutation.isPending && !hasFetched && suggestions.length === 0 && (
                   <div className="rounded-md border border-dashed p-4 text-sm text-gray-500">
-                    아직 조회한 연관 검색어가 없습니다. 먼저 조건을 입력해 조회해 보세요.
+                    {t("suggestions.notFetchedYet")}
                   </div>
                 )}
               </div>
@@ -400,15 +401,15 @@ export function SuggestionsDialog({ children, onKeywordsAdded }: SuggestionsDial
               onClick={handleClose}
               disabled={bulkCreateMutation.isPending}
             >
-              취소
+              {t("suggestions.cancel")}
             </Button>
             <Button
               onClick={handleAddSelected}
               disabled={selectedKeywords.size === 0 || bulkCreateMutation.isPending}
             >
               {bulkCreateMutation.isPending
-                ? "추가 중..."
-                : `선택 항목 추가 (${selectedKeywords.size})`}
+                ? t("suggestions.adding")
+                : t("suggestions.addSelected", { count: selectedKeywords.size })}
             </Button>
           </DialogFooter>
         )}

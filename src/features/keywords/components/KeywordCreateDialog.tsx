@@ -26,24 +26,26 @@ import { Button } from "@/components/ui/button";
 import { useCreateKeyword } from "@/features/keywords/hooks/useKeywordQuery";
 import { useToast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
-
-const formSchema = z.object({
-  phrase: z
-    .string()
-    .min(1, "키워드를 입력해주세요")
-    .max(100, "키워드는 100자 이내여야 합니다"),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from "next-intl";
 
 interface KeywordCreateDialogProps {
   children?: React.ReactNode;
 }
 
 export function KeywordCreateDialog({ children }: KeywordCreateDialogProps) {
+  const t = useTranslations("keywords");
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const createMutation = useCreateKeyword();
+
+  const formSchema = z.object({
+    phrase: z
+      .string()
+      .min(1, t("create.validation.required"))
+      .max(100, t("create.validation.maxLength")),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -56,8 +58,8 @@ export function KeywordCreateDialog({ children }: KeywordCreateDialogProps) {
     try {
       await createMutation.mutateAsync(values.phrase);
       toast({
-        title: "키워드 생성 완료",
-        description: `"${values.phrase}" 키워드가 생성되었습니다.`,
+        title: t("create.toast.successTitle"),
+        description: t("create.toast.successDescription", { phrase: values.phrase }),
       });
       form.reset();
       setOpen(false);
@@ -65,9 +67,9 @@ export function KeywordCreateDialog({ children }: KeywordCreateDialogProps) {
       const errorMessage =
         error?.response?.data?.error?.message ||
         error?.message ||
-        "키워드 생성에 실패했습니다";
+        t("create.toast.errorFallback");
       toast({
-        title: "생성 실패",
+        title: t("create.toast.errorTitle"),
         description: errorMessage,
         variant: "destructive",
       });
@@ -80,15 +82,15 @@ export function KeywordCreateDialog({ children }: KeywordCreateDialogProps) {
         {children || (
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            새 키워드
+            {t("create.trigger")}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>새 키워드 추가</DialogTitle>
+          <DialogTitle>{t("create.title")}</DialogTitle>
           <DialogDescription>
-            저장하고 싶은 키워드를 입력해주세요.
+            {t("create.description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -98,11 +100,11 @@ export function KeywordCreateDialog({ children }: KeywordCreateDialogProps) {
               name="phrase"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>키워드</FormLabel>
+                  <FormLabel>{t("create.fieldLabel")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="키워드를 입력하세요"
+                      placeholder={t("create.fieldPlaceholder")}
                       disabled={createMutation.isPending}
                     />
                   </FormControl>
@@ -117,10 +119,10 @@ export function KeywordCreateDialog({ children }: KeywordCreateDialogProps) {
                 onClick={() => setOpen(false)}
                 disabled={createMutation.isPending}
               >
-                취소
+                {t("create.cancel")}
               </Button>
               <Button type="submit" disabled={createMutation.isPending}>
-                {createMutation.isPending ? "저장 중..." : "저장"}
+                {createMutation.isPending ? t("create.saving") : t("create.save")}
               </Button>
             </DialogFooter>
           </form>

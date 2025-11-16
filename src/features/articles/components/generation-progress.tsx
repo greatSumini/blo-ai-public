@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -21,6 +22,7 @@ export function GenerationProgress({
   onCancel,
   onRetry,
 }: GenerationProgressProps) {
+  const t = useTranslations("articles");
   const [progress, setProgress] = useState(0);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const maxTime = 300; // 5분 (300초)
@@ -70,7 +72,7 @@ export function GenerationProgress({
 
   const handleCancel = () => {
     const confirmed = window.confirm(
-      "AI 글 생성을 취소하시겠습니까? 진행 중인 작업이 중단됩니다."
+      t("generationProgress.cancelConfirm")
     );
     if (confirmed) {
       onCancel();
@@ -99,23 +101,23 @@ export function GenerationProgress({
           <AlertDescription>
             {isQuotaError ? (
               <div>
-                <p className="font-semibold mb-2">생성 횟수 제한에 도달했습니다</p>
+                <p className="font-semibold mb-2">{t("generationProgress.errorQuotaTitle")}</p>
                 <p className="text-sm">{error.message}</p>
                 <p className="text-sm mt-2">
-                  더 많은 글을 생성하려면 플랜을 업그레이드해주세요.
+                  {t("generationProgress.errorQuotaMessage")}
                 </p>
               </div>
             ) : isAIError ? (
               <div>
-                <p className="font-semibold mb-2">AI 글 생성에 실패했습니다</p>
+                <p className="font-semibold mb-2">{t("generationProgress.errorAITitle")}</p>
                 <p className="text-sm">{error.message}</p>
                 <p className="text-sm mt-2">
-                  잠시 후 다시 시도해주세요. 문제가 계속되면 고객 지원팀에 문의해주세요.
+                  {t("generationProgress.errorAIMessage")}
                 </p>
               </div>
             ) : (
               <div>
-                <p className="font-semibold mb-2">오류가 발생했습니다</p>
+                <p className="font-semibold mb-2">{t("generationProgress.errorGenericTitle")}</p>
                 <p className="text-sm">{error.message}</p>
               </div>
             )}
@@ -133,7 +135,7 @@ export function GenerationProgress({
               }}
             >
               <RefreshCw className="mr-2 h-4 w-4" />
-              다시 시도
+              {t("generationProgress.retry")}
             </Button>
           )}
           <Button
@@ -142,7 +144,7 @@ export function GenerationProgress({
             className="flex-1"
             style={{ borderRadius: "8px" }}
           >
-            취소
+            {t("generationProgress.cancel")}
           </Button>
         </div>
       </Card>
@@ -163,7 +165,7 @@ export function GenerationProgress({
       }}
       role="status"
       aria-live="polite"
-      aria-label="AI 글 생성 진행 중"
+      aria-label={t("generationProgress.ariaLabel")}
     >
       {/* Header */}
       <div className="mb-6">
@@ -180,10 +182,10 @@ export function GenerationProgress({
                 className="font-semibold text-lg"
                 style={{ color: "#1F2937" }}
               >
-                AI가 글을 작성하고 있습니다
+                {t("generationProgress.generating")}
               </h3>
               <p className="text-sm" style={{ color: "#6B7280" }}>
-                잠시만 기다려주세요
+                {t("generationProgress.pleaseWait")}
               </p>
             </div>
           </div>
@@ -191,7 +193,7 @@ export function GenerationProgress({
             variant="ghost"
             size="icon"
             onClick={handleCancel}
-            aria-label="취소"
+            aria-label={t("generationProgress.cancel")}
             style={{ color: "#6B7280" }}
           >
             <X className="h-4 w-4" />
@@ -201,11 +203,11 @@ export function GenerationProgress({
         {/* Progress Bar */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span style={{ color: "#6B7280" }}>진행률</span>
+            <span style={{ color: "#6B7280" }}>{t("generationProgress.progress")}</span>
             <span
               className="font-semibold"
               style={{ color: "#3BA2F8" }}
-              aria-label={`진행률 ${Math.round(progress)}%`}
+              aria-label={t("generationProgress.progressPercent", { percent: Math.round(progress) })}
             >
               {Math.round(progress)}%
             </span>
@@ -226,7 +228,7 @@ export function GenerationProgress({
         >
           <Clock className="h-4 w-4" />
           <span>
-            남은 시간: <span className="font-mono">{formatTime(timeRemaining)}</span>
+            {t("generationProgress.timeRemaining")} <span className="font-mono">{formatTime(timeRemaining)}</span>
           </span>
         </div>
       </div>
@@ -255,7 +257,7 @@ export function GenerationProgress({
         style={{ backgroundColor: "#F0FDF4" }}
       >
         <p className="text-sm font-medium" style={{ color: "#16A34A" }}>
-          💡 이 글을 직접 작성하면 약 50분이 걸립니다. AI가 당신의 시간을 절약해드립니다!
+          {t("generationProgress.motivationalMessage")}
         </p>
       </div>
 
@@ -267,7 +269,7 @@ export function GenerationProgress({
           className="w-full"
           style={{ borderRadius: "8px" }}
         >
-          취소
+          {t("generationProgress.cancel")}
         </Button>
       </div>
     </Card>

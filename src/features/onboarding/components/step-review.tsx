@@ -1,6 +1,7 @@
 "use client";
 
 import { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import {
   FormField,
   FormItem,
@@ -24,6 +25,7 @@ interface StepReviewProps {
 }
 
 export function StepReview({ form }: StepReviewProps) {
+  const t = useTranslations("onboarding.review");
   const formValues = form.getValues();
 
   const getPersonalityLabels = () => {
@@ -72,10 +74,10 @@ export function StepReview({ form }: StepReviewProps) {
           className="text-2xl font-semibold"
           style={{ color: "#111827" }}
         >
-          최종 검토
+          {t("title")}
         </h2>
         <p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-          설정을 검토하고 완료해주세요
+          {t("subtitle")}
         </p>
       </div>
 
@@ -93,11 +95,11 @@ export function StepReview({ form }: StepReviewProps) {
             className="mb-3 font-semibold"
             style={{ color: "#111827" }}
           >
-            브랜드 보이스
+            {t("section_brand_voice")}
           </h3>
           <dl className="space-y-2">
             <div className="flex justify-between text-sm">
-              <dt style={{ color: "#6B7280" }}>브랜드 이름</dt>
+              <dt style={{ color: "#6B7280" }}>{t("label_brand_name")}</dt>
               <dd
                 className="font-medium"
                 style={{ color: "#111827" }}
@@ -107,14 +109,14 @@ export function StepReview({ form }: StepReviewProps) {
             </div>
             <div className="text-sm">
               <dt className="mb-1" style={{ color: "#6B7280" }}>
-                설명
+                {t("label_description")}
               </dt>
               <dd style={{ color: "#111827" }}>
                 {formValues.brandDescription}
               </dd>
             </div>
             <div className="flex justify-between text-sm">
-              <dt style={{ color: "#6B7280" }}>성격</dt>
+              <dt style={{ color: "#6B7280" }}>{t("label_personality")}</dt>
               <dd
                 className="font-medium"
                 style={{ color: "#111827" }}
@@ -123,7 +125,7 @@ export function StepReview({ form }: StepReviewProps) {
               </dd>
             </div>
             <div className="flex justify-between text-sm">
-              <dt style={{ color: "#6B7280" }}>격식</dt>
+              <dt style={{ color: "#6B7280" }}>{t("label_formality")}</dt>
               <dd
                 className="font-medium"
                 style={{ color: "#111827" }}
@@ -146,12 +148,12 @@ export function StepReview({ form }: StepReviewProps) {
             className="mb-3 font-semibold"
             style={{ color: "#111827" }}
           >
-            타겟 독자
+            {t("section_audience")}
           </h3>
           <dl className="space-y-2">
             <div className="text-sm">
               <dt className="mb-1" style={{ color: "#6B7280" }}>
-                타겟 독자
+                {t("label_target_audience")}
               </dt>
               <dd style={{ color: "#111827" }}>
                 {formValues.targetAudience}
@@ -159,7 +161,7 @@ export function StepReview({ form }: StepReviewProps) {
             </div>
             <div className="text-sm">
               <dt className="mb-1" style={{ color: "#6B7280" }}>
-                해결하려는 문제
+                {t("label_pain_points")}
               </dt>
               <dd style={{ color: "#111827" }}>{formValues.painPoints}</dd>
             </div>
@@ -178,20 +180,20 @@ export function StepReview({ form }: StepReviewProps) {
             className="mb-3 font-semibold"
             style={{ color: "#111827" }}
           >
-            콘텐츠 설정
+            {t("section_content_settings")}
           </h3>
           <dl className="space-y-2">
             <div className="flex justify-between text-sm">
-              <dt style={{ color: "#6B7280" }}>언어</dt>
+              <dt style={{ color: "#6B7280" }}>{t("label_language")}</dt>
               <dd
                 className="font-medium"
                 style={{ color: "#111827" }}
               >
-                {formValues.language === "ko" ? "한국어" : "English"}
+                {formValues.language === "ko" ? t("language_ko") : t("language_en")}
               </dd>
             </div>
             <div className="flex justify-between text-sm">
-              <dt style={{ color: "#6B7280" }}>톤</dt>
+              <dt style={{ color: "#6B7280" }}>{t("label_tone")}</dt>
               <dd
                 className="font-medium"
                 style={{ color: "#111827" }}
@@ -200,7 +202,7 @@ export function StepReview({ form }: StepReviewProps) {
               </dd>
             </div>
             <div className="flex justify-between text-sm">
-              <dt style={{ color: "#6B7280" }}>길이</dt>
+              <dt style={{ color: "#6B7280" }}>{t("label_length")}</dt>
               <dd
                 className="font-medium"
                 style={{ color: "#111827" }}
@@ -209,7 +211,7 @@ export function StepReview({ form }: StepReviewProps) {
               </dd>
             </div>
             <div className="flex justify-between text-sm">
-              <dt style={{ color: "#6B7280" }}>읽기 수준</dt>
+              <dt style={{ color: "#6B7280" }}>{t("label_reading_level")}</dt>
               <dd
                 className="font-medium"
                 style={{ color: "#111827" }}
@@ -227,10 +229,10 @@ export function StepReview({ form }: StepReviewProps) {
         name="notes"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>추가 메모 (선택사항)</FormLabel>
+            <FormLabel>{t("field_notes")}</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="추가로 기억하고 싶은 내용이나 특별한 요구사항을 입력하세요"
+                placeholder={t("placeholder_notes")}
                 {...field}
                 className="min-h-[100px] resize-y"
                 style={{
@@ -240,7 +242,7 @@ export function StepReview({ form }: StepReviewProps) {
               />
             </FormControl>
             <FormDescription>
-              이 메모는 향후 참고용으로 저장됩니다
+              {t("description_notes")}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -255,11 +257,10 @@ export function StepReview({ form }: StepReviewProps) {
         }}
       >
         <p className="text-sm font-medium" style={{ color: "#111827" }}>
-          준비 완료!
+          {t("ready_title")}
         </p>
         <p className="mt-2 text-sm" style={{ color: "#374151" }}>
-          모든 설정이 완료되었습니다. &ldquo;완료&rdquo; 버튼을 클릭하면 대시보드로
-          이동하여 콘텐츠 생성을 시작할 수 있습니다.
+          {t("ready_text")}
         </p>
       </div>
     </div>

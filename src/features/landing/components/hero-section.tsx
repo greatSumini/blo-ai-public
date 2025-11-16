@@ -4,24 +4,10 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
-interface HeroSectionProps {
-  badge?: string;
-  heading?: string;
-  subheading?: string;
-  ctaText?: string;
-  ctaUrl?: string;
-  secondaryText?: string;
-}
-
-export function HeroSection({
-  badge = "AI 블로그 작성 도구",
-  heading = "5분 안에 SEO 최적화된 블로그 글 완성",
-  subheading = "인디해커와 솔로 창업자를 위한 AI 블로그 작성 도구. 키워드만 입력하면 영어·한국어 블로그 글과 SEO 메타데이터가 자동으로 완성됩니다.",
-  ctaText = "무료로 시작하기",
-  ctaUrl = "/signup",
-  secondaryText = "3편까지 무료",
-}: HeroSectionProps) {
+export function HeroSection() {
+  const t = useTranslations("landing.hero");
   const fadeUpVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
@@ -51,7 +37,7 @@ export function HeroSection({
             className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-full border border-[#E1E5EA] bg-[#F5F7FA]/50 mb-6 md:mb-8"
           >
             <span className="text-xs font-medium text-[#374151]">
-              {badge}
+              {t("badge")}
             </span>
           </motion.div>
 
@@ -63,7 +49,7 @@ export function HeroSection({
             animate="visible"
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 tracking-tight text-[#111827] leading-tight px-2">
-              {heading}
+              {t("heading")}
             </h1>
           </motion.div>
 
@@ -75,7 +61,7 @@ export function HeroSection({
             animate="visible"
           >
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#6B7280] mb-8 md:mb-10 max-w-2xl mx-auto font-normal leading-relaxed px-2">
-              {subheading}
+              {t("subheading")}
             </p>
           </motion.div>
 
@@ -92,18 +78,16 @@ export function HeroSection({
               className="rounded-lg px-8 py-6 text-base font-medium bg-[#3BA2F8] hover:bg-[#3BA2F8]/90 text-white shadow-sm"
               asChild
             >
-              <Link href={ctaUrl}>
-                {ctaText}
+              <Link href="/signup">
+                {t("cta_text")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
 
             {/* Secondary text */}
-            {secondaryText && (
-              <p className="text-sm text-[#6B7280]">
-                {secondaryText}
-              </p>
-            )}
+            <p className="text-sm text-[#6B7280]">
+              {t("secondary_text")}
+            </p>
           </motion.div>
         </div>
       </div>

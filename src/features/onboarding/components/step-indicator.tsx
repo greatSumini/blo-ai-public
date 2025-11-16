@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Progress } from "@/components/ui/progress";
 import { STEP_NAMES, TOTAL_STEPS } from "../lib/constants";
 
@@ -8,6 +9,7 @@ interface StepIndicatorProps {
 }
 
 export function StepIndicator({ currentStep }: StepIndicatorProps) {
+  const t = useTranslations("onboarding.indicator");
   const progressPercentage = (currentStep / TOTAL_STEPS) * 100;
 
   return (
@@ -28,7 +30,7 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
           style={{
             backgroundColor: "#E1E5EA",
           }}
-          aria-label={`진행률: ${Math.round(progressPercentage)}%`}
+          aria-label={t("progress_aria_label", { percentage: Math.round(progressPercentage) })}
         />
       </div>
 
