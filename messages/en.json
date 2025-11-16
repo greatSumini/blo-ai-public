@@ -80,6 +80,46 @@
         "title": "AI Article Generated",
         "desc": "The article \"{title}\" has been generated."
       }
+    },
+    "generating": {
+      "cancel": "Cancel",
+      "initializing": "Initializing...",
+      "tasks": {
+        "title": "Generating title...",
+        "keywords": "Extracting keywords...",
+        "content": "Writing content...",
+        "finalizing": "Finalizing..."
+      },
+      "metadata": {
+        "title": "Title",
+        "keywords": "Keywords",
+        "generating": "Generating..."
+      }
+    },
+    "complete": {
+      "ready": "Your draft is ready",
+      "metadata": {
+        "toggle": "View Metadata",
+        "keywords": "Keywords",
+        "description": "Meta Description",
+        "empty": "None"
+      },
+      "actions": {
+        "edit": "Edit Draft",
+        "regenerate": "Regenerate"
+      }
+    },
+    "save": {
+      "loginRequired": "Login required",
+      "error": {
+        "title": "Save Failed",
+        "desc": "An error occurred while saving the article",
+        "network": "Failed to save the article"
+      },
+      "success": {
+        "title": "Saved",
+        "desc": "Draft \"{title}\" has been saved"
+      }
     }
   },
   "styleGuide": {
@@ -270,23 +310,25 @@
     "description": "Manage and edit your AI-generated articles.",
     "coming_soon": "This page will be implemented soon.",
     "generationForm": {
-      "title": "AI Article Generation",
-      "subtitle": "Enter a topic and select a style guide.",
+      "title": "New Article",
+      "subtitle": "Enter a topic and AI will draft an article for you",
       "topicLabel": "Topic",
-      "topicPlaceholder": "Enter article topic (e.g., blog writing tips)",
+      "topicPlaceholder": "e.g., New features and use cases of React 19",
       "styleGuideLabel": "Style Guide",
-      "styleGuidePlaceholder": "Select a style guide",
+      "styleGuidePlaceholder": "Select style guide",
       "noStyleGuides": "No style guides available",
       "createStyleGuide": "Create new style guide",
       "keywordLabel": "Target Keyword (Optional)",
       "keywordPlaceholder": "Select a keyword",
       "noKeywords": "No keywords available",
-      "generateButton": "Generate AI Article",
+      "generateButton": "Generate",
       "generating": "Generating...",
       "validation": {
         "topicRequired": "Please enter a topic.",
-        "topicMinLength": "Topic must be at least 5 characters.",
-        "styleGuideRequired": "Please select a style guide."
+        "topicMinLength": "Topic must be at least 2 characters",
+        "topicMaxLength": "Topic must not exceed 200 characters",
+        "styleGuideRequired": "Please select a valid style guide",
+        "additionalMaxLength": "Additional instructions must not exceed 1000 characters"
       }
     },
     "articleForm": {
