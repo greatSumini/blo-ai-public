@@ -1,7 +1,13 @@
 import "./globals.css";
 import Providers from "./providers";
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+import { Noto_Serif_KR } from "next/font/google";
+
+const notoSerifKR = Noto_Serif_KR({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+});
 
 /**
  * Root Layout
@@ -24,15 +30,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        <link
-          rel="stylesheet"
-          as="style"
-          crossOrigin="anonymous"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
-        />
-      </head>
-      <body className="antialiased font-sans">
+      <body className={`antialiased ${notoSerifKR.className}`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>

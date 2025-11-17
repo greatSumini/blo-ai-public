@@ -14,6 +14,7 @@ interface FeatureHighlightProps {
   imageSrc: string;
   imageAlt: string;
   position: "left" | "right";
+  bgColor?: string;
 }
 
 function FeatureHighlight({
@@ -24,6 +25,7 @@ function FeatureHighlight({
   imageSrc,
   imageAlt,
   position,
+  bgColor = "#f8fafc",
 }: FeatureHighlightProps) {
   const isLeft = position === "left";
 
@@ -58,16 +60,25 @@ function FeatureHighlight({
         </div>
       </div>
 
-      {/* 이미지 - Claude.ai subtle shadow */}
+      {/* 이미지 - 16:9 배경에 중앙 배치 */}
       <div className="flex-1 w-full">
-        <div className="relative rounded-xl overflow-hidden border border-border-default/60 shadow-sm hover:shadow-md transition-all duration-slow group">
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            width={600}
-            height={400}
-            className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-slower"
-          />
+        <div
+          className="relative rounded-xl overflow-hidden border border-border-default/60 shadow-sm hover:shadow-md transition-all duration-slow group"
+          style={{ backgroundColor: bgColor }}
+        >
+          {/* 16:9 Aspect Ratio Container */}
+          <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+            {/* 56.25% = 9/16 * 100 for 16:9 aspect ratio */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Image
+                src={imageSrc}
+                alt={imageAlt}
+                width={600}
+                height={600}
+                className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-slower"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -125,9 +136,10 @@ export function FeaturesSection() {
             title={t("ai_generation.title")}
             description={t("ai_generation.description")}
             stat={t("ai_generation.stat")}
-            imageSrc={FEATURE_IMAGES.aiGeneration}
+            imageSrc={FEATURE_IMAGES.aiGeneration.src}
             imageAlt="AI 글 생성 화면"
             position="left"
+            bgColor={FEATURE_IMAGES.aiGeneration.bgColor}
           />
 
           {/* 키워드 관리 */}
@@ -136,9 +148,10 @@ export function FeaturesSection() {
             title={t("seo_keywords.title")}
             description={t("seo_keywords.description")}
             stat={t("seo_keywords.stat")}
-            imageSrc={FEATURE_IMAGES.seoKeywords}
+            imageSrc={FEATURE_IMAGES.seoKeywords.src}
             imageAlt="키워드 관리 화면"
             position="right"
+            bgColor={FEATURE_IMAGES.seoKeywords.bgColor}
           />
         </div>
 

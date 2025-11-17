@@ -26,9 +26,9 @@ export function HeroSection() {
             variants={fadeUpStagger}
             initial="hidden"
             animate="visible"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-default/60 bg-bg-secondary/40 mb-8 md:mb-10 backdrop-blur-sm hover:border-border-default transition-colors duration-slow"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-default bg-bg-secondary/40 mb-8 md:mb-10 backdrop-blur-sm hover:border-border-default transition-colors duration-slow"
           >
-            <span className="text-xs md:text-sm font-medium text-text-secondary">
+            <span className="text-xs md:text-sm font-bold text-text-secondary">
               {t("badge")}
             </span>
           </motion.div>
@@ -40,7 +40,7 @@ export function HeroSection() {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium mb-6 md:mb-8 tracking-tight text-text-primary leading-[1.15] px-2">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 tracking-tight text-text-primary leading-[1.15] px-2 whitespace-pre-line">
               {t("heading")}
             </h1>
           </motion.div>
@@ -99,7 +99,9 @@ export function HeroSection() {
             animate="visible"
             className="flex flex-col items-center gap-8"
           >
-            <p className="text-xs md:text-sm text-text-tertiary">{t("trust_badge")}</p>
+            <p className="text-xs md:text-sm text-text-tertiary">
+              {t("trust_badge")}
+            </p>
             <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
               {TRUST_BADGE_LOGOS.map((logo, index) => (
                 <div
