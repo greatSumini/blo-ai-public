@@ -4,6 +4,8 @@ import { FileText, Sparkles, Edit } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+import { nanumMyeongjo } from "@/constants/fonts";
 
 export function HowItWorksSection() {
   const t = useTranslations("landing.how_it_works");
@@ -34,7 +36,12 @@ export function HowItWorksSection() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header - Claude.ai style */}
         <div className="text-center mb-16 md:mb-20 lg:mb-24">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight">
+          <h2
+            className={cn(
+              "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight",
+              nanumMyeongjo.className
+            )}
+          >
             {t("section_title")}
           </h2>
           <p className="text-base md:text-lg lg:text-xl text-text-secondary max-w-3xl mx-auto px-4 leading-relaxed">
@@ -45,7 +52,10 @@ export function HowItWorksSection() {
         {/* Steps Grid - accent-brand color */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12 mb-16">
           {steps.map((step, index) => (
-            <div key={index} className="relative text-center space-y-5 md:space-y-6">
+            <div
+              key={index}
+              className="relative text-center space-y-5 md:space-y-6"
+            >
               {/* Step Number - accent-brand badge */}
               <div className="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent-brand/5 text-accent-brand text-lg md:text-xl font-medium mb-4 border border-accent-brand/20">
                 {index + 1}

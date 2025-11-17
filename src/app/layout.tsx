@@ -1,13 +1,9 @@
+import { suit } from "@/constants/fonts";
 import "./globals.css";
 import Providers from "./providers";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { Noto_Serif_KR } from "next/font/google";
-
-const notoSerifKR = Noto_Serif_KR({
-  weight: ["400", "500", "700"],
-  subsets: ["latin"],
-});
+import localFont from "next/font/local";
 
 /**
  * Root Layout
@@ -30,7 +26,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`antialiased ${notoSerifKR.className}`}>
+      <body className={`antialiased ${suit.className}`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>

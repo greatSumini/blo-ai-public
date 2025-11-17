@@ -4,6 +4,8 @@ import { Check } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+import { nanumMyeongjo } from "@/constants/fonts";
 
 interface PricingCardProps {
   name: string;
@@ -129,7 +131,12 @@ export function PricingSection() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header - Claude.ai style */}
         <div className="text-center mb-16 md:mb-20 lg:mb-24">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight">
+          <h2
+            className={cn(
+              "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight",
+              nanumMyeongjo.className
+            )}
+          >
             {t("section_title")}
           </h2>
           <p className="text-base md:text-lg lg:text-xl text-text-secondary max-w-3xl mx-auto px-4 leading-relaxed">

@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { fadeUpStagger } from "@/features/landing/lib/animations";
 import { TRUST_BADGE_LOGOS } from "@/features/landing/lib/constants";
+import { cn } from "@/lib/utils";
+import { nanumMyeongjo } from "@/constants/fonts";
 
 export function HeroSection() {
   const t = useTranslations("landing.hero");
@@ -40,7 +42,12 @@ export function HeroSection() {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 text-text-primary leading-[1.15] px-2 whitespace-pre-line">
+            <h1
+              className={cn(
+                "text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 text-text-primary leading-[1.15] px-2 whitespace-pre-line",
+                nanumMyeongjo.className
+              )}
+            >
               {t("heading")}
             </h1>
           </motion.div>

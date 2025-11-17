@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { fadeIn } from "@/features/landing/lib/animations";
+import { cn } from "@/lib/utils";
+import { nanumMyeongjo } from "@/constants/fonts";
 
 export function FinalCtaSection() {
   const t = useTranslations("landing.cta");
@@ -20,7 +22,12 @@ export function FinalCtaSection() {
           viewport={{ once: true }}
         >
           {/* Heading - Claude.ai style */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-white mb-6 md:mb-8 px-4 tracking-tight leading-tight">
+          <h2
+            className={cn(
+              "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-white mb-6 md:mb-8 px-4 tracking-tight leading-tight",
+              nanumMyeongjo.className
+            )}
+          >
             {t("heading")}
           </h2>
 
@@ -44,7 +51,9 @@ export function FinalCtaSection() {
           </div>
 
           {/* No credit card required - Claude.ai subtle text */}
-          <p className="text-xs md:text-sm text-white/70">{t("no_credit_card")}</p>
+          <p className="text-xs md:text-sm text-white/70">
+            {t("no_credit_card")}
+          </p>
         </motion.div>
       </div>
     </section>

@@ -7,6 +7,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+import { nanumMyeongjo } from "@/constants/fonts";
 
 export function FaqSection() {
   const t = useTranslations("landing.faq");
@@ -29,7 +31,12 @@ export function FaqSection() {
       <div className="max-w-4xl mx-auto">
         {/* Section Header - Claude.ai style */}
         <div className="text-center mb-16 md:mb-20">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight">
+          <h2
+            className={cn(
+              "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight",
+              nanumMyeongjo.className
+            )}
+          >
             {t("section_title")}
           </h2>
         </div>
