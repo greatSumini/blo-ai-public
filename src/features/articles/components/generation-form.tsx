@@ -11,6 +11,7 @@ import {
   FormItem,
   FormControl,
   FormMessage,
+  FormLabel,
 } from "@/components/ui/form";
 import {
   Select,
@@ -22,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button-v2";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Loader2 } from "lucide-react";
+import { KeywordInput } from "./keyword-input";
 
 // Factory function for i18n-aware schema
 const createGenerationFormSchema = (t: (key: string) => string) =>
@@ -97,7 +99,7 @@ export function GenerationForm({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
+            className="flex flex-col gap-4"
           >
             {/* Textarea */}
             <FormField
@@ -105,12 +107,33 @@ export function GenerationForm({
               name="topic"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>{t("topicLabel")}</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       placeholder={t("topicPlaceholder")}
                       disabled={isSubmitting || isLoading}
-                      className="min-h-[200px] resize-none border-border-default bg-bg-primary text-text-primary placeholder:text-text-tertiary focus-visible:ring-2 focus-visible:ring-accent-brand focus-visible:ring-offset-2 transition-shadow duration-normal"
+                      className="min-h-[120px] resize-none border-border-default bg-bg-primary text-text-primary placeholder:text-text-tertiary focus-visible:ring-2 focus-visible:ring-accent-brand focus-visible:ring-offset-2 transition-shadow duration-normal"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Keywords */}
+            <FormField
+              control={form.control}
+              name="keywords"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("keywordLabel")}</FormLabel>
+                  <FormControl>
+                    <KeywordInput
+                      value={field.value || []}
+                      onChange={field.onChange}
+                      placeholder={t("keywordPlaceholder")}
+                      disabled={isSubmitting || isLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -119,54 +142,54 @@ export function GenerationForm({
             />
 
             {/* Controls (Style Guide + Generate Button) */}
-            <div className="flex items-center gap-3">
-              <FormField
-                control={form.control}
-                name="brandingId"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={isSubmitting || isLoading}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="border-border-default bg-bg-primary text-text-primary">
-                          <SelectValue placeholder={t("brandingPlaceholder")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {brandings.map((guide) => (
-                          <SelectItem key={guide.id} value={guide.id}>
-                            {guide.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="brandingId"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>{t("brandingLabel")}</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isSubmitting || isLoading}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="border-border-default bg-bg-primary text-text-primary">
+                        <SelectValue placeholder={t("brandingPlaceholder")} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {brandings.map((guide) => (
+                        <SelectItem key={guide.id} value={guide.id}>
+                          {guide.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                disabled={isSubmitting || isLoading || !form.formState.isValid}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    {t("generating")}
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    {t("generateButton")}
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="self-end"
+              disabled={isSubmitting || isLoading || !form.formState.isValid}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  {t("generating")}
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  {t("generateButton")}
+                </>
+              )}
+            </Button>
           </form>
         </Form>
       </div>
