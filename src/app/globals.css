@@ -198,10 +198,10 @@
     /* === New Tokens (Claude Console Style) === */
 
     /* Background Layers */
-    --bg-primary: 53 28.6% 94.5%;        /* Main content bg */
-    --bg-secondary: 48 33.3% 97.1%;      /* Page background */
-    --bg-tertiary: 60 2.1% 18.4%;        /* Elevated surfaces */
-    --bg-hover: 60 2.7% 14.5%;           /* Hover states */
+    --bg-primary: 0 0% 100%;             /* Main content bg (pure white) */
+    --bg-secondary: 0 0% 98%;            /* Page background (very light gray) */
+    --bg-tertiary: 240 5% 96%;           /* Elevated surfaces (light gray) */
+    --bg-hover: 240 5% 94%;              /* Hover states (slightly darker) */
 
     /* Text Hierarchy */
     --text-primary: 60 2.6% 7.6%;        /* Main text */
