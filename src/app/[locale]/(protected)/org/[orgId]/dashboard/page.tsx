@@ -3,6 +3,7 @@
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useRequiredOrganization } from "@/contexts/organization-context";
 import { WelcomeSection } from "@/components/dashboard/WelcomeSection";
 import { StatsGrid } from "@/components/dashboard/StatsGrid";
 import { RecentArticlesGrid } from "@/components/dashboard/RecentArticlesGrid";
@@ -11,15 +12,17 @@ import { useDashboardStats } from "@/features/articles/hooks/useDashboardStats";
 import { useRecentArticles } from "@/features/articles/hooks/useRecentArticles";
 import { useTranslations } from "next-intl";
 import { AlertCircle } from "lucide-react";
+import { ROUTES } from "@/lib/routes";
 
 type DashboardPageProps = {
-  params: Promise<Record<string, never>>;
+  params: Promise<{ orgId: string }>;
 };
 
 const WELCOME_SHOWN_KEY = "onboarding_welcome_shown";
 
 function DashboardContent() {
   const { user } = useCurrentUser();
+  const orgId = useRequiredOrganization();
   const searchParams = useSearchParams();
   const router = useRouter();
   const t = useTranslations('common');
@@ -51,15 +54,15 @@ function DashboardContent() {
   };
 
   const handleCreateArticle = () => {
-    router.push('/new-article');
+    router.push(ROUTES.NEW_ARTICLE(orgId));
   };
 
   const handleViewArticle = (id: string) => {
-    router.push(`/articles/${id}/edit`);
+    router.push(ROUTES.ARTICLES_EDIT(orgId, id));
   };
 
   const handleViewAllArticles = () => {
-    router.push('/articles');
+    router.push(ROUTES.ARTICLES(orgId));
   };
 
   if (isStatsLoading || isArticlesLoading) {

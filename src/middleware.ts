@@ -14,10 +14,10 @@ import { getOnboardingCompletedFromDb } from "@/features/onboarding/backend/onbo
  * - Route: /auth/onboarding
  * - Requires: User authentication
  * - Redirect: Unauthenticated users → /sign-in
- * - Reverse: Completed onboarding → /dashboard (prevents re-access)
+ * - Reverse: Completed onboarding → /org (prevents re-access)
  *
  * STAGE 2: Protected Routes Guard
- * - Routes: /dashboard, /new-article, /branding, /account, /editor, /settings
+ * - Routes: /org/[orgId]/*, /org (organization pages)
  * - Requires: User authentication + completed onboarding
  * - Redirect: Unauthenticated users → /sign-in (via auth.protect())
  * - Redirect: Authenticated users without onboarding → /auth/onboarding
@@ -58,13 +58,7 @@ const resolveOnboardingCompleted = async (userId: string): Promise<boolean> => {
 };
 
 const isProtectedRoute = createRouteMatcher([
-  "/dashboard(.*)",
-  "/new-article(.*)",
-  "/branding(.*)",
-  "/articles(.*)",
-  "/account(.*)",
-  "/editor(.*)",
-  "/settings(.*)",
+  "/org(.*)",
 ]);
 
 const isOnboardingRoute = createRouteMatcher(["/auth/onboarding(.*)"]);
@@ -102,10 +96,10 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
 
     if (onboardingCompleted) {
       console.log(
-        "[MIDDLEWARE] User already completed onboarding, redirecting to /dashboard"
+        "[MIDDLEWARE] User already completed onboarding, redirecting to /org"
       );
-      const dashboardUrl = new URL("/dashboard", req.url);
-      return NextResponse.redirect(dashboardUrl);
+      const orgUrl = new URL("/org", req.url);
+      return NextResponse.redirect(orgUrl);
     }
 
     console.log("[MIDDLEWARE] Allowing access to onboarding route");

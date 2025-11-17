@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { X, Sparkles } from "lucide-react";
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { useCurrentOrganization } from "@/contexts/organization-context";
+import { ROUTES } from "@/lib/routes";
 
 interface WelcomeBannerProps {
   onDismiss?: () => void;
@@ -13,6 +15,7 @@ export function WelcomeBanner({ onDismiss }: WelcomeBannerProps) {
   const t = useTranslations('dashboard.banner');
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
+  const { orgId } = useCurrentOrganization();
 
   const handleDismiss = useCallback(() => {
     setIsVisible(false);
@@ -46,7 +49,8 @@ export function WelcomeBanner({ onDismiss }: WelcomeBannerProps) {
   }, [handleDismiss]);
 
   const handleCTAClick = () => {
-    router.push("/new-article");
+    if (!orgId) return;
+    router.push(ROUTES.NEW_ARTICLE(orgId));
   };
 
   return (

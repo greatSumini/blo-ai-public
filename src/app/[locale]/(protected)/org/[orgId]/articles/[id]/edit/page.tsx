@@ -2,6 +2,7 @@
 
 import { use } from "react";
 import { useRouter } from "next/navigation";
+import { useRequiredOrganization } from "@/contexts/organization-context";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button-v2";
 import { Badge } from "@/components/ui/badge-v2";
@@ -14,13 +15,15 @@ import rehypeSanitize from "rehype-sanitize";
 import { format } from "date-fns";
 import { ko, enUS } from "date-fns/locale";
 import { useLocale } from "next-intl";
+import { ROUTES } from "@/lib/routes";
 
 type EditorPageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ orgId: string; id: string }>;
 };
 
 export default function EditorPage({ params }: EditorPageProps) {
   const resolvedParams = use(params);
+  const orgId = useRequiredOrganization();
   const articleId = resolvedParams.id;
   const router = useRouter();
   const t = useTranslations("editor");
@@ -45,7 +48,7 @@ export default function EditorPage({ params }: EditorPageProps) {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-bg-secondary">
         <p className="text-sm text-danger">{t("load_error")}</p>
         <Button
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push(ROUTES.DASHBOARD(orgId))}
           variant="secondary"
           size="sm"
         >

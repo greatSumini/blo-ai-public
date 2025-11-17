@@ -19,13 +19,16 @@ import { BrandingGrid } from "@/features/branding/components/branding-grid";
 import { EmptyState } from "@/features/branding/components/empty-state";
 import { BrandingPreviewModalImproved } from "@/features/branding/components/branding-preview-modal-improved";
 import { filterBrandingsBySearch } from "@/features/branding/lib/utils";
+import { useRequiredOrganization } from "@/contexts/organization-context";
+import { ROUTES } from "@/lib/routes";
 
 type BrandingPageProps = {
-  params: Promise<Record<string, never>>;
+  params: Promise<{ orgId: string }>;
 };
 
 export default function BrandingPage({ params }: BrandingPageProps) {
   void params;
+  const orgId = useRequiredOrganization();
   const router = useRouter();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -58,7 +61,7 @@ export default function BrandingPage({ params }: BrandingPageProps) {
 
   // Handlers
   const handleCreateNew = () => {
-    router.push("/brandings/new");
+    router.push(ROUTES.BRANDINGS_NEW(orgId));
   };
 
   const handlePreview = (branding: BrandingResponse) => {
@@ -67,7 +70,7 @@ export default function BrandingPage({ params }: BrandingPageProps) {
   };
 
   const handleEdit = (branding: BrandingResponse) => {
-    router.push(`/brandings/${branding.id}/edit`);
+    router.push(ROUTES.BRANDINGS_EDIT(orgId, branding.id));
   };
 
   const handleDelete = async (id: string) => {

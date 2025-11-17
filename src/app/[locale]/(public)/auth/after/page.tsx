@@ -35,7 +35,8 @@ export default async function AfterAuthPage() {
   }
 
   if (onboardingCompleted) {
-    redirect("/dashboard");
+    // Redirect to org selection page instead of hardcoded dashboard
+    redirect("/org");
   } else {
     redirect("/auth/onboarding");
   }

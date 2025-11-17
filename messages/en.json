@@ -10,6 +10,7 @@
     "retry": "Retry",
     "loading": "Loading...",
     "error": "Error",
+    "error_description": "Please try again later. If the problem persists, please contact support.",
     "success": "Success"
   },
   "sidebar": {
@@ -17,8 +18,15 @@
     "new_article": "New Article",
     "articles": "Articles",
     "keywords": "Keywords",
-    "branding": "Branding",
-    "account": "Account"
+    "branding": "Branding Style",
+    "brandings": "Branding Library",
+    "members": "Members",
+    "account": "Account Settings",
+    "group": {
+      "content": "Content",
+      "branding": "Branding",
+      "settings": "Settings"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -224,6 +232,7 @@
   "keywords": {
     "title": "Keywords",
     "description": "Manage keywords and get AI recommendations to optimize your blog content.",
+    "new_keyword": "Add Keyword",
     "table": {
       "searchPlaceholder": "Search keywords...",
       "clearSearch": "Clear search",
@@ -296,6 +305,7 @@
     "suggestions": {
       "title": "AI Keyword Suggestions",
       "subtitle": "Get long-tail keyword suggestions to optimize your blog's SEO.",
+      "description": "Get long-tail keyword suggestions related to your topic.",
       "trigger": "Get Suggestions",
       "stepInput": "Input Keyword",
       "stepResults": "Results",
@@ -321,6 +331,7 @@
       "adding": "Adding...",
       "emptyResults": "No suggestions found. Try different keywords.",
       "notFetchedYet": "Enter a keyword and click \"Get Suggestions\" to start",
+      "noResults": "No suggestions found.",
       "competition": "Competition",
       "competition_details": {
         "high": "High competition",
@@ -358,6 +369,10 @@
         "addSuccessTitle": "Keywords Added",
         "addSuccessDescription": "Added {created} keywords ({skipped} already exist)",
         "addErrorTitle": "Add Failed",
+        "successTitle": "Keyword Added",
+        "successDescription": "The keyword has been added successfully.",
+        "errorTitle": "Suggestion Failed",
+        "errorFallback": "An error occurred while fetching keyword suggestions.",
         "success": {
           "title": "Keyword Added",
           "desc": "The keyword \"{keyword}\" has been added."
@@ -875,6 +890,132 @@
       },
       "updateFailed": "Failed to update settings",
       "updateErrorDesc": "Please check your network and try again"
+    }
+  },
+  "organizations": {
+    "title": "My Organizations",
+    "description": "List of organizations you belong to.",
+    "add_new": "Add Organization",
+    "role": {
+      "owner": "Owner",
+      "member": "Member"
+    },
+    "member_count": "{count} members",
+    "menu": {
+      "delete": "Delete",
+      "leave": "Leave"
+    },
+    "new": {
+      "title": "Create New Organization",
+      "description": "Create a new organization and invite members."
+    },
+    "form": {
+      "name": {
+        "label": "Organization Name",
+        "placeholder": "Enter organization name"
+      },
+      "description": {
+        "label": "Organization Description (Optional)",
+        "placeholder": "Enter a brief description of the organization"
+      }
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "create": "Create",
+      "creating": "Creating..."
+    },
+    "toast": {
+      "createSuccess": "Organization created successfully",
+      "createError": "Failed to create organization"
+    },
+    "delete": {
+      "title": "Delete Organization",
+      "description": "Are you sure you want to delete this organization? All related data including member information will be deleted. This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting...",
+      "success": {
+        "title": "Deleted",
+        "description": "Organization has been deleted."
+      },
+      "error": {
+        "title": "Delete Failed",
+        "description": "An error occurred while deleting the organization."
+      }
+    },
+    "leave": {
+      "title": "Leave Organization",
+      "description": "Are you sure you want to leave this organization? You'll need an invitation from the owner to rejoin.",
+      "cancel": "Cancel",
+      "confirm": "Leave",
+      "leaving": "Leaving...",
+      "success": {
+        "title": "Left Organization",
+        "description": "You have left the organization."
+      },
+      "error": {
+        "title": "Leave Failed",
+        "description": "An error occurred while leaving the organization."
+      }
+    },
+    "empty": {
+      "title": "No Organizations",
+      "description": "Create a new organization or get invited to one.",
+      "create_first": "Create Organization"
+    },
+    "loading": "Loading organizations...",
+    "error": {
+      "title": "Error Occurred",
+      "description": "Failed to load organizations."
+    },
+    "members": {
+      "title": "Manage Members",
+      "description": "Manage organization members and invite new people to join.",
+      "notFound": "Organization not found",
+      "addButton": "Add Member",
+      "leaveButton": "Leave",
+      "emptyState": "No members",
+      "unknownUser": "Unknown",
+      "roleOwner": "Owner",
+      "roleMember": "Member",
+      "removeAction": "Remove",
+      "tableHeaders": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role"
+      },
+      "addDialog": {
+        "title": "Add Member",
+        "description": "Enter an email address to add a member to the organization.",
+        "emailLabel": "Email",
+        "emailPlaceholder": "user@example.com",
+        "cancelButton": "Cancel",
+        "addButton": "Add",
+        "addingButton": "Adding..."
+      },
+      "removeDialog": {
+        "title": "Remove Member",
+        "description": "Are you sure you want to remove {name} from the organization?",
+        "cancelButton": "Cancel",
+        "removeButton": "Remove",
+        "removingButton": "Removing..."
+      },
+      "leaveDialog": {
+        "title": "Leave Organization",
+        "description": "Are you sure you want to leave {name}? You'll need an invitation from the owner to rejoin.",
+        "cancelButton": "Cancel",
+        "leaveButton": "Leave",
+        "leavingButton": "Leaving..."
+      },
+      "toast": {
+        "emailRequired": "Please enter an email address",
+        "addSuccess": "Member added successfully",
+        "addError": "Failed to add member",
+        "removeSuccess": "Member removed successfully",
+        "removeError": "Failed to remove member",
+        "leaveSuccess": "You have left the organization",
+        "leaveError": "Failed to leave organization"
+      }
     }
   }
 }

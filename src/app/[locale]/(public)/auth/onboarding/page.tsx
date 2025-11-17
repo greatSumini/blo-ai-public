@@ -9,9 +9,9 @@ export default function OnboardingPage() {
   const handleComplete = async (data: OnboardingFormData) => {
     try {
       const result = await completeOnboarding(data);
-      if (result.success) {
-        const redirectUrl = "/dashboard?onboarding_completed=true&welcome=true";
-        window.location.href = redirectUrl;
+      if (result.success && result.redirectUrl) {
+        // Use redirectUrl from server action (includes orgId)
+        window.location.href = result.redirectUrl;
       }
     } catch (error) {
       toast.error("오류가 발생했습니다", {

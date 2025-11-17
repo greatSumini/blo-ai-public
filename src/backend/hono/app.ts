@@ -8,6 +8,7 @@ import { registerOnboardingRoutes } from '@/features/onboarding/backend/route';
 import { registerArticlesRoutes } from '@/features/articles/backend/route';
 import { registerProfilesRoutes } from '@/features/profiles/backend/route';
 import { registerKeywordsRoutes } from '@/features/keywords/backend/route';
+import { registerOrganizationsRoutes } from '@/features/organizations/backend/route';
 import accountRoutes from '@/features/account/backend/route';
 import type { AppEnv } from '@/backend/hono/context';
 
@@ -35,6 +36,7 @@ export const createHonoApp = () => {
   registerArticlesRoutes(app);
   registerProfilesRoutes(app);
   registerKeywordsRoutes(app);
+  registerOrganizationsRoutes(app);
   app.route('/', accountRoutes);
 
   // Only cache in production

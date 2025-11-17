@@ -15,9 +15,10 @@ import {
 import type { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
 import type { BrandingResponse } from "@/features/onboarding/backend/schema";
 import { ROUTES } from "@/lib/routes";
+import { useRequiredOrganization } from "@/contexts/organization-context";
 
 type EditBrandingPageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ orgId: string; id: string }>;
 };
 
 /**
@@ -45,6 +46,7 @@ export default function EditBrandingPage({
   params,
 }: EditBrandingPageProps) {
   const resolvedParams = use(params);
+  const orgId = useRequiredOrganization();
   const guideId = resolvedParams.id;
   const router = useRouter();
   const { toast } = useToast();
@@ -67,7 +69,7 @@ export default function EditBrandingPage({
         description: t("branding.update.success.desc"),
       });
 
-      router.push(ROUTES.BRANDINGS);
+      router.push(ROUTES.BRANDINGS(orgId));
     } catch (error) {
       toast({
         title: t("common.error"),
@@ -104,7 +106,7 @@ export default function EditBrandingPage({
         <ErrorDisplay
           message={t("branding.error.load")}
           onRetry={() => refetch()}
-          onBack={() => router.push(ROUTES.BRANDINGS)}
+          onBack={() => router.push(ROUTES.BRANDINGS(orgId))}
         />
       </PageLayout>
     );

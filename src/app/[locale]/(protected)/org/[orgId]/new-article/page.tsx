@@ -40,9 +40,11 @@ import {
 import { Button } from "@/components/ui/button-v2";
 import { Badge } from "@/components/ui/badge-v2";
 import { Card, CardContent } from "@/components/ui/card";
+import { useRequiredOrganization } from "@/contexts/organization-context";
+import { ROUTES } from "@/lib/routes";
 
 type NewArticlePageProps = {
-  params: Promise<Record<string, never>>;
+  params: Promise<{ orgId: string }>;
 };
 
 type MetadataState = {
@@ -64,6 +66,7 @@ type ToolProgressState = {
 
 export default function NewArticlePage({ params }: NewArticlePageProps) {
   void params;
+  const orgId = useRequiredOrganization();
   const t = useTranslations("newArticle");
   const router = useRouter();
   const { toast } = useToast();
@@ -323,7 +326,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
       });
 
       // 저장 완료 후 상세 페이지로 이동
-      router.push(`/articles/${article.id}/edit`);
+      router.push(ROUTES.ARTICLES_EDIT(orgId, article.id));
     } catch (error) {
       const message = extractApiErrorMessage(error, t("save.error.desc"));
       toast({
@@ -827,7 +830,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
               }}
               onEdit={() => {
                 if (articleId) {
-                  router.push(`/articles/${articleId}/edit`);
+                  router.push(ROUTES.ARTICLES_EDIT(orgId, articleId));
                 }
               }}
               onRegenerate={() => {

@@ -7,8 +7,10 @@ import { Badge } from '@/components/ui/badge-v2';
 import { FileText, ArrowRight, CheckCircle, Clock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ko, enUS } from 'date-fns/locale';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { ArticleResponse } from '@/features/articles/lib/dto';
+import { useCurrentOrganization } from '@/contexts/organization-context';
+import { ROUTES } from '@/lib/routes';
 
 interface RecentArticlesGridProps {
   articles: ArticleResponse[];
@@ -24,6 +26,7 @@ export function RecentArticlesGrid({
   const t = useTranslations('dashboard.recentArticles');
   const locale = useLocale();
   const dateLocale = locale === 'ko' ? ko : enUS;
+  const { orgId } = useCurrentOrganization();
 
   const getBadgeVariant = (status: string) => {
     switch (status) {
@@ -90,11 +93,13 @@ export function RecentArticlesGrid({
               </Badge>
             </div>
 
-            <Link href={`/${locale}/articles/${article.id}/edit`}>
-              <h3 className="text-lg font-medium mb-3 line-clamp-2 text-text-primary group-hover:text-accent-brand transition-colors duration-normal">
-                {article.title}
-              </h3>
-            </Link>
+            {orgId && (
+              <Link href={ROUTES.ARTICLES_EDIT(orgId, article.id)}>
+                <h3 className="text-lg font-medium mb-3 line-clamp-2 text-text-primary group-hover:text-accent-brand transition-colors duration-normal">
+                  {article.title}
+                </h3>
+              </Link>
+            )}
 
             <p className="text-xs text-text-tertiary">
               {formatDistanceToNow(new Date(article.updatedAt), {

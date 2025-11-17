@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useRequiredOrganization } from "@/contexts/organization-context";
 import { KeywordTable } from "@/features/keywords/components/KeywordTable";
 import { KeywordCreateDialog } from "@/features/keywords/components/KeywordCreateDialog";
 import { SuggestionsDialog } from "@/features/keywords/components/SuggestionsDialog";
@@ -9,11 +10,12 @@ import { Plus, Lightbulb } from "lucide-react";
 import { useTranslations } from 'next-intl';
 
 type KeywordsPageProps = {
-  params: Promise<Record<string, never>>;
+  params: Promise<{ orgId: string }>;
 };
 
 export default function KeywordsPage({ params }: KeywordsPageProps) {
   void params;
+  const orgId = useRequiredOrganization();
   const t = useTranslations('keywords');
 
   return (

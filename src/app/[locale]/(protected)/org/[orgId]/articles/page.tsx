@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRequiredOrganization } from "@/contexts/organization-context";
 import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button-v2";
 import { ArticlesFilters } from "@/features/articles/components/articles-filters";
@@ -20,13 +21,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAuthenticatedClient, extractApiErrorMessage } from "@/lib/remote/api-client";
 import { useAuth } from "@clerk/nextjs";
 import { Sparkles } from "lucide-react";
+import { ROUTES } from "@/lib/routes";
 
 type ArticlesPageProps = {
-  params: Promise<Record<string, never>>;
+  params: Promise<{ orgId: string }>;
 };
 
 export default function ArticlesPage({ params }: ArticlesPageProps) {
   void params;
+  const orgId = useRequiredOrganization();
   const t = useTranslations("articles");
   const router = useRouter();
   const locale = useLocale();
@@ -88,7 +91,7 @@ export default function ArticlesPage({ params }: ArticlesPageProps) {
 
   // 핸들러
   const handleEdit = (id: string) => {
-    router.push(`/${locale}/articles/${id}/edit`);
+    router.push(ROUTES.ARTICLES_EDIT(orgId, id));
   };
 
   const handleDelete = (id: string) => {
@@ -121,7 +124,7 @@ export default function ArticlesPage({ params }: ArticlesPageProps) {
           <Button
             variant="primary"
             size="lg"
-            onClick={() => router.push(`/${locale}/new-article`)}
+            onClick={() => router.push(ROUTES.NEW_ARTICLE(orgId))}
           >
             <Sparkles className="mr-2 h-4 w-4" />
             {t("create_new")}

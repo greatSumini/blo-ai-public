@@ -9,15 +9,18 @@ import { createBranding } from "@/features/onboarding/actions/create-branding";
 import type { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
 import { useTranslations } from 'next-intl';
 import { PageLayout } from "@/components/layout/page-layout";
+import { useRequiredOrganization } from "@/contexts/organization-context";
+import { ROUTES } from "@/lib/routes";
 
 type NewBrandingPageProps = {
-  params: Promise<Record<string, never>>;
+  params: Promise<{ orgId: string }>;
 };
 
 export default function NewBrandingPage({
   params,
 }: NewBrandingPageProps) {
   void params;
+  const orgId = useRequiredOrganization();
   const router = useRouter();
   const { toast } = useToast();
   const t = useTranslations();
@@ -31,7 +34,7 @@ export default function NewBrandingPage({
         description: t("branding.update.success.desc").replace("업데이트", "생성"),
       });
 
-      router.push("/brandings");
+      router.push(ROUTES.BRANDINGS(orgId));
     } catch (error) {
       console.error("Failed to create style guide:", error);
       toast({

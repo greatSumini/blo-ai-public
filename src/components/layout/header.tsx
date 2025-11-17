@@ -8,6 +8,8 @@ import {
   FileText,
   Tag,
   User,
+  Palette,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -16,24 +18,92 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useCurrentOrganization } from "@/contexts/organization-context";
+import { ROUTES } from "@/lib/routes";
+
+interface MenuItem {
+  icon: any;
+  label: string;
+  href: string;
+}
+
+interface MenuGroup {
+  label?: string;
+  items: MenuItem[];
+}
 
 // Sidebar content for mobile sheet
 function MobileSidebarContent() {
   const pathname =
     typeof window !== "undefined" ? window.location.pathname : "";
   const t = useTranslations();
+  const { orgId } = useCurrentOrganization();
 
-  const menuItems = [
+  if (!orgId) {
+    return null;
+  }
+
+  const menuGroups: MenuGroup[] = [
     {
-      icon: LayoutDashboard,
-      label: t("sidebar.dashboard"),
-      href: "/dashboard",
+      // Dashboard group (no label)
+      items: [
+        {
+          icon: LayoutDashboard,
+          label: t("sidebar.dashboard"),
+          href: ROUTES.DASHBOARD(orgId),
+        },
+      ],
     },
-    { icon: PenTool, label: t("sidebar.new_article"), href: "/new-article" },
-    { icon: FileText, label: t("sidebar.articles"), href: "/articles" },
-    { icon: Tag, label: t("sidebar.keywords"), href: "/keywords" },
-    { icon: FileText, label: t("sidebar.branding"), href: "/branding" },
-    { icon: User, label: t("sidebar.account"), href: "/account" },
+    {
+      label: t("sidebar.group.content"),
+      items: [
+        {
+          icon: PenTool,
+          label: t("sidebar.new_article"),
+          href: ROUTES.NEW_ARTICLE(orgId)
+        },
+        {
+          icon: FileText,
+          label: t("sidebar.articles"),
+          href: ROUTES.ARTICLES(orgId)
+        },
+        {
+          icon: Tag,
+          label: t("sidebar.keywords"),
+          href: ROUTES.KEYWORDS(orgId)
+        },
+      ],
+    },
+    {
+      label: t("sidebar.group.branding"),
+      items: [
+        {
+          icon: Palette,
+          label: t("sidebar.branding"),
+          href: ROUTES.BRANDING(orgId)
+        },
+        {
+          icon: FileText,
+          label: t("sidebar.brandings"),
+          href: ROUTES.BRANDINGS(orgId)
+        },
+      ],
+    },
+    {
+      label: t("sidebar.group.settings"),
+      items: [
+        {
+          icon: Users,
+          label: t("sidebar.members"),
+          href: ROUTES.ORG_MEMBERS(orgId)
+        },
+        {
+          icon: User,
+          label: t("sidebar.account"),
+          href: ROUTES.ACCOUNT(orgId)
+        },
+      ],
+    },
   ];
 
   return (
@@ -49,25 +119,36 @@ function MobileSidebarContent() {
           {t("common.brand_name")}
         </h1>
       </div>
-      <nav className="flex flex-col gap-2">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.href;
-          return (
-            <Link key={item.href} href={item.href}>
-              <Button
-                variant={isActive ? "secondary" : "ghost"}
-                className={cn(
-                  "w-full justify-start gap-3 text-text-secondary hover:text-text-primary hover:bg-bg-secondary",
-                  isActive && "bg-bg-secondary text-text-primary"
-                )}
-              >
-                <Icon className="h-5 w-5" />
-                <span>{item.label}</span>
-              </Button>
-            </Link>
-          );
-        })}
+      <nav className="flex flex-col gap-6">
+        {menuGroups.map((group, groupIndex) => (
+          <div key={groupIndex} className="flex flex-col gap-2">
+            {group.label && (
+              <h2 className="px-2 text-xs font-semibold uppercase tracking-wider text-text-tertiary">
+                {group.label}
+              </h2>
+            )}
+            <div className="flex flex-col gap-1">
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <Link key={item.href} href={item.href}>
+                    <Button
+                      variant={isActive ? "secondary" : "ghost"}
+                      className={cn(
+                        "w-full justify-start gap-3 text-text-secondary hover:text-text-primary hover:bg-bg-secondary",
+                        isActive && "bg-bg-secondary text-text-primary"
+                      )}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{item.label}</span>
+                    </Button>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
     </div>
   );
