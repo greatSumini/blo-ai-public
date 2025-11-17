@@ -13,13 +13,6 @@
     "error_description": "잠시 후 다시 시도해 주세요. 문제가 지속되면 고객 지원팀에 문의하세요.",
     "success": "성공"
   },
-  "navigation": {
-    "dashboard": "대시보드",
-    "articles": "글 관리",
-    "branding": "브랜딩",
-    "keywords": "키워드 관리",
-    "account": "계정 관리"
-  },
   "sidebar": {
     "dashboard": "대시보드",
     "new_article": "새 글 작성",
@@ -71,10 +64,6 @@
       "cta": "첫 글 작성",
       "cta_aria": "첫 글 작성하러 가기",
       "close_aria": "환영 메시지 닫기"
-    },
-    "activity": {
-      "title": "월간 활동 그래프",
-      "placeholder": "차트 라이브러리(예: Recharts)가 여기에 표시됩니다"
     }
   },
   "newArticle": {
@@ -386,7 +375,6 @@
   "articles": {
     "title": "글 관리",
     "description": "AI가 작성한 블로그 글을 검토하고 발행하세요",
-    "coming_soon": "곧 제공될 예정입니다.",
     "total_count": "총 {count}개 글",
     "create_new": "AI로 글 생성",
     "search_placeholder": "글 제목이나 키워드로 검색...",
@@ -461,75 +449,6 @@
         "additionalMaxLength": "추가 요구사항은 1000자 이내여야 합니다"
       }
     },
-    "articleForm": {
-      "subtitle": "글의 제목, 내용, 메타데이터를 수정합니다",
-      "titleLabel": "제목",
-      "titlePlaceholder": "글 제목을 입력하세요",
-      "titleDescription": "글의 주요 제목입니다",
-      "slugLabel": "슬러그",
-      "slugPlaceholder": "URL 슬러그",
-      "slugDescription": "URL에 사용할 수 있는 식별자 (제목에서 자동 생성)",
-      "keywordsLabel": "키워드",
-      "keywordsPlaceholder": "키워드 선택 (선택사항)",
-      "keywordsDescription": "SEO를 위한 관련 키워드를 추가하세요",
-      "descriptionLabel": "요약",
-      "descriptionPlaceholder": "글 요약을 입력하세요",
-      "descriptionDescription": "글의 내용을 간단히 요약합니다",
-      "contentLabel": "본문",
-      "contentPlaceholder": "본문 내용을 입력하세요",
-      "contentDescription": "마크다운 형식의 완전한 글 내용",
-      "brandingDescription": "브랜딩을 적용하여 일관성 유지",
-      "toneLabel": "톤",
-      "toneDescription": "콘텐츠 작성의 톤을 선택하세요",
-      "tonePlaceholder": "톤을 선택하세요",
-      "toneProfessional": "전문적",
-      "toneFriendly": "친근한",
-      "toneInspirational": "영감을 주는",
-      "toneEducational": "교육적",
-      "contentLengthLabel": "콘텐츠 길이",
-      "contentLengthPlaceholder": "콘텐츠 길이를 선택하세요",
-      "contentLengthShort": "짧게 (300-500자)",
-      "contentLengthMedium": "보통 (500-1000자)",
-      "contentLengthLong": "길게 (1000자 이상)",
-      "readingLevelLabel": "읽기 수준",
-      "readingLevelPlaceholder": "읽기 수준을 선택하세요",
-      "readingLevelBeginner": "초급",
-      "readingLevelIntermediate": "중급",
-      "readingLevelAdvanced": "고급"
-    },
-    "seoPanel": {
-      "title": "SEO 분석",
-      "scoreLabel": "SEO 점수 {score}",
-      "titleLengthLabel": "제목 길이",
-      "titleLengthValue": "{current}/{max}자",
-      "titleLengthMessage": "제목 길이: {count}자",
-      "titleLengthEmpty": "SEO 분석을 위해 제목을 추가하세요",
-      "metaTitleLabel": "메타 제목",
-      "metaTitlePlaceholder": "메타 제목 (선택사항)",
-      "metaTitleMessage": "메타 제목: {count}자",
-      "metaTitleEmpty": "메타 제목 추가 (최적: 50-60자)",
-      "metaDescLabel": "메타 설명",
-      "metaDescPlaceholder": "메타 설명 (선택사항)",
-      "metaDescriptionMessage": "메타 설명: {count}자",
-      "metaDescriptionEmpty": "메타 설명 추가 (최적: 120-160자)",
-      "slugValid": "슬러그 형식이 올바릅니다",
-      "slugInvalid": "잘못된 슬러그 형식입니다. 소문자, 숫자, 하이픈을 사용하세요.",
-      "slugEmpty": "URL 슬러그를 추가하세요",
-      "keywordsMessage": "키워드: {count}개 추가됨",
-      "keywordsEmpty": "키워드 추가 (최적: 3-10개)",
-      "keywordsLabel": "키워드",
-      "contentLengthMessage": "콘텐츠: {count}자",
-      "contentLengthEmpty": "분석을 위해 콘텐츠 추가 (최소: 300자)",
-      "contentLengthLabel": "콘텐츠 길이",
-      "itemsPassed": "{total}개 중 {passed}개 검사 통과",
-      "tipsTitle": "SEO 팁",
-      "tip1": "제목은 30-60자 사이로 유지하세요",
-      "tip2": "메타 설명은 120-160자여야 합니다",
-      "tip3": "3-10개의 관련 키워드를 포함하세요",
-      "tip4": "콘텐츠는 최소 300자 이상이어야 합니다",
-      "recommendations": "개선 권장사항",
-      "noRecommendations": "모든 항목이 최적화되었습니다!"
-    },
     "autoSave": {
       "saving": "저장 중...",
       "saved": "{time} 저장됨",
@@ -537,29 +456,6 @@
     },
     "tableOfContents": {
       "title": "목차"
-    },
-    "generationProgress": {
-      "ariaLabel": "글 생성 진행 중",
-      "generating": "AI가 글을 생성하고 있습니다...",
-      "pleaseWait": "잠시만 기다려주세요.",
-      "retry": "다시 시도",
-      "cancelConfirm": "정말 글 생성을 취소하시겠습니까?",
-      "errorQuotaTitle": "생성 횟수 제한 초과",
-      "errorQuotaMessage": "월간 생성 한도에 도달했습니다. 플랜을 업그레이드하세요.",
-      "errorAITitle": "AI 생성 실패",
-      "errorAIMessage": "AI 생성 중 오류가 발생했습니다. 다시 시도해주세요.",
-      "errorGenericTitle": "생성 오류",
-      "progress": "진행도",
-      "progressPercent": "진행도 {percent}%",
-      "timeRemaining": "남은 시간:",
-      "motivationalMessage": "좋은 결과는 시간이 걸립니다... AI가 당신의 글을 작성하고 있습니다!",
-      "cancel": "취소"
-    },
-    "preview": {
-      "title": "미리보기",
-      "emptyMessage": "글을 작성하면 미리보기가 표시됩니다",
-      "keywordsLabel": "키워드",
-      "contentLabel": "본문"
     }
   },
   "editor": {
@@ -583,7 +479,6 @@
     "description_optimal_message": "SEO에 최적화된 길이입니다 (120-160자).",
     "field_content": "본문",
     "placeholder_content": "본문 내용을 입력하세요",
-    "field_content_mobile": "본문",
     "download": "다운로드",
     "copy": "복사",
     "copied": "복사 완료!",
@@ -950,11 +845,7 @@
         "emailHint": "이메일은 인증 제공자(Clerk)에서 관리됩니다.",
         "joinedAt": "가입일",
         "uploadAvatar": "프로필 사진 업로드"
-      },
-      "imageUploadNotImplemented": "이미지 업로드 준비 중",
-      "imageUploadComingSoon": "곧 사용 가능합니다",
-      "imageUploadFailed": "이미지 업로드 실패",
-      "imageUploadErrorDesc": "다시 시도해주세요"
+      }
     },
     "contentPreferences": {
       "title": "콘텐츠 설정",

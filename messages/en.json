@@ -63,10 +63,6 @@
       "cta": "Create First Article",
       "cta_aria": "Go to create first article",
       "close_aria": "Close welcome message"
-    },
-    "activity": {
-      "title": "Monthly Activity Chart",
-      "placeholder": "The chart library (e.g., Recharts) will be displayed here"
     }
   },
   "newArticle": {
@@ -371,7 +367,6 @@
   "articles": {
     "title": "Articles",
     "description": "Review and publish your AI-generated blog articles",
-    "coming_soon": "This page will be implemented soon.",
     "total_count": "{count} articles in total",
     "create_new": "Generate with AI",
     "search_placeholder": "Search by title or keywords...",
@@ -446,75 +441,6 @@
         "additionalMaxLength": "Additional instructions must not exceed 1000 characters"
       }
     },
-    "articleForm": {
-      "subtitle": "Edit your article details and content",
-      "titleLabel": "Title",
-      "titlePlaceholder": "Enter article title",
-      "titleDescription": "The main heading of your article",
-      "slugLabel": "Slug",
-      "slugPlaceholder": "URL slug",
-      "slugDescription": "URL-friendly identifier (auto-generated from title)",
-      "keywordsLabel": "Keywords",
-      "keywordsPlaceholder": "Select keywords (optional)",
-      "keywordsDescription": "Add relevant keywords for SEO",
-      "descriptionLabel": "Summary",
-      "descriptionPlaceholder": "Enter article summary",
-      "descriptionDescription": "Brief summary of the article content",
-      "contentLabel": "Content",
-      "contentPlaceholder": "Enter article content",
-      "contentDescription": "Full article content in Markdown format",
-      "brandingDescription": "Apply branding to maintain consistency",
-      "toneLabel": "Tone",
-      "toneDescription": "Choose the writing tone for your content",
-      "tonePlaceholder": "Select tone",
-      "toneProfessional": "Professional",
-      "toneFriendly": "Friendly",
-      "toneInspirational": "Inspirational",
-      "toneEducational": "Educational",
-      "contentLengthLabel": "Content Length",
-      "contentLengthPlaceholder": "Select content length",
-      "contentLengthShort": "Short (300-500 words)",
-      "contentLengthMedium": "Medium (500-1000 words)",
-      "contentLengthLong": "Long (1000+ words)",
-      "readingLevelLabel": "Reading Level",
-      "readingLevelPlaceholder": "Select reading level",
-      "readingLevelBeginner": "Beginner",
-      "readingLevelIntermediate": "Intermediate",
-      "readingLevelAdvanced": "Advanced"
-    },
-    "seoPanel": {
-      "title": "SEO Analysis",
-      "scoreLabel": "SEO Score {score}",
-      "titleLengthLabel": "Title Length",
-      "titleLengthValue": "{current}/{max} characters",
-      "titleLengthMessage": "Title length: {count} characters",
-      "titleLengthEmpty": "Add a title for SEO analysis",
-      "metaTitleLabel": "Meta Title",
-      "metaTitlePlaceholder": "Meta title (optional)",
-      "metaTitleMessage": "Meta title: {count} characters",
-      "metaTitleEmpty": "Add a meta title (optimal: 50-60 characters)",
-      "metaDescLabel": "Meta Description",
-      "metaDescPlaceholder": "Meta description (optional)",
-      "metaDescriptionMessage": "Meta description: {count} characters",
-      "metaDescriptionEmpty": "Add a meta description (optimal: 120-160 characters)",
-      "slugValid": "Slug format is valid",
-      "slugInvalid": "Invalid slug format. Use lowercase letters, numbers and hyphens.",
-      "slugEmpty": "Add a URL slug",
-      "keywordsMessage": "Keywords: {count} added",
-      "keywordsEmpty": "Add keywords (optimal: 3-10)",
-      "keywordsLabel": "Keywords",
-      "contentLengthMessage": "Content: {count} characters",
-      "contentLengthEmpty": "Add content for analysis (minimum: 300 characters)",
-      "contentLengthLabel": "Content Length",
-      "itemsPassed": "{passed} of {total} checks passed",
-      "tipsTitle": "SEO Tips",
-      "tip1": "Keep your title between 30-60 characters",
-      "tip2": "Meta description should be 120-160 characters",
-      "tip3": "Include 3-10 relevant keywords",
-      "tip4": "Ensure content is at least 300 characters long",
-      "recommendations": "Improvement Recommendations",
-      "noRecommendations": "Everything is optimized!"
-    },
     "autoSave": {
       "saving": "Saving...",
       "saved": "Saved {time}",
@@ -522,29 +448,6 @@
     },
     "tableOfContents": {
       "title": "Table of Contents"
-    },
-    "generationProgress": {
-      "ariaLabel": "Article generation in progress",
-      "generating": "AI is generating your article...",
-      "pleaseWait": "Please wait.",
-      "retry": "Retry",
-      "cancelConfirm": "Are you sure you want to cancel article generation?",
-      "errorQuotaTitle": "Generation Quota Exceeded",
-      "errorQuotaMessage": "You've reached your monthly generation limit. Please upgrade your plan.",
-      "errorAITitle": "AI Generation Failed",
-      "errorAIMessage": "An error occurred during AI generation. Please try again.",
-      "errorGenericTitle": "Generation Error",
-      "progress": "Progress",
-      "progressPercent": "Progress {percent}%",
-      "timeRemaining": "Time remaining:",
-      "motivationalMessage": "Great things take a moment... Your article is being crafted with AI intelligence!",
-      "cancel": "Cancel"
-    },
-    "preview": {
-      "title": "Preview",
-      "emptyMessage": "Start writing to see preview here",
-      "keywordsLabel": "Keywords",
-      "contentLabel": "Content"
     }
   },
   "editor": {
@@ -568,7 +471,6 @@
     "description_optimal_message": "Optimal length for SEO (120-160 characters).",
     "field_content": "Content",
     "placeholder_content": "Enter article content",
-    "field_content_mobile": "Content",
     "download": "Download",
     "copy": "Copy",
     "copied": "Copied!",
@@ -935,11 +837,7 @@
         "emailHint": "Email is managed by your authentication provider (Clerk).",
         "joinedAt": "Member Since",
         "uploadAvatar": "Upload profile picture"
-      },
-      "imageUploadNotImplemented": "Image upload coming soon",
-      "imageUploadComingSoon": "This feature will be available soon",
-      "imageUploadFailed": "Image upload failed",
-      "imageUploadErrorDesc": "Please try again"
+      }
     },
     "contentPreferences": {
       "title": "Content Preferences",
