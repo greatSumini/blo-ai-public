@@ -27,6 +27,7 @@ interface ArticlePreviewSectionProps {
   onEdit: () => void;
   onRegenerate: () => void;
   isSaving?: boolean;
+  onSave: () => void;
 }
 
 export function ArticlePreviewSection({
@@ -34,6 +35,7 @@ export function ArticlePreviewSection({
   onEdit,
   onRegenerate,
   isSaving,
+  onSave,
 }: ArticlePreviewSectionProps) {
   const t = useTranslations("newArticle.complete");
   const [isMetadataOpen, setIsMetadataOpen] = useState(false);
@@ -121,8 +123,16 @@ export function ArticlePreviewSection({
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4">
         <Button
-          onClick={onEdit}
+          onClick={onSave}
           className="flex-1 bg-[#C46849] hover:bg-[#b05a3e] text-white dark:bg-[#C46849] dark:hover:bg-[#b05a3e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C46849] focus-visible:ring-offset-2 transition-all duration-100 active:scale-95"
+          disabled={isSaving}
+        >
+          <CheckCircle2 className="w-4 h-4 mr-2" />
+          {t("actions.save")}
+        </Button>
+        <Button
+          onClick={onEdit}
+          className="flex-1 bg-bg-secondary hover:bg-bg-tertiary text-text-primary border border-border dark:bg-bg-secondary dark:hover:bg-bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C46849] focus-visible:ring-offset-2 transition-all duration-100 active:scale-95"
           disabled={isSaving}
         >
           <Edit className="w-4 h-4 mr-2" />

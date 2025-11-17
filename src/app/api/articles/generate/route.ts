@@ -1,5 +1,13 @@
 import { auth } from '@clerk/nextjs/server';
-import { streamText } from 'ai';
+import {
+  convertToModelMessages,
+  streamText,
+  tool,
+  type InferUITools,
+  type ToolSet,
+  type UIDataTypes,
+  type UIMessage,
+} from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createClient } from '@supabase/supabase-js';
@@ -8,6 +16,10 @@ import {
   checkQuota,
 } from '@/features/articles/backend/quota-service';
 import { articleErrorCodes } from '@/features/articles/backend/error';
+import { d4seo } from '@/features/keywords/lib/dataforseo';
+import { naverSearch } from '@/lib/naver_search';
+import { braveSearch } from '@/lib/brave_search';
+import { z } from 'zod';
 
 type BrandingResponse = {
   id: string;
@@ -29,6 +41,123 @@ type BrandingResponse = {
 };
 
 const BRANDINGS_TABLE = 'style_guides';
+
+// ==== Tools definition (server + client) ====
+
+const tools = {
+  // client-side tool: 메인 키워드 설정 (키워드 상태만 변경)
+  set_main_keyword: tool({
+    description:
+      'Set the main SEO keyword for the article based on the topic and context.',
+    inputSchema: z.object({
+      keyword: z.string().min(1),
+    }),
+  }),
+
+  // server-side tool: DataForSEO 기반 연관/롱테일 키워드 조회
+  suggest_keywords: tool({
+    description:
+      'Fetch long-tail related keywords with search volume, competition, and CPC using the DataForSEO API.',
+    inputSchema: z.object({
+      keyword: z.string().min(1),
+    }),
+    async execute({ keyword }) {
+      try {
+        const suggestions = await d4seo.requestSuggestions(keyword);
+        return suggestions;
+      } catch (error) {
+        console.error('suggest_keywords tool failed', error);
+        // 실패하더라도 모델이 계속 진행할 수 있도록 빈 배열 반환
+        return [];
+      }
+    },
+  }),
+
+  // server-side tool: 네이버 블로그 상위 검색 결과 조회
+  naver_search_blog: tool({
+    description:
+      'Search top Naver blog posts for a given keyword and return summarized results.',
+    inputSchema: z.object({
+      keyword: z.string().min(1),
+    }),
+    async execute({ keyword }) {
+      try {
+        const results = await naverSearch.searchBlog({
+          query: keyword,
+          display: 5,
+          start: 1,
+          sort: 'sim',
+        });
+
+        return results.map((item) => ({
+          title: item.title,
+          description: item.description,
+        }));
+      } catch (error) {
+        console.error('naver_search_blog tool failed', error);
+        return [];
+      }
+    },
+  }),
+
+  // server-side tool: Brave Search 기반 웹 리서치
+  brave_search: tool({
+    description:
+      'Search the web using Brave Search to gather expert knowledge and up-to-date information.',
+    inputSchema: z.object({
+      query: z.string().min(1),
+    }),
+    async execute({ query }) {
+      try {
+        const result = await braveSearch.searchWeb({
+          query,
+          count: 5,
+          offset: 0,
+        });
+
+        return result.results.map((item) => ({
+          title: item.title,
+          description: item.description,
+          published: item.published ?? '',
+          rank: item.rank ?? 0,
+        }));
+      } catch (error) {
+        console.error('brave_search tool failed', error);
+        return [];
+      }
+    },
+  }),
+
+  // client-side tool: SEO 메타데이터 상태 설정
+  set_metadata: tool({
+    description:
+      'Set SEO metadata for the article (title, slug, description, keywords, headings) in client state.',
+    inputSchema: z.object({
+      title: z.string(),
+      slug: z.string(),
+      description: z.string(),
+      keywords: z.array(z.string()),
+      headings: z.array(z.string()),
+    }),
+  }),
+
+  // client-side tool: 최종 본문 상태 설정
+  set_content: tool({
+    description:
+      'Set the final Markdown content for the article in client state.',
+    inputSchema: z.object({
+      content: z.string(),
+    }),
+  }),
+} satisfies ToolSet;
+
+export type ChatTools = InferUITools<typeof tools>;
+
+export type ChatMessage = UIMessage<never, UIDataTypes, ChatTools>;
+
+type AgentChatRequest = GenerateArticleRequest & {
+  messages: ChatMessage[];
+};
 
 /**
  * Gets style guide by ID or default style guide for user
@@ -195,6 +324,41 @@ ${additionalInstructions ? `**Additional Instructions (Highest Priority)**: ${ad
   return promptTemplate;
 };
 
+const buildAgentSystemPrompt = (
+  topic: string,
+  branding: BrandingResponse | null,
+  keywords: string[],
+  additionalInstructions?: string,
+): string => {
+  const basePrompt = buildPrompt(topic, branding, keywords, additionalInstructions);
+
+  return `
+${basePrompt}
+
+---
+
+당신은 위 조건에 맞춰 블로그 글을 작성하는 **대화형 에이전트**입니다. 아래 워크플로우를 **반드시 순서대로** 따르세요.
+
+1. 사용자가 "글 작성을 시작해주세요."라고 말하면 작업을 시작합니다.
+2. 먼저 사용자가 입력한 **주제, 브랜딩/스타일 정보, 초기 키워드**를 3~4줄로 간단히 요약해서 브리핑하고, 내용이 맞는지 질문합니다.
+3. 사용자가 글 작성을 요청하면, 다음 툴들을 순서대로 사용합니다. 이전 단계가 성공적으로 끝나기 전에는 다음 툴을 호출하지 마세요.
+   - (필요 시) \`set_main_keyword\`: 현재 키워드 목록이 비어있다면 주제와 문맥을 바탕으로 가장 유력한 검색어 하나를 선택해 메인 키워드를 설정합니다.
+   - \`suggest_keywords\`: 메인 키워드를 기반으로 DataForSEO에서 롱테일 키워드를 가져와 키워드 목록에 추가합니다.
+   - \`naver_search_blog\`: 상위 3개의 주요 키워드 각각에 대해 네이버 블로그 검색을 수행하고, 상위 검색 결과를 분석합니다.
+   - \`brave_search\`: 글 작성을 위해 필요한 추가 전문 지식/정보를 스스로 목록화한 뒤, 그에 맞는 검색 쿼리로 Brave Search를 사용합니다.
+   - \`set_metadata\`: 최종 글의 SEO를 위한 메타데이터(title, slug, description, keywords, headings)를 한 번에 설정합니다.
+   - \`set_content\`: 최종 Markdown 본문 전체를 한 번에 설정합니다.
+4. 각 툴 호출 전에는 **무엇을 위해 이 툴을 사용하는지** 1~2줄로 설명하고, 호출이 완료된 후에는 결과를 요약해서 설명합니다.
+5. \`set_content\` 툴이 성공적으로 완료된 후에는 마지막으로 한 번만 다음 문장을 포함한 짧은 메시지를 출력하고 대화를 종료합니다.
+   - "글 작성이 완료되었습니다."
+
+대화 내내:
+- 사용자가 이해하기 쉽도록 마크다운 형식을 활용합니다.
+- 불필요하게 장황하지 않게, 핵심 위주로 설명합니다.
+- 모든 응답은 한국어로 작성합니다.
+`;
+};
+
 export async function POST(req: Request) {
   try {
     // Authenticate user
@@ -212,9 +376,15 @@ export async function POST(req: Request) {
       );
     }
 
-    // Parse request body - expects direct GenerateArticleRequest
-    const body = await req.json();
-    const { topic, brandingId, keywords = [], additionalInstructions } = body as GenerateArticleRequest;
+    // Parse request body - chat messages + generation context
+    const body = (await req.json()) as AgentChatRequest;
+    const {
+      messages,
+      topic,
+      brandingId,
+      keywords = [],
+      additionalInstructions,
+    } = body;
 
     if (!topic) {
       return new Response(
@@ -222,6 +392,18 @@ export async function POST(req: Request) {
           error: {
             code: articleErrorCodes.validationError,
             message: 'Topic is required',
+          },
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return new Response(
+        JSON.stringify({
+          error: {
+            code: articleErrorCodes.validationError,
+            message: 'Messages are required',
           },
         }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -294,8 +476,13 @@ export async function POST(req: Request) {
       );
     }
 
-    // Build prompt
-    const systemPrompt = buildPrompt(topic, branding, keywords || [], additionalInstructions);
+    // Build system prompt for agent workflow
+    const systemPrompt = buildAgentSystemPrompt(
+      topic,
+      branding,
+      keywords || [],
+      additionalInstructions,
+    );
 
     // Get API key
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
@@ -314,16 +501,12 @@ export async function POST(req: Request) {
 
     const google = createGoogleGenerativeAI({ apiKey });
 
-    // Stream text generation with simple prompt
+    // Stream chat with tools (agentic workflow)
     const result = streamText({
-      model: google('gemini-2.5-flash'),
+      model: google('gemini-2.5-pro'),
       system: systemPrompt,
-      messages: [
-        {
-          role: 'user',
-          content: '위의 조건에 따라 블로그 글을 작성해주세요.',
-        },
-      ],
+      messages: convertToModelMessages<ChatMessage>(messages),
+      tools,
     });
 
     // Return stream response

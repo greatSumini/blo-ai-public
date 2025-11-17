@@ -102,6 +102,7 @@
         "empty": "None"
       },
       "actions": {
+        "save": "Save Draft",
         "edit": "Edit Draft",
         "regenerate": "Regenerate"
       }

@@ -1,7 +1,5 @@
 글 작성 기능을 단순 일회성 생성에서, 에이전트(AI 채팅 + tool call) 방식으로 수정해주세요.
-useCompletion 대신 useChat hook을 활용하도록 수정해야합니다.
 하단 참고 문서 코드를 반드시 따르세요.
-gemini-2.5-pro 모델을 사용하세요.
 
 ## 수정 개요
 
@@ -86,9 +84,12 @@ gemini-2.5-pro 모델을 사용하세요.
 - AI가 생각중일땐 로딩상태를 적절히 표시하세요.
 - assistant가 마크다운으로 응답하게하고, 적절히 포맷팅해 표시하세요.
 
-## 에이전트 구현 참고 문서
+## Vercel AI SDK v5 참고 문서
 
 주어진 코드를 자세히 파악하고, 반드시 따르세요.
+
+- useCompletion 대신 useChat hook을 활용하도록 수정해야합니다.
+- gemini-2.5-pro 모델을 사용하세요.
 
 ### Client - `useChat` hook 활용
 

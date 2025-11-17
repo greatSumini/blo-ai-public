@@ -103,6 +103,7 @@
         "empty": "없음"
       },
       "actions": {
+        "save": "저장하기",
         "edit": "초안 편집하기",
         "regenerate": "다시 생성"
       }
