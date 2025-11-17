@@ -1,22 +1,34 @@
 "use client";
 
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { Menu, LayoutDashboard, PenTool, FileText, Tag, User } from "lucide-react";
+import {
+  Menu,
+  LayoutDashboard,
+  PenTool,
+  FileText,
+  Tag,
+  User,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 // Sidebar content for mobile sheet
 function MobileSidebarContent() {
-  const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+  const pathname =
+    typeof window !== "undefined" ? window.location.pathname : "";
   const t = useTranslations();
 
   const menuItems = [
-    { icon: LayoutDashboard, label: t("sidebar.dashboard"), href: "/dashboard" },
+    {
+      icon: LayoutDashboard,
+      label: t("sidebar.dashboard"),
+      href: "/dashboard",
+    },
     { icon: PenTool, label: t("sidebar.new_article"), href: "/new-article" },
     { icon: FileText, label: t("sidebar.articles"), href: "/articles" },
     { icon: Tag, label: t("sidebar.keywords"), href: "/keywords" },
@@ -28,12 +40,14 @@ function MobileSidebarContent() {
     <div className="flex h-full flex-col gap-4 p-4">
       <div className="mb-4 flex items-center gap-2 px-2">
         <Image
-          src="/images/icon.svg"
+          src="/images/icon.png"
           alt={t("common.brand_name")}
           width={32}
           height={32}
         />
-        <h1 className="text-2xl font-bold text-text-primary">{t("common.brand_name")}</h1>
+        <h1 className="text-2xl font-bold text-text-primary">
+          {t("common.brand_name")}
+        </h1>
       </div>
       <nav className="flex flex-col gap-2">
         {menuItems.map((item) => {
@@ -84,7 +98,8 @@ export function Header() {
             appearance={{
               elements: {
                 avatarBox: "h-9 w-9",
-                userButtonTrigger: "focus:shadow-none focus-visible:ring-2 focus-visible:ring-accent-brand",
+                userButtonTrigger:
+                  "focus:shadow-none focus-visible:ring-2 focus-visible:ring-accent-brand",
               },
             }}
             afterSignOutUrl="/sign-in"

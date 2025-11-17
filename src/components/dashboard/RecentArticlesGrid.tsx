@@ -1,9 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { ArticleCard } from './ArticleCard';
+import { useTranslations, useLocale } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { FileText, ArrowRight } from 'lucide-react';
+import { Card } from '@/components/ui/card-v2';
+import { Badge } from '@/components/ui/badge-v2';
+import { FileText, ArrowRight, CheckCircle, Clock } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { ko, enUS } from 'date-fns/locale';
+import Link from 'next/link';
 import type { ArticleResponse } from '@/features/articles/lib/dto';
 
 interface RecentArticlesGridProps {
@@ -18,6 +22,19 @@ export function RecentArticlesGrid({
   onViewAll,
 }: RecentArticlesGridProps) {
   const t = useTranslations('dashboard.recentArticles');
+  const locale = useLocale();
+  const dateLocale = locale === 'ko' ? ko : enUS;
+
+  const getBadgeVariant = (status: string) => {
+    switch (status) {
+      case 'published':
+        return 'success';
+      case 'archived':
+        return 'default';
+      default:
+        return 'warning';
+    }
+  };
 
   if (articles.length === 0) {
     return (
@@ -56,11 +73,36 @@ export function RecentArticlesGrid({
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {articles.map((article) => (
-          <ArticleCard
-            key={article.id}
-            article={article}
-            onView={onViewArticle}
-          />
+          <Card key={article.id} hover className="group cursor-pointer" onClick={() => onViewArticle(article.id)}>
+            <div className="flex items-start justify-between mb-4">
+              <Badge variant={getBadgeVariant(article.status)} className="text-xs">
+                {article.status === 'published' ? (
+                  <>
+                    <CheckCircle className="mr-1 h-3 w-3" />
+                    Published
+                  </>
+                ) : (
+                  <>
+                    <Clock className="mr-1 h-3 w-3" />
+                    Draft
+                  </>
+                )}
+              </Badge>
+            </div>
+
+            <Link href={`/${locale}/articles/${article.id}/edit`}>
+              <h3 className="text-lg font-medium mb-3 line-clamp-2 text-text-primary group-hover:text-accent-brand transition-colors duration-normal">
+                {article.title}
+              </h3>
+            </Link>
+
+            <p className="text-xs text-text-tertiary">
+              {formatDistanceToNow(new Date(article.updatedAt), {
+                locale: dateLocale,
+                addSuffix: true,
+              })}
+            </p>
+          </Card>
         ))}
       </div>
     </section>
