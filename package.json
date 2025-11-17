@@ -20,6 +20,7 @@
     "env:check": "dotenv -e .env.local -- tsx scripts/check-env.ts"
   },
   "dependencies": {
+    "@agentic/brave-search": "^7.6.9",
     "@ai-sdk/google": "^2.0.29",
     "@ai-sdk/react": "^2.0.93",
     "@blocknote/core": "^0.42.0",

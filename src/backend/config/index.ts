@@ -9,6 +9,9 @@ const envSchema = z.object({
   DATAFORSEO_PASSWORD: z.string().min(1),
   CLERK_SECRET_KEY: z.string().min(1),
   CLERK_PUBLISHABLE_KEY: z.string().min(1),
+  NAVER_CLIENT_ID: z.string().min(1),
+  NAVER_CLIENT_SECRET: z.string().min(1),
+  BRAVE_API_KEY: z.string().min(1),
 });
 
 let cachedConfig: AppConfig | null = null;
@@ -26,6 +29,9 @@ export const getAppConfig = (): AppConfig => {
     DATAFORSEO_PASSWORD: process.env.DATAFORSEO_PASSWORD,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY,
+    NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
+    NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
+    BRAVE_API_KEY: process.env.BRAVE_API_KEY,
   });
 
   if (!parsed.success) {
@@ -50,6 +56,13 @@ export const getAppConfig = (): AppConfig => {
     clerk: {
       secretKey: parsed.data.CLERK_SECRET_KEY,
       publishableKey: parsed.data.CLERK_PUBLISHABLE_KEY,
+    },
+    naver: {
+      clientId: parsed.data.NAVER_CLIENT_ID,
+      clientSecret: parsed.data.NAVER_CLIENT_SECRET,
+    },
+    brave: {
+      apiKey: parsed.data.BRAVE_API_KEY,
     },
   } satisfies AppConfig;
 

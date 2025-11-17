@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@agentic/brave-search':
+        specifier: ^7.6.9
+        version: 7.6.9(zod@3.25.76)
       '@ai-sdk/google':
         specifier: ^2.0.29
         version: 2.0.31(zod@3.25.76)
@@ -263,6 +266,16 @@ packages:
 
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==, tarball: https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.4.4.tgz}
+
+  '@agentic/brave-search@7.6.9':
+    resolution: {integrity: sha512-SYpkKmV3FcfKx8r0OoRyzYu1OHupHTv+5z6rlivF0zWspvXVoMBhXoACfMYayBR+SpPvzHpWu6LcNT0a7vPO/Q==, tarball: https://registry.npmjs.org/@agentic/brave-search/-/brave-search-7.6.9.tgz}
+    peerDependencies:
+      zod: ^3.25.67
+
+  '@agentic/core@7.6.9':
+    resolution: {integrity: sha512-B6l6lDjigCf4HKt1vN+0nii1FbfyICgZgxiEIkNuEZAPTLlLr0BC0z6dgCPVdiiZrJJPXdLw30kqQ7nlwzUUTQ==, tarball: https://registry.npmjs.org/@agentic/core/-/core-7.6.9.tgz}
+    peerDependencies:
+      zod: ^3.25.67
 
   '@ai-sdk/gateway@2.0.9':
     resolution: {integrity: sha512-E6x4h5CPPPJ0za1r5HsLtHbeI+Tp3H+YFtcH8G3dSSPFE6w+PZINzB4NxLZmg1QqSeA5HTP3ZEzzsohp0o2GEw==, tarball: https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-2.0.9.tgz}
@@ -2613,6 +2626,14 @@ packages:
   decode-named-character-reference@1.2.0:
     resolution: {integrity: sha512-c6fcElNV6ShtZXmsgNgFFV5tVX2PaV4g+MOAkb8eXHvn6sryJBrZa9r0zV6+dtTyoCKxtDy5tyQ5ZwQuidtd+Q==, tarball: https://registry.npmjs.org/decode-named-character-reference/-/decode-named-character-reference-1.2.0.tgz}
 
+  dedent@1.7.0:
+    resolution: {integrity: sha512-HGFtf8yhuhGhqO07SV79tRp+br4MnbdjeVxotpn1QBl30pcLLCQjX5b2295ll0fv8RKDKsmWYrl05usHM9CewQ==, tarball: https://registry.npmjs.org/dedent/-/dedent-1.7.0.tgz}
+    peerDependencies:
+      babel-plugin-macros: ^3.1.0
+    peerDependenciesMeta:
+      babel-plugin-macros:
+        optional: true
+
   deep-eql@5.0.2:
     resolution: {integrity: sha512-h5k/5U50IJJFpzfL6nO9jaaumfjO/f2NjK/oYB2Djzm4p9L+3T9qWpZqZ2hAbLPuuYq9wrU08WQyBTL5GbPk5Q==, tarball: https://registry.npmjs.org/deep-eql/-/deep-eql-5.0.2.tgz}
     engines: {node: '>=6'}
@@ -2627,6 +2648,10 @@ packages:
   define-properties@1.2.1:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==, tarball: https://registry.npmjs.org/define-properties/-/define-properties-1.2.1.tgz}
     engines: {node: '>= 0.4'}
+
+  delay@6.0.0:
+    resolution: {integrity: sha512-2NJozoOHQ4NuZuVIr5CWd0iiLVIRSDepakaovIN+9eIDHEhdCAEvSy2cuf1DCrPPQLvHmbqTHODlhHg8UCy4zw==, tarball: https://registry.npmjs.org/delay/-/delay-6.0.0.tgz}
+    engines: {node: '>=16'}
 
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==, tarball: https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz}
@@ -3463,12 +3488,20 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  jsonrepair@3.13.1:
+    resolution: {integrity: sha512-WJeiE0jGfxYmtLwBTEk8+y/mYcaleyLXWaqp5bJu0/ZTSeG0KQq/wWQ8pmnkKenEdN6pdnn6QtcoSUkbqDHWNw==, tarball: https://registry.npmjs.org/jsonrepair/-/jsonrepair-3.13.1.tgz}
+    hasBin: true
+
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==, tarball: https://registry.npmjs.org/jsx-ast-utils/-/jsx-ast-utils-3.3.5.tgz}
     engines: {node: '>=4.0'}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==, tarball: https://registry.npmjs.org/keyv/-/keyv-4.5.4.tgz}
+
+  ky@1.14.0:
+    resolution: {integrity: sha512-Rczb6FMM6JT0lvrOlP5WUOCB7s9XKxzwgErzhKlKde1bEV90FXplV1o87fpt4PU/asJFiqjYJxAJyzJhcrxOsQ==, tarball: https://registry.npmjs.org/ky/-/ky-1.14.0.tgz}
+    engines: {node: '>=18'}
 
   language-subtag-registry@0.3.23:
     resolution: {integrity: sha512-0K65Lea881pHotoGEa5gDlMxt3pctLi2RplBb7Ezh4rRdLEOtgi7n4EwK9lamnUCkKBqaeKRVebTq6BAxSkpXQ==, tarball: https://registry.npmjs.org/language-subtag-registry/-/language-subtag-registry-0.3.23.tgz}
@@ -3917,6 +3950,12 @@ packages:
     resolution: {integrity: sha512-gXah6aZrcUxjWg2zR2MwouP2eHlCBzdV4pygudehaKXSGW4v2AsRQUK+lwwXhii6KFZcunEnmSUoYp5CXibxtA==, tarball: https://registry.npmjs.org/object.values/-/object.values-1.2.1.tgz}
     engines: {node: '>= 0.4'}
 
+  openai-zod-to-json-schema@1.1.2:
+    resolution: {integrity: sha512-c23mG4XutId7WAQmmB/TRMF7sY1Y7Z78bEqJUpgAzBXGxlGAWU56a0eqoGVqPCqjOpSuHFC2uT2WMHn6/molsg==, tarball: https://registry.npmjs.org/openai-zod-to-json-schema/-/openai-zod-to-json-schema-1.1.2.tgz}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.23.8
+
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==, tarball: https://registry.npmjs.org/optionator/-/optionator-0.9.4.tgz}
     engines: {node: '>= 0.8.0'}
@@ -3935,6 +3974,10 @@ packages:
   p-locate@5.0.0:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==, tarball: https://registry.npmjs.org/p-locate/-/p-locate-5.0.0.tgz}
     engines: {node: '>=10'}
+
+  p-throttle@6.2.0:
+    resolution: {integrity: sha512-NCKkOVj6PZa6NiTmfvGilDdf6vO1rFCD3KDnkHko8dTOtkpk4cSR/VTAhhLMG9aiQ7/A9HYgEDNmxzf6hxzR3g==, tarball: https://registry.npmjs.org/p-throttle/-/p-throttle-6.2.0.tgz}
+    engines: {node: '>=18'}
 
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==, tarball: https://registry.npmjs.org/package-json-from-dist/-/package-json-from-dist-1.0.1.tgz}
@@ -5062,6 +5105,12 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==, tarball: https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz}
     engines: {node: '>=10'}
 
+  zod-validation-error@3.5.4:
+    resolution: {integrity: sha512-+hEiRIiPobgyuFlEojnqjJnhFvg4r/i3cqgcm67eehZf/WBaK3g6cD02YU9mtdVxZjv8CzCA9n/Rhrs3yAAvAw==, tarball: https://registry.npmjs.org/zod-validation-error/-/zod-validation-error-3.5.4.tgz}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      zod: ^3.24.4
+
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==, tarball: https://registry.npmjs.org/zod/-/zod-3.25.76.tgz}
 
@@ -5086,6 +5135,28 @@ packages:
 snapshots:
 
   '@adobe/css-tools@4.4.4': {}
+
+  '@agentic/brave-search@7.6.9(zod@3.25.76)':
+    dependencies:
+      '@agentic/core': 7.6.9(zod@3.25.76)
+      ky: 1.14.0
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - babel-plugin-macros
+
+  '@agentic/core@7.6.9(zod@3.25.76)':
+    dependencies:
+      dedent: 1.7.0
+      delay: 6.0.0
+      jsonrepair: 3.13.1
+      ky: 1.14.0
+      openai-zod-to-json-schema: 1.1.2(zod@3.25.76)
+      p-throttle: 6.2.0
+      type-fest: 4.41.0
+      zod: 3.25.76
+      zod-validation-error: 3.5.4(zod@3.25.76)
+    transitivePeerDependencies:
+      - babel-plugin-macros
 
   '@ai-sdk/gateway@2.0.9(zod@3.25.76)':
     dependencies:
@@ -7476,6 +7547,8 @@ snapshots:
     dependencies:
       character-entities: 2.0.2
 
+  dedent@1.7.0: {}
+
   deep-eql@5.0.2: {}
 
   deep-is@0.1.4: {}
@@ -7491,6 +7564,8 @@ snapshots:
       define-data-property: 1.1.4
       has-property-descriptors: 1.0.2
       object-keys: 1.1.1
+
+  delay@6.0.0: {}
 
   delayed-stream@1.0.0: {}
 
@@ -8582,6 +8657,8 @@ snapshots:
 
   json5@2.2.3: {}
 
+  jsonrepair@3.13.1: {}
+
   jsx-ast-utils@3.3.5:
     dependencies:
       array-includes: 3.1.9
@@ -8592,6 +8669,8 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
+
+  ky@1.14.0: {}
 
   language-subtag-registry@0.3.23: {}
 
@@ -9251,6 +9330,10 @@ snapshots:
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
+  openai-zod-to-json-schema@1.1.2(zod@3.25.76):
+    dependencies:
+      zod: 3.25.76
+
   optionator@0.9.4:
     dependencies:
       deep-is: 0.1.4
@@ -9275,6 +9358,8 @@ snapshots:
   p-locate@5.0.0:
     dependencies:
       p-limit: 3.1.0
+
+  p-throttle@6.2.0: {}
 
   package-json-from-dist@1.0.1: {}
 
@@ -10651,6 +10736,10 @@ snapshots:
       lib0: 0.2.114
 
   yocto-queue@0.1.0: {}
+
+  zod-validation-error@3.5.4(zod@3.25.76):
+    dependencies:
+      zod: 3.25.76
 
   zod@3.25.76: {}
 

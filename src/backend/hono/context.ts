@@ -20,6 +20,13 @@ export type AppConfig = {
     secretKey: string;
     publishableKey: string;
   };
+  naver: {
+    clientId: string;
+    clientSecret: string;
+  };
+  brave: {
+    apiKey: string;
+  };
 };
 
 export type AppVariables = {
