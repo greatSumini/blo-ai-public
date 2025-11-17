@@ -22,6 +22,7 @@ interface NavItem {
 export function AppSidebar() {
   const pathname = usePathname();
   const t = useTranslations('navigation');
+  const brandName = useTranslations('common');
 
   // Extract locale from pathname (e.g., /ko/dashboard -> ko)
   const locale = pathname.split('/')[1] || 'ko';
@@ -29,7 +30,7 @@ export function AppSidebar() {
   const navItems: NavItem[] = [
     { href: `/${locale}/dashboard`, label: t('dashboard'), icon: LayoutDashboard },
     { href: `/${locale}/articles`, label: t('articles'), icon: FileText },
-    { href: `/${locale}/style-guide`, label: t('styleGuide'), icon: BookOpen },
+    { href: `/${locale}/branding`, label: t('branding'), icon: BookOpen },
     { href: `/${locale}/keywords`, label: t('keywords'), icon: Search },
     { href: `/${locale}/account`, label: t('account'), icon: Settings },
   ];
@@ -42,7 +43,7 @@ export function AppSidebar() {
           href={`/${locale}/dashboard`}
           className="text-xl font-semibold text-text-primary transition-colors hover:text-accent-brand"
         >
-          IndieBlog
+          {brandName('brand_name')}
         </Link>
       </div>
 

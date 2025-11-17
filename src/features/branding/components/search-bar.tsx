@@ -10,7 +10,7 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ value, onChange }: SearchBarProps) {
-  const t = useTranslations("styleGuide.search");
+  const t = useTranslations("branding.search");
 
   return (
     <div className="relative">

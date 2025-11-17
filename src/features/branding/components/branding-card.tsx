@@ -8,26 +8,26 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale/ko";
 import { enUS } from "date-fns/locale/en-US";
 import { useTranslations, useLocale } from "next-intl";
-import type { StyleGuideResponse } from "../types";
+import type { BrandingResponse } from "../types";
 import { cardEnterVariants } from "../lib/animations";
 
-interface StyleGuideCardProps {
-  guide: StyleGuideResponse;
+interface BrandingCardProps {
+  branding: BrandingResponse;
   index: number;
-  onPreview: (guide: StyleGuideResponse) => void;
-  onEdit: (guide: StyleGuideResponse) => void;
+  onPreview: (branding: BrandingResponse) => void;
+  onEdit: (branding: BrandingResponse) => void;
   onDelete: (id: string) => void;
 }
 
-export function StyleGuideCard({
-  guide,
+export function BrandingCard({
+  branding,
   index,
   onPreview,
   onEdit,
   onDelete,
-}: StyleGuideCardProps) {
-  const t = useTranslations("styleGuide");
-  const tLabels = useTranslations("styleGuide.labels");
+}: BrandingCardProps) {
+  const t = useTranslations("branding");
+  const tLabels = useTranslations("branding.labels");
   const locale = useLocale();
   const dateLocale = locale === "ko" ? ko : enUS;
 
@@ -44,11 +44,11 @@ export function StyleGuideCard({
         {/* Left: Title & Description */}
         <div className="flex-1 min-w-0">
           <h3 className="text-foreground font-medium text-base hover:text-[#C46849] transition-colors mb-2">
-            {guide.brandName}
+            {branding.brandName}
           </h3>
           <div className="mb-2 max-w-[720px]">
             <p className="line-clamp-2 text-base text-muted-foreground">
-              {guide.brandDescription}
+              {branding.brandDescription}
             </p>
           </div>
         </div>
@@ -58,24 +58,24 @@ export function StyleGuideCard({
           <IconButton
             variant="ghost"
             size="sm"
-            onClick={() => onPreview(guide)}
-            aria-label={t("actions.previewAria", { brand: guide.brandName })}
+            onClick={() => onPreview(branding)}
+            aria-label={t("actions.previewAria", { brand: branding.brandName })}
           >
             <Eye className="h-4 w-4" />
           </IconButton>
           <IconButton
             variant="ghost"
             size="sm"
-            onClick={() => onEdit(guide)}
-            aria-label={t("actions.editAria", { brand: guide.brandName })}
+            onClick={() => onEdit(branding)}
+            aria-label={t("actions.editAria", { brand: branding.brandName })}
           >
             <Pencil className="h-4 w-4" />
           </IconButton>
           <IconButton
             variant="ghost"
             size="sm"
-            onClick={() => onDelete(guide.id)}
-            aria-label={t("actions.deleteAria", { brand: guide.brandName })}
+            onClick={() => onDelete(branding.id)}
+            aria-label={t("actions.deleteAria", { brand: branding.brandName })}
             className="hover:bg-red-50 dark:hover:bg-red-950/20 focus-visible:ring-red-500"
           >
             <Trash2 className="h-4 w-4 text-red-500 dark:text-red-400" />
@@ -91,8 +91,8 @@ export function StyleGuideCard({
             variant="outline"
             className="inline-flex items-center align-middle leading-none flex-shrink-0 bg-gradient-to-bl from-secondary/30 to-secondary/70 text-muted-foreground h-6 px-2 rounded-lg text-xs font-mono border-0"
           >
-            {guide.personality.slice(0, 2).join(", ")}
-            {guide.personality.length > 2 && ` +${guide.personality.length - 2}`}
+            {branding.personality.slice(0, 2).join(", ")}
+            {branding.personality.length > 2 && ` +${branding.personality.length - 2}`}
           </Badge>
         </span>
 
@@ -101,7 +101,7 @@ export function StyleGuideCard({
         {/* Language */}
         <span className="flex items-center gap-1">
           <Globe className="h-3 w-3" aria-hidden="true" />
-          {guide.language === "ko"
+          {branding.language === "ko"
             ? tLabels("language.korean")
             : tLabels("language.english")}
         </span>
@@ -111,14 +111,14 @@ export function StyleGuideCard({
         {/* Target Audience */}
         <span className="flex items-center gap-1">
           <User className="h-3 w-3" aria-hidden="true" />
-          {guide.targetAudience}
+          {branding.targetAudience}
         </span>
 
         <span>•</span>
 
         {/* Created Date */}
-        <time dateTime={guide.createdAt}>
-          {format(new Date(guide.createdAt), "PPP", { locale: dateLocale })}
+        <time dateTime={branding.createdAt}>
+          {format(new Date(branding.createdAt), "PPP", { locale: dateLocale })}
         </time>
       </div>
     </motion.div>

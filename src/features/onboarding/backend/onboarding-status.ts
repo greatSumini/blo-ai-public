@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { getProfileIdByClerkId } from '@/features/profiles/backend/service';
 
-const STYLE_GUIDES_TABLE = 'style_guides';
+const BRANDINGS_TABLE = 'style_guides';
 
 /**
  * 주어진 Clerk 사용자 ID에 대해 DB에서 온보딩 완료 여부를 조회합니다.
@@ -21,7 +21,7 @@ export const getOnboardingCompletedFromDb = async (
 
   try {
     const { data, error } = await client
-      .from(STYLE_GUIDES_TABLE)
+      .from(BRANDINGS_TABLE)
       .select('onboarding_completed')
       .eq('profile_id', profileId)
       .single();

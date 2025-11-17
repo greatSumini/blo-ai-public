@@ -10,7 +10,7 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ onCreateNew }: EmptyStateProps) {
-  const t = useTranslations("styleGuide");
+  const t = useTranslations("branding");
 
   return (
     <motion.div

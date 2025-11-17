@@ -35,7 +35,9 @@ function FeatureHighlight({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className={`flex flex-col ${isLeft ? "md:flex-row" : "md:flex-row-reverse"} gap-12 md:gap-16 lg:gap-20 items-center`}
+      className={`flex flex-col ${
+        isLeft ? "md:flex-row" : "md:flex-row-reverse"
+      } gap-12 md:gap-16 lg:gap-20 items-center`}
     >
       {/* 텍스트 */}
       <div className="flex-1 space-y-6 md:space-y-8">
@@ -45,7 +47,7 @@ function FeatureHighlight({
         </div>
 
         {/* 제목 - Claude.ai typography */}
-        <h3 className="text-2xl md:text-3xl lg:text-4xl font-medium text-text-primary tracking-tight leading-tight">
+        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-primary tracking-tight leading-tight">
           {title}
         </h3>
 
@@ -56,7 +58,9 @@ function FeatureHighlight({
 
         {/* 통계 - accent-brand subtle badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-brand/5 border border-accent-brand/20">
-          <span className="text-xs md:text-sm font-medium text-accent-brand">{stat}</span>
+          <span className="text-xs md:text-sm font-medium text-accent-brand">
+            {stat}
+          </span>
         </div>
       </div>
 
@@ -101,7 +105,9 @@ function FeatureCard({ icon, title, description }: FeatureCardProps) {
         </div>
 
         {/* 제목 - Claude.ai typography */}
-        <h3 className="text-lg md:text-xl font-medium text-text-primary">{title}</h3>
+        <h3 className="text-lg md:text-xl font-bold text-text-primary">
+          {title}
+        </h3>
 
         {/* 설명 - Claude.ai muted text */}
         <p className="text-sm md:text-base text-text-secondary leading-relaxed">
@@ -116,11 +122,14 @@ export function FeaturesSection() {
   const t = useTranslations("landing.features");
 
   return (
-    <section id="features" className="w-full bg-bg-primary py-20 md:py-28 lg:py-32 px-4 border-t border-border-default/40">
+    <section
+      id="features"
+      className="w-full bg-bg-primary py-20 md:py-28 lg:py-32 px-4 border-t border-border-default/40"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Section Header - Claude.ai style */}
         <div className="text-center mb-16 md:mb-20 lg:mb-24">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight">
             {t("section_title")}
           </h2>
           <p className="text-base md:text-lg lg:text-xl text-text-secondary max-w-3xl mx-auto px-4 leading-relaxed">

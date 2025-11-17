@@ -22,20 +22,24 @@ export function FaqSection() {
   ];
 
   return (
-    <section id="faq" className="w-full bg-bg-secondary/20 py-20 md:py-28 lg:py-32 px-4 border-t border-border-default/40">
+    <section
+      id="faq"
+      className="w-full bg-bg-secondary/20 py-20 md:py-28 lg:py-32 px-4 border-t border-border-default/40"
+    >
       <div className="max-w-4xl mx-auto">
         {/* Section Header - Claude.ai style */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-text-primary mb-4 md:mb-6 tracking-tight px-4 leading-tight">
             {t("section_title")}
           </h2>
-          <p className="text-base md:text-lg lg:text-xl text-text-secondary max-w-2xl mx-auto px-4 leading-relaxed">
-            {t("section_subtitle")}
-          </p>
         </div>
 
         {/* Accordion - Claude.ai subtle style */}
-        <Accordion type="single" collapsible className="w-full space-y-3 md:space-y-4">
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full space-y-3 md:space-y-4"
+        >
           {faqItems.map((item, index) => (
             <AccordionItem
               key={index}

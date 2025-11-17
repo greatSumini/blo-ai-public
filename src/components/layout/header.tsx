@@ -20,7 +20,7 @@ function MobileSidebarContent() {
     { icon: PenTool, label: t("sidebar.new_article"), href: "/new-article" },
     { icon: FileText, label: t("sidebar.articles"), href: "/articles" },
     { icon: Tag, label: t("sidebar.keywords"), href: "/keywords" },
-    { icon: FileText, label: t("sidebar.style_guide"), href: "/style-guide" },
+    { icon: FileText, label: t("sidebar.branding"), href: "/branding" },
     { icon: User, label: t("sidebar.account"), href: "/account" },
   ];
 

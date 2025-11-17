@@ -5,18 +5,18 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { OnboardingWizard } from "@/features/onboarding/components/onboarding-wizard";
-import { createStyleGuide } from "@/features/onboarding/actions/create-style-guide";
+import { createBranding } from "@/features/onboarding/actions/create-branding";
 import type { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
 import { useTranslations } from 'next-intl';
 import { PageLayout } from "@/components/layout/page-layout";
 
-type NewStyleGuidePageProps = {
+type NewBrandingPageProps = {
   params: Promise<Record<string, never>>;
 };
 
-export default function NewStyleGuidePage({
+export default function NewBrandingPage({
   params,
-}: NewStyleGuidePageProps) {
+}: NewBrandingPageProps) {
   void params;
   const router = useRouter();
   const { toast } = useToast();
@@ -24,14 +24,14 @@ export default function NewStyleGuidePage({
 
   const handleComplete = async (data: OnboardingFormData) => {
     try {
-      const result = await createStyleGuide(data);
+      const result = await createBranding(data);
 
       toast({
         title: t("common.success"),
-        description: t("styleGuide.update.success.desc").replace("업데이트", "생성"),
+        description: t("branding.update.success.desc").replace("업데이트", "생성"),
       });
 
-      router.push("/style-guides");
+      router.push("/brandings");
     } catch (error) {
       console.error("Failed to create style guide:", error);
       toast({
@@ -39,7 +39,7 @@ export default function NewStyleGuidePage({
         description:
           error instanceof Error
             ? error.message
-            : t("styleGuide.update.error.desc").replace("업데이트", "생성"),
+            : t("branding.update.error.desc").replace("업데이트", "생성"),
         variant: "destructive",
       });
     }
@@ -47,8 +47,8 @@ export default function NewStyleGuidePage({
 
   return (
     <PageLayout
-      title={t("styleGuide.title")}
-      description={t("styleGuide.subtitle")}
+      title={t("branding.title")}
+      description={t("branding.subtitle")}
       maxWidthClassName="max-w-4xl"
     >
       <div className="mb-4">

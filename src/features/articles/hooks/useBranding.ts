@@ -23,11 +23,11 @@ export interface StyleGuideData {
   updatedAt: string;
 }
 
-export const useStyleGuide = () => {
+export const useBranding = () => {
   const { userId } = useAuth();
 
   return useQuery<StyleGuideData | null, Error>({
-    queryKey: ["styleGuide", userId],
+    queryKey: ["branding", userId],
     queryFn: async () => {
       if (!userId) {
         throw new Error("User ID is required");
@@ -36,7 +36,7 @@ export const useStyleGuide = () => {
       try {
         const client = createAuthenticatedClient(userId);
         // Fix: Use list API to get all style guides for the user
-        const response = await client.get(`/api/style-guides`);
+        const response = await client.get(`/api/brandings`);
         const guides = response.data as StyleGuideData[];
 
         // Return the first (default) style guide, or null if none exist

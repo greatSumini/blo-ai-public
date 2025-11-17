@@ -222,7 +222,7 @@ export async function getDashboardStats() {
 
 /**
  * Get all style guides for the current user
- * @deprecated Use useListStyleGuides hook instead
+ * @deprecated Use useListBrandings hook instead
  */
 export async function listUserStyleGuides() {
   try {
@@ -232,7 +232,7 @@ export async function listUserStyleGuides() {
       throw new Error("Unauthorized");
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/style-guides`, {
+    const response = await fetch(`${API_BASE_URL}/api/brandings`, {
       method: "GET",
       headers: { "x-clerk-user-id": userId },
       cache: "no-store",
@@ -278,7 +278,7 @@ export async function getUserStyleGuide() {
 
 /**
  * Update a style guide
- * @deprecated Use useUpdateStyleGuide hook instead
+ * @deprecated Use useUpdateBranding hook instead
  */
 export async function updateStyleGuideAction(
   guideId: string,
@@ -292,7 +292,7 @@ export async function updateStyleGuideAction(
     }
 
     const response = await fetch(
-      `${API_BASE_URL}/api/style-guides/${guideId}`,
+      `${API_BASE_URL}/api/brandings/${guideId}`,
       {
         method: "PATCH",
         headers: {
@@ -325,7 +325,7 @@ export async function updateStyleGuideAction(
 
 /**
  * Delete a style guide
- * @deprecated Use useDeleteStyleGuide hook instead
+ * @deprecated Use useDeleteBranding hook instead
  */
 export async function deleteStyleGuideAction(guideId: string) {
   try {
@@ -336,7 +336,7 @@ export async function deleteStyleGuideAction(guideId: string) {
     }
 
     const response = await fetch(
-      `${API_BASE_URL}/api/style-guides/${guideId}`,
+      `${API_BASE_URL}/api/brandings/${guideId}`,
       {
         method: "DELETE",
         headers: {

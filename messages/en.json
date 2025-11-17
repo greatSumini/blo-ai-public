@@ -4,7 +4,7 @@
     "account_management_description": "Manage your profile, content preferences, and notifications.",
     "coming_soon": "This page will be implemented soon.",
     "login": "Log in",
-    "brand_name": "SEO24",
+    "brand_name": "Blo AI",
     "back": "Back",
     "back_go": "Go back",
     "retry": "Retry",
@@ -17,7 +17,7 @@
     "new_article": "New Article",
     "articles": "Articles",
     "keywords": "Keywords",
-    "style_guide": "Style Guide",
+    "branding": "Branding",
     "account": "Account"
   },
   "dashboard": {
@@ -71,7 +71,7 @@
   },
   "newArticle": {
     "back": "Go back",
-    "default_style_guide": "My Style Guide",
+    "default_branding": "My Branding",
     "toast": {
       "error": {
         "title": "Generation Failed",
@@ -123,56 +123,56 @@
       }
     }
   },
-  "styleGuide": {
-    "title": "Style Guide",
-    "subtitle": "Manage your blog's style guide for AI writing.",
-    "create_new": "Create New Guide",
-    "empty": "No style guides created yet.",
-    "emptyDescription": "Set up a style guide so AI can generate content with a consistent brand voice.",
-    "create": "Create Style Guide",
+  "branding": {
+    "title": "Branding",
+    "subtitle": "Manage your blog's branding for AI writing.",
+    "create_new": "Create New Branding",
+    "empty": "No branding created yet.",
+    "emptyDescription": "Set up branding so AI can generate content with a consistent brand voice.",
+    "create": "Create Branding",
     "noResults": "No results found.",
     "clearSearch": "Clear search",
     "loading": "Loading...",
     "retry": "Retry",
     "cancel": "Cancel",
     "error": {
-      "load": "Failed to load the style guide."
+      "load": "Failed to load branding."
     },
     "delete": {
-      "confirm": "Delete this style guide? This action cannot be undone.",
+      "confirm": "Delete this branding? This action cannot be undone.",
       "success": {
         "title": "Deleted",
-        "desc": "The style guide has been deleted."
+        "desc": "Branding has been deleted."
       },
       "error": {
         "title": "Delete Failed",
-        "desc": "An error occurred while deleting the style guide."
+        "desc": "An error occurred while deleting branding."
       }
     },
     "update": {
       "success": {
-        "desc": "The style guide has been updated."
+        "desc": "Branding has been updated."
       },
       "error": {
-        "desc": "Failed to update the style guide."
+        "desc": "Failed to update branding."
       }
     },
     "edit": {
-      "title": "Edit Style Guide",
-      "hint": "To regenerate your style guide, go to the new guide creation page.",
-      "description": "Modify the content of your style guide."
+      "title": "Edit Branding",
+      "hint": "To regenerate your branding, go to the new branding creation page.",
+      "description": "Modify the content of your branding."
     },
     "search": {
       "placeholder": "Search by brand name...",
-      "ariaLabel": "Search style guides"
+      "ariaLabel": "Search branding"
     },
     "actions": {
       "preview": "Preview",
       "edit": "Edit",
       "delete": "Delete",
-      "previewAria": "Preview {brand} style guide",
-      "editAria": "Edit {brand} style guide",
-      "deleteAria": "Delete {brand} style guide"
+      "previewAria": "Preview {brand} branding",
+      "editAria": "Edit {brand} branding",
+      "deleteAria": "Delete {brand} branding"
     },
     "modal": {
       "brandInfo": "Brand Info",
@@ -221,7 +221,7 @@
     }
   },
   "metadata": {
-    "title": "SEO24",
+    "title": "Blo AI",
     "description": "AI-powered content generation SaaS"
   },
   "keywords": {
@@ -429,10 +429,10 @@
       "subtitle": "Enter a topic and AI will draft an article for you",
       "topicLabel": "Topic",
       "topicPlaceholder": "e.g., New features and use cases of React 19",
-      "styleGuideLabel": "Style Guide",
-      "styleGuidePlaceholder": "Select style guide",
-      "noStyleGuides": "No style guides available",
-      "createStyleGuide": "Create new style guide",
+      "brandingLabel": "Branding",
+      "brandingPlaceholder": "Select branding",
+      "noBrandings": "No branding available",
+      "createBranding": "Create new branding",
       "keywordLabel": "Target Keyword (Optional)",
       "keywordPlaceholder": "Select a keyword",
       "noKeywords": "No keywords available",
@@ -442,7 +442,7 @@
         "topicRequired": "Please enter a topic.",
         "topicMinLength": "Topic must be at least 2 characters",
         "topicMaxLength": "Topic must not exceed 200 characters",
-        "styleGuideRequired": "Please select a valid style guide",
+        "brandingRequired": "Please select a valid branding",
         "additionalMaxLength": "Additional instructions must not exceed 1000 characters"
       }
     },
@@ -463,7 +463,7 @@
       "contentLabel": "Content",
       "contentPlaceholder": "Enter article content",
       "contentDescription": "Full article content in Markdown format",
-      "styleGuideDescription": "Apply a style guide to maintain consistency",
+      "brandingDescription": "Apply branding to maintain consistency",
       "toneLabel": "Tone",
       "toneDescription": "Choose the writing tone for your content",
       "tonePlaceholder": "Select tone",
@@ -750,7 +750,7 @@
       "language_ko": "Korean",
       "language_en": "English",
       "ready_title": "Ready to Create!",
-      "ready_text": "Your style guide is all set. You can now start creating content with AI."
+      "ready_text": "Your branding is all set. You can now start creating content with AI."
     }
   },
   "landing": {
@@ -805,7 +805,7 @@
       "section_title": "Simple 3-Step Process",
       "section_subtitle": "Anyone can easily get started with AI content generation.",
       "step1": {
-        "title": "Set Up Style Guide",
+        "title": "Set Up Branding",
         "description": "Define your brand voice, target audience, and preferred tone."
       },
       "step2": {
@@ -829,7 +829,7 @@
         "features": {
           "articles": "5 articles per month",
           "keywords": "Basic keyword management",
-          "style_guides": "1 style guide"
+          "brandings": "1 branding"
         },
         "cta": "Start for Free"
       },
@@ -843,7 +843,7 @@
         "features": {
           "articles": "50 articles per month",
           "keywords": "Advanced keyword analysis",
-          "style_guides": "Unlimited style guides",
+          "brandings": "Unlimited branding",
           "priority_support": "Priority support"
         },
         "cta": "Start Pro"
@@ -854,7 +854,7 @@
       "section_subtitle": "Have questions? We've got answers.",
       "q1": {
         "question": "What types of blogs is this suitable for?",
-        "answer": "SEO24 is suitable for all types of blogs including tech, marketing, and personal blogs. It learns your brand voice to generate content in a consistent style."
+        "answer": "Blo AI is suitable for all types of blogs including tech, marketing, and personal blogs. It learns your branding to generate content in a consistent style."
       },
       "q2": {
         "question": "How do I get started for free?",
@@ -912,7 +912,7 @@
         "email_label": "Email us"
       },
       "bottom": {
-        "copyright": "© 2024 SEO24. All rights reserved.",
+        "copyright": "© 2024 Blo AI. All rights reserved.",
         "sitemap": "Sitemap",
         "accessibility": "Accessibility"
       }

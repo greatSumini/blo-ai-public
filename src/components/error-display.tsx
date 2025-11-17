@@ -28,7 +28,7 @@ interface ErrorDisplayProps {
  * @example
  * ```tsx
  * <ErrorDisplay
- *   message={t("styleGuide.error.load")}
+ *   message={t("branding.error.load")}
  *   onRetry={() => refetch()}
  *   onBack={() => router.back()}
  * />

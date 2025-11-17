@@ -9,7 +9,7 @@
 pnpm dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 결과를 확인할 수 있습니다.
+브라우저에서 [https://blo-ai.kr](https://blo-ai.kr) 또는 로컬 개발 시 [http://localhost:3000](http://localhost:3000)을 열어 결과를 확인할 수 있습니다.
 
 `app/page.tsx` 파일을 수정하여 페이지를 편집할 수 있습니다. 파일을 수정하면 자동으로 페이지가 업데이트됩니다.
 

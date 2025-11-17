@@ -414,7 +414,7 @@ export const registerArticlesRoutes = (app: Hono<AppEnv>) => {
       keywords: generatedContent.keywords,
       description: generatedContent.metaDescription,
       content: generatedContent.content,
-      styleGuideId: parsedBody.data.styleGuideId,
+      brandingId: parsedBody.data.brandingId,
       metaTitle: generatedContent.title,
       metaDescription: generatedContent.metaDescription,
     };

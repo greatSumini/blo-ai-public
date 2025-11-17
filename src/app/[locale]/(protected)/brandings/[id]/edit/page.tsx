@@ -6,25 +6,25 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
 import { PageLayout } from "@/components/layout/page-layout";
 import { OnboardingWizard } from "@/features/onboarding/components/onboarding-wizard";
-import { EditSkeleton } from "@/features/style-guides/components/edit-skeleton";
+import { EditSkeleton } from "@/features/brandings/components/edit-skeleton";
 import { ErrorDisplay } from "@/components/error-display";
 import {
-  useStyleGuide,
-  useUpdateStyleGuide,
-} from "@/features/articles/hooks/useStyleGuideQuery";
+  useBranding,
+  useUpdateBranding,
+} from "@/features/articles/hooks/useBrandingQuery";
 import type { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
-import type { StyleGuideResponse } from "@/features/onboarding/backend/schema";
+import type { BrandingResponse } from "@/features/onboarding/backend/schema";
 import { ROUTES } from "@/lib/routes";
 
-type EditStyleGuidePageProps = {
+type EditBrandingPageProps = {
   params: Promise<{ id: string }>;
 };
 
 /**
- * StyleGuideResponse를 OnboardingFormData로 변환
+ * BrandingResponse를 OnboardingFormData로 변환
  */
 function transformGuideToFormData(
-  guide: StyleGuideResponse
+  guide: BrandingResponse
 ): OnboardingFormData {
   return {
     brandName: guide.brandName,
@@ -41,9 +41,9 @@ function transformGuideToFormData(
   };
 }
 
-export default function EditStyleGuidePage({
+export default function EditBrandingPage({
   params,
-}: EditStyleGuidePageProps) {
+}: EditBrandingPageProps) {
   const resolvedParams = use(params);
   const guideId = resolvedParams.id;
   const router = useRouter();
@@ -55,8 +55,8 @@ export default function EditStyleGuidePage({
     isLoading,
     isError,
     refetch,
-  } = useStyleGuide(guideId);
-  const updateStyleGuide = useUpdateStyleGuide();
+  } = useBranding(guideId);
+  const updateStyleGuide = useUpdateBranding();
 
   const handleComplete = async (data: OnboardingFormData) => {
     try {
@@ -64,17 +64,17 @@ export default function EditStyleGuidePage({
 
       toast({
         title: t("common.success"),
-        description: t("styleGuide.update.success.desc"),
+        description: t("branding.update.success.desc"),
       });
 
-      router.push(ROUTES.STYLE_GUIDES);
+      router.push(ROUTES.BRANDINGS);
     } catch (error) {
       toast({
         title: t("common.error"),
         description:
           error instanceof Error
             ? error.message
-            : t("styleGuide.update.error.desc"),
+            : t("branding.update.error.desc"),
         variant: "destructive",
       });
     }
@@ -84,8 +84,8 @@ export default function EditStyleGuidePage({
   if (isLoading) {
     return (
       <PageLayout
-        title={t("styleGuide.edit.title")}
-        description={t("styleGuide.edit.description")}
+        title={t("branding.edit.title")}
+        description={t("branding.edit.description")}
         maxWidthClassName="max-w-7xl"
       >
         <EditSkeleton />
@@ -97,14 +97,14 @@ export default function EditStyleGuidePage({
   if (isError || !guide) {
     return (
       <PageLayout
-        title={t("styleGuide.edit.title")}
-        description={t("styleGuide.edit.description")}
+        title={t("branding.edit.title")}
+        description={t("branding.edit.description")}
         maxWidthClassName="max-w-7xl"
       >
         <ErrorDisplay
-          message={t("styleGuide.error.load")}
+          message={t("branding.error.load")}
           onRetry={() => refetch()}
-          onBack={() => router.push(ROUTES.STYLE_GUIDES)}
+          onBack={() => router.push(ROUTES.BRANDINGS)}
         />
       </PageLayout>
     );
@@ -113,8 +113,8 @@ export default function EditStyleGuidePage({
   // 메인 콘텐츠
   return (
     <PageLayout
-      title={t("styleGuide.edit.title")}
-      description={guide.brandName || t("styleGuide.edit.description")}
+      title={t("branding.edit.title")}
+      description={guide.brandName || t("branding.edit.description")}
       maxWidthClassName="max-w-7xl"
     >
       <OnboardingWizard

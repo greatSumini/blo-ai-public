@@ -1,12 +1,12 @@
-import type { StyleGuideResponse } from "../types";
+import type { BrandingResponse } from "../types";
 
 /**
  * 브랜드명으로 스타일 가이드 필터링
  */
-export function filterStyleGuidesBySearch(
-  guides: StyleGuideResponse[],
+export function filterBrandingsBySearch(
+  guides: BrandingResponse[],
   searchQuery: string
-): StyleGuideResponse[] {
+): BrandingResponse[] {
   if (!searchQuery.trim()) return guides;
 
   const query = searchQuery.toLowerCase();

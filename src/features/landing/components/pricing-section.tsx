@@ -5,6 +5,104 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
+interface PricingCardProps {
+  name: string;
+  description: string;
+  price: string;
+  period: string;
+  cta: string;
+  features: string[];
+  featured?: boolean;
+  badge?: string;
+  roi?: string;
+}
+
+function PricingCard({
+  name,
+  description,
+  price,
+  period,
+  cta,
+  features,
+  featured = false,
+  badge,
+  roi,
+}: PricingCardProps) {
+  return (
+    <div
+      className={`relative p-6 md:p-8 lg:p-10 rounded-xl border transition-all duration-slow ${
+        featured
+          ? "border-accent-brand/20 bg-bg-secondary md:scale-[1.02] hover:shadow-md"
+          : "border-border-default/60 bg-bg-secondary/50 hover:border-border-default hover:bg-bg-secondary hover:shadow-sm"
+      }`}
+    >
+      {/* Badge - featured 플랜에만 표시 */}
+      {featured && badge && (
+        <div className="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2">
+          <div className="px-3 md:px-4 py-1.5 rounded-full bg-accent-brand text-white text-xs md:text-sm font-medium">
+            {badge}
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-6 md:space-y-8">
+        {/* Plan Name */}
+        <div>
+          <h3 className="text-xl md:text-2xl font-bold text-text-primary">
+            {name}
+          </h3>
+          <p className="text-sm md:text-base text-text-secondary mt-2">
+            {description}
+          </p>
+        </div>
+
+        {/* Price */}
+        <div className="flex items-baseline gap-2">
+          <span className="text-4xl md:text-5xl font-medium text-text-primary">
+            {price}
+          </span>
+          <span className="text-base text-text-secondary">{period}</span>
+        </div>
+
+        {/* ROI 메시지 - featured 플랜에만 표시 */}
+        {featured && roi && (
+          <div className="px-4 py-3 rounded-lg bg-accent-brand/5 border border-accent-brand/10">
+            <p className="text-xs md:text-sm font-medium text-accent-brand">
+              {roi}
+            </p>
+          </div>
+        )}
+
+        {/* CTA Button */}
+        <Button
+          className={`w-full py-6 h-auto text-base font-medium rounded-lg transition-all ${
+            featured
+              ? "bg-accent-brand text-white hover:opacity-90 duration-fast"
+              : "bg-bg-secondary hover:bg-bg-secondary/80 text-text-primary border border-border-default/60 hover:border-border-default duration-normal"
+          }`}
+          asChild
+        >
+          <Link href="/signup">{cta}</Link>
+        </Button>
+
+        {/* Features List */}
+        <div className="space-y-4 pt-6 border-t border-border-default/60">
+          {features.map((feature, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-accent-brand/10 flex items-center justify-center">
+                <Check className="w-3 h-3 text-accent-brand" />
+              </div>
+              <span className="text-sm md:text-base text-text-secondary">
+                {feature}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function PricingSection() {
   const t = useTranslations("landing.pricing");
 
@@ -12,19 +110,22 @@ export function PricingSection() {
   const freeFeatures = [
     t("free.features.articles"),
     t("free.features.keywords"),
-    t("free.features.style_guides"),
+    t("free.features.brandings"),
   ];
 
   // Pro 플랜 features
   const proFeatures = [
     t("pro.features.articles"),
     t("pro.features.keywords"),
-    t("pro.features.style_guides"),
+    t("pro.features.brandings"),
     t("pro.features.priority_support"),
   ];
 
   return (
-    <section id="pricing" className="w-full bg-bg-primary py-20 md:py-28 lg:py-32 px-4 border-t border-border-default/40">
+    <section
+      id="pricing"
+      className="w-full bg-bg-primary py-20 md:py-28 lg:py-32 px-4 border-t border-border-default/40"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Section Header - Claude.ai style */}
         <div className="text-center mb-16 md:mb-20 lg:mb-24">
@@ -38,109 +139,28 @@ export function PricingSection() {
 
         {/* Pricing Cards - Claude.ai style */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
-          {/* Free Plan - Claude.ai subtle card */}
-          <div className="relative p-6 md:p-8 lg:p-10 rounded-xl border border-border-default/60 bg-bg-secondary/50 hover:border-border-default hover:bg-bg-secondary hover:shadow-sm transition-all duration-slow">
-            <div className="space-y-6 md:space-y-8">
-              {/* Plan Name - Claude.ai typography */}
-              <div>
-                <h3 className="text-xl md:text-2xl font-medium text-text-primary">
-                  {t("free.name")}
-                </h3>
-                <p className="text-sm md:text-base text-text-secondary mt-2">
-                  {t("free.description")}
-                </p>
-              </div>
+          {/* Free Plan */}
+          <PricingCard
+            name={t("free.name")}
+            description={t("free.description")}
+            price={t("free.price")}
+            period={t("free.period")}
+            cta={t("free.cta")}
+            features={freeFeatures}
+          />
 
-              {/* Price - Claude.ai style */}
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl md:text-5xl font-medium text-text-primary">
-                  {t("free.price")}
-                </span>
-                <span className="text-base text-text-secondary">
-                  {t("free.period")}
-                </span>
-              </div>
-
-              {/* CTA Button - Claude.ai ghost style */}
-              <Button
-                className="w-full py-6 h-auto text-base font-medium rounded-lg bg-bg-secondary hover:bg-bg-secondary/80 text-text-primary border border-border-default/60 hover:border-border-default transition-all duration-normal"
-                asChild
-              >
-                <Link href="/signup">{t("free.cta")}</Link>
-              </Button>
-
-              {/* Features List - Claude.ai style */}
-              <div className="space-y-4 pt-6 border-t border-border-default/60">
-                {freeFeatures.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-accent-brand/10 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-accent-brand" />
-                    </div>
-                    <span className="text-sm md:text-base text-text-secondary">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Pro Plan - Claude.ai featured card */}
-          <div className="relative p-6 md:p-8 lg:p-10 rounded-xl border border-accent-brand/20 bg-bg-secondary md:scale-[1.02] transition-all duration-slow hover:shadow-md">
-            {/* Badge - Claude.ai subtle badge */}
-            <div className="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2">
-              <div className="px-3 md:px-4 py-1.5 rounded-full bg-accent-brand text-white text-xs md:text-sm font-medium">
-                {t("pro.badge")}
-              </div>
-            </div>
-
-            <div className="space-y-6 md:space-y-8">
-              {/* Plan Name - Claude.ai typography */}
-              <div>
-                <h3 className="text-xl md:text-2xl font-medium text-text-primary">
-                  {t("pro.name")}
-                </h3>
-                <p className="text-sm md:text-base text-text-secondary mt-2">
-                  {t("pro.description")}
-                </p>
-              </div>
-
-              {/* Price - Claude.ai style */}
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl md:text-5xl font-medium text-text-primary">
-                  {t("pro.price")}
-                </span>
-                <span className="text-base text-text-secondary">
-                  {t("pro.period")}
-                </span>
-              </div>
-
-              {/* ROI 메시지 - Claude.ai subtle highlight */}
-              <div className="px-4 py-3 rounded-lg bg-accent-brand/5 border border-accent-brand/10">
-                <p className="text-xs md:text-sm font-medium text-accent-brand">
-                  {t("pro.roi")}
-                </p>
-              </div>
-
-              {/* CTA Button - Claude.ai primary style */}
-              <Button
-                className="w-full py-6 h-auto text-base font-medium rounded-lg bg-accent-brand text-white hover:opacity-90 transition-opacity duration-fast"
-                asChild
-              >
-                <Link href="/signup">{t("pro.cta")}</Link>
-              </Button>
-
-              {/* Features List - Claude.ai style */}
-              <div className="space-y-4 pt-6 border-t border-border-default/60">
-                {proFeatures.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-accent-brand/10 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-accent-brand" />
-                    </div>
-                    <span className="text-sm md:text-base text-text-secondary">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          {/* Pro Plan */}
+          <PricingCard
+            name={t("pro.name")}
+            description={t("pro.description")}
+            price={t("pro.price")}
+            period={t("pro.period")}
+            cta={t("pro.cta")}
+            features={proFeatures}
+            featured
+            badge={t("pro.badge")}
+            roi={t("pro.roi")}
+          />
         </div>
       </div>
     </section>

@@ -5,10 +5,10 @@
  */
 
 export const ROUTES = {
-  // 스타일 가이드
-  STYLE_GUIDES: "/style-guides",
-  STYLE_GUIDES_NEW: "/style-guides/new",
-  STYLE_GUIDES_EDIT: (id: string) => `/style-guides/${id}/edit`,
+  // 브랜딩
+  BRANDINGS: "/brandings",
+  BRANDINGS_NEW: "/brandings/new",
+  BRANDINGS_EDIT: (id: string) => `/brandings/${id}/edit`,
 
   // 대시보드
   DASHBOARD: "/dashboard",

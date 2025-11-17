@@ -41,7 +41,7 @@ export const EditArticleFormSchema = z.object({
     .max(160, "Meta 설명은 160자 이내로 입력해주세요")
     .optional()
     .or(z.literal("")),
-  styleGuideId: z.string().uuid("유효하지 않은 스타일 가이드 ID입니다").optional(),
+  brandingId: z.string().uuid("유효하지 않은 스타일 가이드 ID입니다").optional(),
   tone: ContentToneSchema.optional(),
   contentLength: ContentLengthSchema.optional(),
   readingLevel: ReadingLevelSchema.optional(),

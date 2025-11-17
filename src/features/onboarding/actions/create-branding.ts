@@ -6,11 +6,11 @@ import { OnboardingFormData } from "../lib/onboarding-schema";
 
 /**
  * Create a new style guide
- * Used in /style-guides/new page
+ * Used in /brandings/new page
  */
-export async function createStyleGuide(data: OnboardingFormData) {
+export async function createBranding(data: OnboardingFormData) {
   try {
-    console.log("[SERVER ACTION] Starting createStyleGuide");
+    console.log("[SERVER ACTION] Starting createBranding");
 
     // Get authenticated user
     const { userId } = await auth();
@@ -23,7 +23,7 @@ export async function createStyleGuide(data: OnboardingFormData) {
     }
 
     // Save style guide data to Supabase via Hono API
-    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/style-guides`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/brandings`;
     console.log("[SERVER ACTION] Saving style guide to API:", apiUrl);
 
     const response = await fetch(apiUrl, {
@@ -50,8 +50,8 @@ export async function createStyleGuide(data: OnboardingFormData) {
 
     // Revalidate style guide page
     console.log("[SERVER ACTION] Revalidating style guide paths");
-    revalidatePath("/style-guides", "page");
-    revalidatePath("/style-guide", "page");
+    revalidatePath("/brandings", "page");
+    revalidatePath("/branding", "page");
 
     const result = { success: true, data: savedData.data };
     console.log("[SERVER ACTION] Returning result:", result);

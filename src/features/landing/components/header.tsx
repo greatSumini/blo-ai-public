@@ -34,20 +34,22 @@ export function Header() {
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-12 md:h-16">
           {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2 hover:opacity-90 transition-opacity duration-fast"
           >
             <Image
-              src="/images/icon.svg"
+              src="/images/icon.png"
               alt={`${brandName("brand_name")} Logo`}
               width={32}
               height={32}
               className="h-8 w-8"
             />
-            <span className="text-lg md:text-xl font-medium text-text-primary">{brandName("brand_name")}</span>
+            <span className="text-lg md:text-xl font-bold text-text-primary">
+              {brandName("brand_name")}
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -151,14 +153,18 @@ export function Header() {
                   className="w-full justify-center text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary transition-all duration-normal"
                   asChild
                 >
-                  <Link href="/login" onClick={toggleMenu}>{t("cta.login")}</Link>
+                  <Link href="/login" onClick={toggleMenu}>
+                    {t("cta.login")}
+                  </Link>
                 </Button>
                 <Button
                   size="sm"
                   className="w-full justify-center bg-accent-brand text-white hover:opacity-90 rounded-lg transition-all duration-fast"
                   asChild
                 >
-                  <Link href="/signup" onClick={toggleMenu}>{t("cta.get_started")}</Link>
+                  <Link href="/signup" onClick={toggleMenu}>
+                    {t("cta.get_started")}
+                  </Link>
                 </Button>
               </div>
             </nav>

@@ -30,7 +30,7 @@ const createGenerationFormSchema = (t: (key: string) => string) =>
       .string()
       .min(2, t("validation.topicMinLength"))
       .max(200, t("validation.topicMaxLength")),
-    styleGuideId: z.string().uuid(t("validation.styleGuideRequired")),
+    brandingId: z.string().uuid(t("validation.brandingRequired")),
     keywords: z.array(z.string()).optional(),
     additionalInstructions: z
       .string()
@@ -43,13 +43,13 @@ export type GenerationFormData = z.infer<
 >;
 
 interface GenerationFormProps {
-  styleGuides: Array<{ id: string; name: string }>;
+  brandings: Array<{ id: string; name: string }>;
   onSubmit: (data: GenerationFormData) => Promise<void>;
   isLoading?: boolean;
 }
 
 export function GenerationForm({
-  styleGuides,
+  brandings,
   onSubmit,
   isLoading,
 }: GenerationFormProps) {
@@ -65,7 +65,7 @@ export function GenerationForm({
     resolver: zodResolver(GenerationFormSchema),
     defaultValues: {
       topic: "",
-      styleGuideId: styleGuides[0]?.id || "",
+      brandingId: brandings[0]?.id || "",
       keywords: [],
       additionalInstructions: "",
     },
@@ -122,7 +122,7 @@ export function GenerationForm({
             <div className="flex items-center gap-3">
               <FormField
                 control={form.control}
-                name="styleGuideId"
+                name="brandingId"
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <Select
@@ -132,11 +132,11 @@ export function GenerationForm({
                     >
                       <FormControl>
                         <SelectTrigger className="border-border-default bg-bg-primary text-text-primary">
-                          <SelectValue placeholder={t("styleGuidePlaceholder")} />
+                          <SelectValue placeholder={t("brandingPlaceholder")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {styleGuides.map((guide) => (
+                        {brandings.map((guide) => (
                           <SelectItem key={guide.id} value={guide.id}>
                             {guide.name}
                           </SelectItem>

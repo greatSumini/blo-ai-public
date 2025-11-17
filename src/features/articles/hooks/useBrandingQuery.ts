@@ -2,16 +2,16 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/remote/api-client";
-import type { StyleGuideResponse } from "@/features/onboarding/backend/schema";
+import type { BrandingResponse } from "@/features/onboarding/backend/schema";
 import type { OnboardingFormData } from "@/features/onboarding/lib/onboarding-schema";
 
 // ===== 스타일 가이드 목록 조회 =====
-export function useListStyleGuides() {
+export function useListBrandings() {
   return useQuery({
-    queryKey: ["styleGuides"],
+    queryKey: ["brandings"],
     queryFn: async () => {
-      const response = await apiClient.get("/api/style-guides");
-      return (response.data || []) as StyleGuideResponse[];
+      const response = await apiClient.get("/api/brandings");
+      return (response.data || []) as BrandingResponse[];
     },
     staleTime: 60 * 1000, // 1분
     gcTime: 10 * 60 * 1000, // 10분
@@ -20,13 +20,13 @@ export function useListStyleGuides() {
 }
 
 // ===== 단일 스타일 가이드 조회 =====
-export function useStyleGuide(guideId: string | null) {
+export function useBranding(guideId: string | null) {
   return useQuery({
-    queryKey: ["styleGuides", guideId],
+    queryKey: ["brandings", guideId],
     queryFn: async () => {
       if (!guideId) throw new Error("Style guide ID is required");
-      const response = await apiClient.get(`/api/style-guides/${guideId}`);
-      return response.data as StyleGuideResponse;
+      const response = await apiClient.get(`/api/brandings/${guideId}`);
+      return response.data as BrandingResponse;
     },
     enabled: !!guideId,
     staleTime: 60 * 1000, // 1분
@@ -40,17 +40,17 @@ export function useCreateStyleGuide() {
 
   return useMutation({
     mutationFn: async (data: OnboardingFormData) => {
-      const response = await apiClient.post("/api/style-guides", data);
-      return response.data as StyleGuideResponse;
+      const response = await apiClient.post("/api/brandings", data);
+      return response.data as BrandingResponse;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["styleGuides"] });
+      queryClient.invalidateQueries({ queryKey: ["brandings"] });
     },
   });
 }
 
 // ===== 스타일 가이드 수정 =====
-export function useUpdateStyleGuide() {
+export function useUpdateBranding() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -62,31 +62,31 @@ export function useUpdateStyleGuide() {
       data: OnboardingFormData;
     }) => {
       const response = await apiClient.patch(
-        `/api/style-guides/${guideId}`,
+        `/api/brandings/${guideId}`,
         data
       );
-      return response.data as StyleGuideResponse;
+      return response.data as BrandingResponse;
     },
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["styleGuides"] });
+      queryClient.invalidateQueries({ queryKey: ["brandings"] });
       queryClient.invalidateQueries({
-        queryKey: ["styleGuides", variables.guideId],
+        queryKey: ["brandings", variables.guideId],
       });
     },
   });
 }
 
 // ===== 스타일 가이드 삭제 =====
-export function useDeleteStyleGuide() {
+export function useDeleteBranding() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (guideId: string) => {
-      const response = await apiClient.delete(`/api/style-guides/${guideId}`);
+      const response = await apiClient.delete(`/api/brandings/${guideId}`);
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["styleGuides"] });
+      queryClient.invalidateQueries({ queryKey: ["brandings"] });
     },
   });
 }

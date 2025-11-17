@@ -9,48 +9,48 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/layout/page-layout";
 import { ErrorDisplay } from "@/components/error-display";
-import type { StyleGuideResponse } from "@/features/style-guide/types";
+import type { BrandingResponse } from "@/features/branding/types";
 import {
-  useListStyleGuides,
-  useDeleteStyleGuide,
-} from "@/features/articles/hooks/useStyleGuideQuery";
-import { SearchBar } from "@/features/style-guide/components/search-bar";
-import { StyleGuideGrid } from "@/features/style-guide/components/style-guide-grid";
-import { EmptyState } from "@/features/style-guide/components/empty-state";
-import { StyleGuidePreviewModalImproved } from "@/features/style-guide/components/style-guide-preview-modal-improved";
-import { filterStyleGuidesBySearch } from "@/features/style-guide/lib/utils";
+  useListBrandings,
+  useDeleteBranding,
+} from "@/features/articles/hooks/useBrandingQuery";
+import { SearchBar } from "@/features/branding/components/search-bar";
+import { BrandingGrid } from "@/features/branding/components/branding-grid";
+import { EmptyState } from "@/features/branding/components/empty-state";
+import { BrandingPreviewModalImproved } from "@/features/branding/components/branding-preview-modal-improved";
+import { filterBrandingsBySearch } from "@/features/branding/lib/utils";
 
-type StyleGuidePageProps = {
+type BrandingPageProps = {
   params: Promise<Record<string, never>>;
 };
 
-export default function StyleGuidePage({ params }: StyleGuidePageProps) {
+export default function BrandingPage({ params }: BrandingPageProps) {
   void params;
   const router = useRouter();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const t = useTranslations("styleGuide");
+  const t = useTranslations("branding");
 
   // State
   const [searchQuery, setSearchQuery] = useState("");
-  const [previewGuide, setPreviewGuide] = useState<StyleGuideResponse | null>(
+  const [previewBranding, setPreviewBranding] = useState<BrandingResponse | null>(
     null
   );
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   // React Query
   const {
-    data: guides = [],
+    data: brandings = [],
     isLoading,
     isError,
-  } = useListStyleGuides();
+  } = useListBrandings();
 
-  const deleteStyleGuide = useDeleteStyleGuide();
+  const deleteBranding = useDeleteBranding();
 
   // Window focus 시 데이터 갱신
   useEffect(() => {
     const handleFocus = () => {
-      queryClient.invalidateQueries({ queryKey: ["styleGuides"] });
+      queryClient.invalidateQueries({ queryKey: ["brandings"] });
     };
     window.addEventListener("focus", handleFocus);
     return () => window.removeEventListener("focus", handleFocus);
@@ -58,23 +58,23 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
 
   // Handlers
   const handleCreateNew = () => {
-    router.push("/style-guides/new");
+    router.push("/brandings/new");
   };
 
-  const handlePreview = (guide: StyleGuideResponse) => {
-    setPreviewGuide(guide);
+  const handlePreview = (branding: BrandingResponse) => {
+    setPreviewBranding(branding);
     setIsPreviewOpen(true);
   };
 
-  const handleEdit = (guide: StyleGuideResponse) => {
-    router.push(`/style-guides/${guide.id}/edit`);
+  const handleEdit = (branding: BrandingResponse) => {
+    router.push(`/brandings/${branding.id}/edit`);
   };
 
   const handleDelete = async (id: string) => {
     if (!window.confirm(t("delete.confirm"))) return;
 
     try {
-      await deleteStyleGuide.mutateAsync(id);
+      await deleteBranding.mutateAsync(id);
       toast({
         title: t("delete.success.title"),
         description: t("delete.success.desc"),
@@ -89,8 +89,8 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
     }
   };
 
-  // Filtered guides
-  const filteredGuides = filterStyleGuidesBySearch(guides, searchQuery);
+  // Filtered brandings
+  const filteredBrandings = filterBrandingsBySearch(brandings, searchQuery);
 
   // Actions 버튼
   const actions = (
@@ -174,17 +174,17 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
       maxWidthClassName="max-w-6xl"
     >
       {/* Search Bar (조건부: 10개 이상) */}
-      {guides.length >= 10 && (
+      {brandings.length >= 10 && (
         <div className="mb-6">
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
         </div>
       )}
 
       {/* Content */}
-      {guides.length > 0 ? (
-        filteredGuides.length > 0 ? (
-          <StyleGuideGrid
-            guides={filteredGuides}
+      {brandings.length > 0 ? (
+        filteredBrandings.length > 0 ? (
+          <BrandingGrid
+            brandings={filteredBrandings}
             onPreview={handlePreview}
             onEdit={handleEdit}
             onDelete={handleDelete}
@@ -203,8 +203,8 @@ export default function StyleGuidePage({ params }: StyleGuidePageProps) {
       )}
 
       {/* Preview Modal */}
-      <StyleGuidePreviewModalImproved
-        guide={previewGuide}
+      <BrandingPreviewModalImproved
+        branding={previewBranding}
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
         onEdit={handleEdit}

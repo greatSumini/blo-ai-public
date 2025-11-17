@@ -6,33 +6,33 @@ import {
 } from '@/backend/domain/result';
 import {
   StyleGuideTableRowSchema,
-  StyleGuideResponseSchema,
-  type StyleGuideResponse,
+  BrandingResponseSchema,
+  type BrandingResponse,
   type CreateStyleGuideRequest,
 } from '@/features/onboarding/backend/schema';
 import {
-  styleGuideErrorCodes,
+  brandingErrorCodes,
   type StyleGuideDomainError,
 } from '@/features/onboarding/backend/error';
 
-const STYLE_GUIDES_TABLE = 'style_guides';
+const BRANDINGS_TABLE = 'style_guides';
 import { ensureProfile } from '@/features/profiles/backend/service';
 
 /**
  * Creates a new style guide for a user
  * Always creates a new record (users can have multiple style guides)
  */
-export const createStyleGuide = async (
+export const createBranding = async (
   client: SupabaseClient,
   clerkUserId: string,
   data: CreateStyleGuideRequest,
-): Promise<DomainResult<StyleGuideResponse, StyleGuideDomainError>> => {
+): Promise<DomainResult<BrandingResponse, StyleGuideDomainError>> => {
   // Resolve profile_id for this Clerk user (create minimal profile if absent)
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
     return domainFailure({
-      code: styleGuideErrorCodes.upsertError,
+      code: brandingErrorCodes.upsertError,
       message: 'Failed to resolve or create user profile.',
     });
   }
@@ -55,21 +55,21 @@ export const createStyleGuide = async (
 
   // Use INSERT to always create a new record
   const { data: savedData, error } = await client
-    .from(STYLE_GUIDES_TABLE)
+    .from(BRANDINGS_TABLE)
     .insert(dbRecord)
     .select('*')
     .single();
 
   if (error) {
     return domainFailure({
-      code: styleGuideErrorCodes.upsertError,
+      code: brandingErrorCodes.upsertError,
       message: `Failed to save style guide: ${error.message}`,
     });
   }
 
   if (!savedData) {
     return domainFailure({
-      code: styleGuideErrorCodes.upsertError,
+      code: brandingErrorCodes.upsertError,
       message: 'Style guide was saved but no data was returned',
     });
   }
@@ -79,7 +79,7 @@ export const createStyleGuide = async (
 
   if (!rowParse.success) {
     return domainFailure({
-      code: styleGuideErrorCodes.validationError,
+      code: brandingErrorCodes.validationError,
       message: 'Style guide row failed validation.',
       details: rowParse.error.format(),
     });
@@ -103,14 +103,14 @@ export const createStyleGuide = async (
     isDefault: rowParse.data.is_default,
     createdAt: rowParse.data.created_at,
     updatedAt: rowParse.data.updated_at,
-  } satisfies StyleGuideResponse;
+  } satisfies BrandingResponse;
 
   // Validate the response
-  const parsed = StyleGuideResponseSchema.safeParse(mapped);
+  const parsed = BrandingResponseSchema.safeParse(mapped);
 
   if (!parsed.success) {
     return domainFailure({
-      code: styleGuideErrorCodes.validationError,
+      code: brandingErrorCodes.validationError,
       message: 'Style guide response failed validation.',
       details: parsed.error.format(),
     });
@@ -126,22 +126,22 @@ export const createStyleGuide = async (
 export const listStyleGuides = async (
   client: SupabaseClient,
   clerkUserId: string,
-): Promise<DomainResult<StyleGuideResponse[], StyleGuideDomainError>> => {
+): Promise<DomainResult<BrandingResponse[], StyleGuideDomainError>> => {
   // Ensure profile exists and get id
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
+    return domainFailure({ code: brandingErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { data, error } = await client
-    .from(STYLE_GUIDES_TABLE)
+    .from(BRANDINGS_TABLE)
     .select('*')
     .eq('profile_id', profileId)
     .order('created_at', { ascending: false });
 
   if (error) {
     return domainFailure({
-      code: styleGuideErrorCodes.fetchError,
+      code: brandingErrorCodes.fetchError,
       message: `Failed to fetch style guides: ${error.message}`,
     });
   }
@@ -151,13 +151,13 @@ export const listStyleGuides = async (
   }
 
   // Validate and map each row
-  const mappedGuides: StyleGuideResponse[] = [];
+  const mappedGuides: BrandingResponse[] = [];
   for (const row of data) {
     const rowParse = StyleGuideTableRowSchema.safeParse(row);
 
     if (!rowParse.success) {
       return domainFailure({
-        code: styleGuideErrorCodes.validationError,
+        code: brandingErrorCodes.validationError,
         message: 'Style guide row failed validation.',
         details: rowParse.error.format(),
       });
@@ -180,13 +180,13 @@ export const listStyleGuides = async (
       isDefault: rowParse.data.is_default,
       createdAt: rowParse.data.created_at,
       updatedAt: rowParse.data.updated_at,
-    } satisfies StyleGuideResponse;
+    } satisfies BrandingResponse;
 
-    const parsed = StyleGuideResponseSchema.safeParse(mapped);
+    const parsed = BrandingResponseSchema.safeParse(mapped);
 
     if (!parsed.success) {
       return domainFailure({
-        code: styleGuideErrorCodes.validationError,
+        code: brandingErrorCodes.validationError,
         message: 'Style guide response failed validation.',
         details: parsed.error.format(),
       });
@@ -202,19 +202,19 @@ export const listStyleGuides = async (
  * Gets a single style guide by ID
  * Used for viewing/editing a specific guide
  */
-export const getStyleGuideById = async (
+export const getBrandingById = async (
   client: SupabaseClient,
   guideId: string,
   clerkUserId: string,
-): Promise<DomainResult<StyleGuideResponse, StyleGuideDomainError>> => {
+): Promise<DomainResult<BrandingResponse, StyleGuideDomainError>> => {
   // Ensure profile exists and get id
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
+    return domainFailure({ code: brandingErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { data, error } = await client
-    .from(STYLE_GUIDES_TABLE)
+    .from(BRANDINGS_TABLE)
     .select('*')
     .eq('id', guideId)
     .eq('profile_id', profileId)
@@ -222,16 +222,16 @@ export const getStyleGuideById = async (
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
+      return domainFailure({ code: brandingErrorCodes.notFound, message: 'Style guide not found' });
     }
     return domainFailure({
-      code: styleGuideErrorCodes.fetchError,
+      code: brandingErrorCodes.fetchError,
       message: `Failed to fetch style guide: ${error.message}`,
     });
   }
 
   if (!data) {
-    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
+    return domainFailure({ code: brandingErrorCodes.notFound, message: 'Style guide not found' });
   }
 
   // Validate the database row
@@ -239,7 +239,7 @@ export const getStyleGuideById = async (
 
   if (!rowParse.success) {
     return domainFailure({
-      code: styleGuideErrorCodes.validationError,
+      code: brandingErrorCodes.validationError,
       message: 'Style guide row failed validation.',
       details: rowParse.error.format(),
     });
@@ -263,14 +263,14 @@ export const getStyleGuideById = async (
     isDefault: rowParse.data.is_default,
     createdAt: rowParse.data.created_at,
     updatedAt: rowParse.data.updated_at,
-  } satisfies StyleGuideResponse;
+  } satisfies BrandingResponse;
 
   // Validate the response
-  const parsed = StyleGuideResponseSchema.safeParse(mapped);
+  const parsed = BrandingResponseSchema.safeParse(mapped);
 
   if (!parsed.success) {
     return domainFailure({
-      code: styleGuideErrorCodes.validationError,
+      code: brandingErrorCodes.validationError,
       message: 'Style guide response failed validation.',
       details: parsed.error.format(),
     });
@@ -288,7 +288,7 @@ export const updateStyleGuide = async (
   guideId: string,
   clerkUserId: string,
   data: CreateStyleGuideRequest,
-): Promise<DomainResult<StyleGuideResponse, StyleGuideDomainError>> => {
+): Promise<DomainResult<BrandingResponse, StyleGuideDomainError>> => {
   // Map camelCase TypeScript to snake_case database columns
   const dbRecord = {
     brand_name: data.brandName,
@@ -308,10 +308,10 @@ export const updateStyleGuide = async (
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
+    return domainFailure({ code: brandingErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { data: updatedData, error } = await client
-    .from(STYLE_GUIDES_TABLE)
+    .from(BRANDINGS_TABLE)
     .update(dbRecord)
     .eq('id', guideId)
     .eq('profile_id', profileId)
@@ -320,16 +320,16 @@ export const updateStyleGuide = async (
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
+      return domainFailure({ code: brandingErrorCodes.notFound, message: 'Style guide not found' });
     }
     return domainFailure({
-      code: styleGuideErrorCodes.upsertError,
+      code: brandingErrorCodes.upsertError,
       message: `Failed to update style guide: ${error.message}`,
     });
   }
 
   if (!updatedData) {
-    return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
+    return domainFailure({ code: brandingErrorCodes.notFound, message: 'Style guide not found' });
   }
 
   // Validate the database row
@@ -337,7 +337,7 @@ export const updateStyleGuide = async (
 
   if (!rowParse.success) {
     return domainFailure({
-      code: styleGuideErrorCodes.validationError,
+      code: brandingErrorCodes.validationError,
       message: 'Style guide row failed validation.',
       details: rowParse.error.format(),
     });
@@ -361,14 +361,14 @@ export const updateStyleGuide = async (
     isDefault: rowParse.data.is_default,
     createdAt: rowParse.data.created_at,
     updatedAt: rowParse.data.updated_at,
-  } satisfies StyleGuideResponse;
+  } satisfies BrandingResponse;
 
   // Validate the response
-  const parsed = StyleGuideResponseSchema.safeParse(mapped);
+  const parsed = BrandingResponseSchema.safeParse(mapped);
 
   if (!parsed.success) {
     return domainFailure({
-      code: styleGuideErrorCodes.validationError,
+      code: brandingErrorCodes.validationError,
       message: 'Style guide response failed validation.',
       details: parsed.error.format(),
     });
@@ -390,20 +390,20 @@ export const deleteStyleGuide = async (
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
+    return domainFailure({ code: brandingErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { error } = await client
-    .from(STYLE_GUIDES_TABLE)
+    .from(BRANDINGS_TABLE)
     .delete()
     .eq('id', guideId)
     .eq('profile_id', profileId);
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return domainFailure({ code: styleGuideErrorCodes.notFound, message: 'Style guide not found' });
+      return domainFailure({ code: brandingErrorCodes.notFound, message: 'Style guide not found' });
     }
     return domainFailure({
-      code: styleGuideErrorCodes.upsertError,
+      code: brandingErrorCodes.upsertError,
       message: `Failed to delete style guide: ${error.message}`,
     });
   }
@@ -423,16 +423,16 @@ export const markOnboardingCompleted = async (
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) {
-    return domainFailure({ code: styleGuideErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
+    return domainFailure({ code: brandingErrorCodes.upsertError, message: 'Failed to resolve or create user profile' });
   }
   const { error } = await client
-    .from(STYLE_GUIDES_TABLE)
+    .from(BRANDINGS_TABLE)
     .update({ onboarding_completed: true })
     .eq('profile_id', profileId);
 
   if (error) {
     return domainFailure({
-      code: styleGuideErrorCodes.upsertError,
+      code: brandingErrorCodes.upsertError,
       message: `Failed to update onboarding status: ${error.message}`,
     });
   }

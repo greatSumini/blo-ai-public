@@ -23,7 +23,7 @@ export async function completeOnboarding(data: OnboardingFormData) {
     }
 
     // Save onboarding data to Supabase via Hono API
-    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/style-guides`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/brandings`;
     console.log("[SERVER ACTION] Saving style guide to API:", apiUrl);
 
     const response = await fetch(apiUrl, {

@@ -29,7 +29,7 @@ export const StyleGuideTableRowSchema = z.object({
 export type StyleGuideRow = z.infer<typeof StyleGuideTableRowSchema>;
 
 // Response schema (camelCase for API responses)
-export const StyleGuideResponseSchema = z.object({
+export const BrandingResponseSchema = z.object({
   id: z.string().uuid(),
   profileId: z.string().uuid(),
   brandName: z.string(),
@@ -48,4 +48,4 @@ export const StyleGuideResponseSchema = z.object({
   updatedAt: z.string(),
 });
 
-export type StyleGuideResponse = z.infer<typeof StyleGuideResponseSchema>;
+export type BrandingResponse = z.infer<typeof BrandingResponseSchema>;

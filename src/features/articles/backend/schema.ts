@@ -36,7 +36,7 @@ export const CreateArticleRequestSchema = z.object({
   keywords: z.array(z.string()).default([]),
   description: z.string().max(500, '설명은 500자 이내로 입력해주세요').optional(),
   content: z.string().min(1, '내용을 입력해주세요'),
-  styleGuideId: z.string().uuid('유효하지 않은 스타일 가이드 ID입니다').optional(),
+  brandingId: z.string().uuid('유효하지 않은 스타일 가이드 ID입니다').optional(),
   tone: ContentToneSchema.optional(),
   contentLength: ContentLengthSchema.optional(),
   readingLevel: ReadingLevelSchema.optional(),
@@ -68,7 +68,7 @@ export const UpdateArticleRequestSchema = z.object({
   keywords: z.array(z.string()).optional(),
   description: z.string().max(500, '설명은 500자 이내로 입력해주세요').optional(),
   content: z.string().min(1, '내용을 입력해주세요').optional(),
-  styleGuideId: z.string().uuid('유효하지 않은 스타일 가이드 ID입니다').optional(),
+  brandingId: z.string().uuid('유효하지 않은 스타일 가이드 ID입니다').optional(),
   tone: ContentToneSchema.optional(),
   contentLength: ContentLengthSchema.optional(),
   readingLevel: ReadingLevelSchema.optional(),
@@ -116,7 +116,7 @@ export const ArticleResponseSchema = z.object({
   keywords: z.array(z.string()),
   description: z.string().nullable(),
   content: z.string(),
-  styleGuideId: z.string().uuid().nullable(),
+  brandingId: z.string().uuid().nullable(),
   tone: ContentToneSchema.nullable(),
   contentLength: ContentLengthSchema.nullable(),
   readingLevel: ReadingLevelSchema.nullable(),
@@ -138,7 +138,7 @@ export const GenerateArticleRequestSchema = z.object({
     .string()
     .min(1, '주제를 입력해주세요')
     .max(200, '주제는 200자 이내로 입력해주세요'),
-  styleGuideId: z
+  brandingId: z
     .string()
     .uuid('유효하지 않은 스타일 가이드 ID입니다')
     .optional(),

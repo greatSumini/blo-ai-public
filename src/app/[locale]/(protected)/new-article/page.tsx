@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { GenerationForm } from "@/features/articles/components/generation-form";
 import { GenerationProgressSection } from "@/features/articles/components/generation-progress-section";
 import { ArticlePreviewSection } from "@/features/articles/components/article-preview-section";
-import { useStyleGuide } from "@/features/articles/hooks/useStyleGuide";
+import { useBranding } from "@/features/articles/hooks/useBranding";
 import type { GenerationFormData } from "@/features/articles/components/generation-form";
 import { useTranslations } from "next-intl";
 import { useCompletion } from "@ai-sdk/react";
@@ -33,19 +33,19 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   const [parsed, setParsed] = useState<ParsedAIArticle | null>(null);
   const [lastRequest, setLastRequest] = useState<{
     topic: string;
-    styleGuideId?: string;
+    brandingId?: string;
     keywords: string[];
   } | null>(null);
 
-  const { data: styleGuideData, isLoading: isLoadingStyleGuide } =
-    useStyleGuide();
+  const { data: brandingData, isLoading: isLoadingBranding } =
+    useBranding();
   const { user } = useCurrentUser();
   const { completion, complete, stop, isLoading } = useCompletion({
     api: "/api/articles/generate",
   });
 
-  const styleGuides = styleGuideData
-    ? [{ id: styleGuideData.id, name: t("default_style_guide") }]
+  const brandings = brandingData
+    ? [{ id: brandingData.id, name: t("newArticle.default_branding") }]
     : [];
 
   const handleGenerateSubmit = async (data: GenerationFormData) => {
@@ -53,7 +53,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
     setParsed(null);
     setLastRequest({
       topic: data.topic,
-      styleGuideId: data.styleGuideId,
+      brandingId: data.brandingId,
       keywords: data.keywords || [],
     });
 
@@ -61,7 +61,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
       await complete(data.topic, {
         body: {
           topic: data.topic,
-          styleGuideId: data.styleGuideId,
+          brandingId: data.brandingId,
           keywords: data.keywords || [],
           additionalInstructions: data.additionalInstructions || undefined,
         },
@@ -120,7 +120,7 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
         keywords: parsed.keywords ?? [],
         description: parsed.metaDescription ?? undefined,
         content: parsed.content,
-        styleGuideId: lastRequest?.styleGuideId,
+        brandingId: lastRequest?.brandingId,
         metaTitle: parsed.title,
         metaDescription: parsed.metaDescription ?? undefined,
       };
@@ -177,9 +177,9 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
         {mode === "form" && (
           <GenerationForm
             key="form"
-            styleGuides={styleGuides}
+            brandings={brandings}
             onSubmit={handleGenerateSubmit}
-            isLoading={isLoadingStyleGuide}
+            isLoading={isLoadingBranding}
           />
         )}
 

@@ -40,7 +40,7 @@ export function HeroSection() {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 tracking-tight text-text-primary leading-[1.15] px-2 whitespace-pre-line">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 text-text-primary leading-[1.15] px-2 whitespace-pre-line">
               {t("heading")}
             </h1>
           </motion.div>

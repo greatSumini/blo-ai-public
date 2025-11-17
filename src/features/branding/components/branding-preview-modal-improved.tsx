@@ -14,13 +14,13 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale/ko";
 import { enUS } from "date-fns/locale/en-US";
 import { useTranslations, useLocale } from "next-intl";
-import type { StyleGuideResponse } from "../types";
+import type { BrandingResponse } from "../types";
 
-interface StyleGuidePreviewModalImprovedProps {
-  guide: StyleGuideResponse | null;
+interface BrandingPreviewModalImprovedProps {
+  branding: BrandingResponse | null;
   isOpen: boolean;
   onClose: () => void;
-  onEdit: (guide: StyleGuideResponse) => void;
+  onEdit: (branding: BrandingResponse) => void;
 }
 
 // Helper component (상단으로 이동)
@@ -33,18 +33,18 @@ function InfoRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function StyleGuidePreviewModalImproved({
-  guide,
+export function BrandingPreviewModalImproved({
+  branding,
   isOpen,
   onClose,
   onEdit,
-}: StyleGuidePreviewModalImprovedProps) {
-  const t = useTranslations("styleGuide.modal");
-  const tLabels = useTranslations("styleGuide.labels");
+}: BrandingPreviewModalImprovedProps) {
+  const t = useTranslations("branding.modal");
+  const tLabels = useTranslations("branding.labels");
   const locale = useLocale();
   const dateLocale = locale === "ko" ? ko : enUS;
 
-  if (!guide) return null;
+  if (!branding) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -52,12 +52,12 @@ export function StyleGuidePreviewModalImproved({
         {/* Header */}
         <DialogHeader>
           <DialogTitle className="text-2xl text-[#1F2937]">
-            {guide.brandName}
+            {branding.brandName}
           </DialogTitle>
           <DialogDescription className="flex items-center gap-4 mt-2 text-sm text-[#6B7280]">
             <span className="flex items-center gap-1">
               <Calendar className="h-3.5 w-3.5" />
-              {format(new Date(guide.createdAt), "PPP", { locale: dateLocale })}
+              {format(new Date(branding.createdAt), "PPP", { locale: dateLocale })}
             </span>
           </DialogDescription>
         </DialogHeader>
@@ -72,19 +72,19 @@ export function StyleGuidePreviewModalImproved({
             <div className="space-y-2 text-sm text-[#374151]">
               <InfoRow
                 label={t("brandName")}
-                value={guide.brandName}
+                value={branding.brandName}
               />
               <InfoRow
                 label={t("description")}
-                value={guide.brandDescription}
+                value={branding.brandDescription}
               />
               <InfoRow
                 label={t("personality")}
-                value={guide.personality.join(", ")}
+                value={branding.personality.join(", ")}
               />
               <InfoRow
                 label={t("formality")}
-                value={tLabels(`formality.${guide.formality}`)}
+                value={tLabels(`formality.${branding.formality}`)}
               />
             </div>
           </div>
@@ -95,8 +95,8 @@ export function StyleGuidePreviewModalImproved({
               {t("targetAudience")}
             </h4>
             <div className="space-y-2 text-sm text-[#374151]">
-              <InfoRow label={t("audience")} value={guide.targetAudience} />
-              <InfoRow label={t("painPoints")} value={guide.painPoints} />
+              <InfoRow label={t("audience")} value={branding.targetAudience} />
+              <InfoRow label={t("painPoints")} value={branding.painPoints} />
             </div>
           </div>
 
@@ -108,31 +108,31 @@ export function StyleGuidePreviewModalImproved({
             <div className="space-y-2 text-sm text-[#374151]">
               <InfoRow
                 label={t("language")}
-                value={guide.language === "ko" ? tLabels("language.korean") : tLabels("language.english")}
+                value={branding.language === "ko" ? tLabels("language.korean") : tLabels("language.english")}
               />
               <InfoRow
                 label={t("tone")}
-                value={tLabels(`tone.${guide.tone}`)}
+                value={tLabels(`tone.${branding.tone}`)}
               />
               <InfoRow
                 label={t("length")}
-                value={tLabels(`contentLength.${guide.contentLength}`)}
+                value={tLabels(`contentLength.${branding.contentLength}`)}
               />
               <InfoRow
                 label={t("readingLevel")}
-                value={tLabels(`readingLevel.${guide.readingLevel}`)}
+                value={tLabels(`readingLevel.${branding.readingLevel}`)}
               />
             </div>
           </div>
 
           {/* Notes */}
-          {guide.notes && (
+          {branding.notes && (
             <div className="space-y-3 border-t border-[#E1E5EA] pt-4">
               <h4 className="text-sm font-semibold text-[#6B7280] uppercase tracking-wide">
                 {t("notes")}
               </h4>
               <p className="text-sm text-[#6B7280] whitespace-pre-wrap bg-[#F9FAFB] p-3 rounded">
-                {guide.notes}
+                {branding.notes}
               </p>
             </div>
           )}
@@ -142,7 +142,7 @@ export function StyleGuidePreviewModalImproved({
         <DialogFooter className="flex flex-col sm:flex-row gap-2">
           <Button
             variant="outline"
-            onClick={() => onEdit(guide)}
+            onClick={() => onEdit(branding)}
             className="flex-1 border-[#E1E5EA]"
           >
             <Pencil className="mr-2 h-4 w-4" />

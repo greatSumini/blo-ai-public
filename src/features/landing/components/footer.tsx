@@ -7,7 +7,6 @@ import { useTranslations } from "next-intl";
 export function Footer() {
   const t = useTranslations("landing.footer");
   const brandName = useTranslations("common");
-  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="w-full bg-bg-secondary/20 border-t border-border-default/40">
@@ -17,7 +16,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link
               href="/"
-              className="text-lg md:text-xl font-medium text-text-primary hover:opacity-80 transition-opacity duration-fast inline-block"
+              className="text-lg md:text-xl font-bold text-text-primary hover:opacity-80 transition-opacity duration-fast inline-block"
             >
               {brandName("brand_name")}
             </Link>
@@ -28,7 +27,9 @@ export function Footer() {
 
           {/* Product Links - Claude.ai style */}
           <div className="space-y-4">
-            <h3 className="text-xs md:text-sm font-medium text-text-primary">{t("product.title")}</h3>
+            <h3 className="text-xs md:text-sm font-medium text-text-primary">
+              {t("product.title")}
+            </h3>
             <nav className="flex flex-col gap-2.5">
               <Link
                 href="#features"
@@ -59,7 +60,9 @@ export function Footer() {
 
           {/* Company Links - Claude.ai style */}
           <div className="space-y-4">
-            <h3 className="text-xs md:text-sm font-medium text-text-primary">{t("company.title")}</h3>
+            <h3 className="text-xs md:text-sm font-medium text-text-primary">
+              {t("company.title")}
+            </h3>
             <nav className="flex flex-col gap-2.5">
               <Link
                 href="/about"
@@ -84,7 +87,9 @@ export function Footer() {
 
           {/* Legal & Social - Claude.ai style */}
           <div className="space-y-4">
-            <h3 className="text-xs md:text-sm font-medium text-text-primary">{t("legal.title")}</h3>
+            <h3 className="text-xs md:text-sm font-medium text-text-primary">
+              {t("legal.title")}
+            </h3>
             <nav className="flex flex-col gap-2.5">
               <Link
                 href="/privacy"
@@ -102,7 +107,9 @@ export function Footer() {
 
             {/* Social Links - Claude.ai subtle style */}
             <div className="pt-2">
-              <h4 className="text-xs md:text-sm font-medium text-text-primary mb-3">{t("social.title")}</h4>
+              <h4 className="text-xs md:text-sm font-medium text-text-primary mb-3">
+                {t("social.title")}
+              </h4>
               <div className="flex items-center gap-4">
                 <a
                   href="https://github.com"
@@ -123,7 +130,7 @@ export function Footer() {
                   <Twitter className="h-5 w-5" />
                 </a>
                 <a
-                  href="mailto:contact@seo24.blog"
+                  href="mailto:contact@blo-ai.kr"
                   className="text-text-secondary hover:text-text-primary transition-colors duration-normal"
                   aria-label={t("social.email_label")}
                 >

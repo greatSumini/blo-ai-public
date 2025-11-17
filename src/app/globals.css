@@ -177,7 +177,7 @@
     --muted-foreground: 240 3% 40%;   /* gray-600 */
 
     /* Accent - using heroes-accent inspired warm tone */
-    --accent: 17 47% 54%;             /* #C46849 inspired */
+    --accent: 15, 48%, 47%;             /* #C46849 inspired */
     --accent-foreground: 0 0% 98%;
 
     /* Destructive - using error color */
@@ -224,7 +224,7 @@
     --info-bg: 210 65.5% 95%;
 
     /* Brand Accent */
-    --accent-brand: 15 63.1% 59.6%;      /* #C46849 */
+    --accent-brand: 15, 48%, 47%;    
     --accent-pro: 251 84.6% 74.5%;       /* Pro features */
   }
 

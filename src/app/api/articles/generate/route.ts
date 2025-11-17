@@ -9,7 +9,7 @@ import {
 } from '@/features/articles/backend/quota-service';
 import { articleErrorCodes } from '@/features/articles/backend/error';
 
-type StyleGuideResponse = {
+type BrandingResponse = {
   id: string;
   profileId: string;
   brandName: string;
@@ -28,24 +28,24 @@ type StyleGuideResponse = {
   updatedAt: string;
 };
 
-const STYLE_GUIDES_TABLE = 'style_guides';
+const BRANDINGS_TABLE = 'style_guides';
 
 /**
  * Gets style guide by ID or default style guide for user
  */
-const getStyleGuide = async (
+const getBranding = async (
   client: SupabaseClient,
   clerkUserId: string,
-  styleGuideId?: string,
-): Promise<StyleGuideResponse | null> => {
+  brandingId?: string,
+): Promise<BrandingResponse | null> => {
   const { ensureProfile } = await import('@/features/profiles/backend/service');
   const profile = await ensureProfile(client, clerkUserId);
   const profileId = profile?.id;
   if (!profileId) return null;
-  let query = client.from(STYLE_GUIDES_TABLE).select('*').eq('profile_id', profileId);
+  let query = client.from(BRANDINGS_TABLE).select('*').eq('profile_id', profileId);
 
-  if (styleGuideId) {
-    query = query.eq('id', styleGuideId);
+  if (brandingId) {
+    query = query.eq('id', brandingId);
   } else {
     query = query.eq('is_default', true);
   }
@@ -82,11 +82,11 @@ const getStyleGuide = async (
  */
 const buildPrompt = (
   topic: string,
-  styleGuide: StyleGuideResponse | null,
+  branding: BrandingResponse | null,
   keywords: string[],
   additionalInstructions?: string,
 ): string => {
-  const language = styleGuide?.language || 'ko';
+  const language = branding?.language || 'ko';
   const isKorean = language === 'ko';
 
   const contentLengthGuide = {
@@ -117,17 +117,17 @@ const buildPrompt = (
 **주제**: ${topic}
 
 **브랜드 정보**:
-${styleGuide ? `- 브랜드명: ${styleGuide.brandName}
-- 브랜드 설명: ${styleGuide.brandDescription}
-- 브랜드 성격: ${styleGuide.personality.join(', ')}
-- 격식 수준: ${styleGuide.formality}
-- 타겟 독자: ${styleGuide.targetAudience}
-- 독자의 고민: ${styleGuide.painPoints}` : '일반적인 블로그 스타일로 작성'}
+${branding ? `- 브랜드명: ${branding.brandName}
+- 브랜드 설명: ${branding.brandDescription}
+- 브랜드 성격: ${branding.personality.join(', ')}
+- 격식 수준: ${branding.formality}
+- 타겟 독자: ${branding.targetAudience}
+- 독자의 고민: ${branding.painPoints}` : '일반적인 블로그 스타일로 작성'}
 
 **작성 스타일**:
-- 어조: ${styleGuide ? toneGuide[styleGuide.tone as keyof typeof toneGuide] : '친근하고 전문적인'}
-- 글 길이: ${styleGuide ? contentLengthGuide[styleGuide.contentLength as keyof typeof contentLengthGuide] : '2000-3000자'}
-- 난이도: ${styleGuide ? readingLevelGuide[styleGuide.readingLevel as keyof typeof readingLevelGuide] : '중급 수준의'}
+- 어조: ${branding ? toneGuide[branding.tone as keyof typeof toneGuide] : '친근하고 전문적인'}
+- 글 길이: ${branding ? contentLengthGuide[branding.contentLength as keyof typeof contentLengthGuide] : '2000-3000자'}
+- 난이도: ${branding ? readingLevelGuide[branding.readingLevel as keyof typeof readingLevelGuide] : '중급 수준의'}
 
 **키워드**: ${keywords.length > 0 ? keywords.join(', ') : '주제와 관련된 키워드를 자연스럽게 포함'}
 
@@ -158,17 +158,17 @@ Important: If "Additional Instructions" are provided, you MUST prioritize them a
 **Topic**: ${topic}
 
 **Brand Information**:
-${styleGuide ? `- Brand Name: ${styleGuide.brandName}
-- Brand Description: ${styleGuide.brandDescription}
-- Brand Personality: ${styleGuide.personality.join(', ')}
-- Formality Level: ${styleGuide.formality}
-- Target Audience: ${styleGuide.targetAudience}
-- Audience Pain Points: ${styleGuide.painPoints}` : 'Write in a general blog style'}
+${branding ? `- Brand Name: ${branding.brandName}
+- Brand Description: ${branding.brandDescription}
+- Brand Personality: ${branding.personality.join(', ')}
+- Formality Level: ${branding.formality}
+- Target Audience: ${branding.targetAudience}
+- Audience Pain Points: ${branding.painPoints}` : 'Write in a general blog style'}
 
 **Writing Style**:
-- Tone: ${styleGuide ? toneGuide[styleGuide.tone as keyof typeof toneGuide] : 'friendly and professional'}
-- Content Length: ${styleGuide ? contentLengthGuide[styleGuide.contentLength as keyof typeof contentLengthGuide] : '1000-1500 words'}
-- Reading Level: ${styleGuide ? readingLevelGuide[styleGuide.readingLevel as keyof typeof readingLevelGuide] : 'intermediate-level'}
+- Tone: ${branding ? toneGuide[branding.tone as keyof typeof toneGuide] : 'friendly and professional'}
+- Content Length: ${branding ? contentLengthGuide[branding.contentLength as keyof typeof contentLengthGuide] : '1000-1500 words'}
+- Reading Level: ${branding ? readingLevelGuide[branding.readingLevel as keyof typeof readingLevelGuide] : 'intermediate-level'}
 
 **Keywords**: ${keywords.length > 0 ? keywords.join(', ') : 'Naturally include relevant keywords'}
 
@@ -214,7 +214,7 @@ export async function POST(req: Request) {
 
     // Parse request body - expects direct GenerateArticleRequest
     const body = await req.json();
-    const { topic, styleGuideId, keywords = [], additionalInstructions } = body as GenerateArticleRequest;
+    const { topic, brandingId, keywords = [], additionalInstructions } = body as GenerateArticleRequest;
 
     if (!topic) {
       return new Response(
@@ -280,13 +280,13 @@ export async function POST(req: Request) {
     }
 
     // Get style guide
-    const styleGuide = await getStyleGuide(supabase, userId, styleGuideId);
+    const branding = await getBranding(supabase, userId, brandingId);
 
-    if (styleGuideId && !styleGuide) {
+    if (brandingId && !branding) {
       return new Response(
         JSON.stringify({
           error: {
-            code: articleErrorCodes.styleGuideNotFound,
+            code: articleErrorCodes.brandingNotFound,
             message: 'Style guide not found',
           },
         }),
@@ -295,7 +295,7 @@ export async function POST(req: Request) {
     }
 
     // Build prompt
-    const systemPrompt = buildPrompt(topic, styleGuide, keywords || [], additionalInstructions);
+    const systemPrompt = buildPrompt(topic, branding, keywords || [], additionalInstructions);
 
     // Get API key
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;

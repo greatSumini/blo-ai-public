@@ -10,19 +10,19 @@ import {
   type AppEnv,
 } from '@/backend/hono/context';
 import { CreateStyleGuideRequestSchema } from '@/features/onboarding/backend/schema';
-import { createStyleGuide, listStyleGuides, getStyleGuideById, updateStyleGuide, deleteStyleGuide, markOnboardingCompleted } from './service';
+import { createBranding, listStyleGuides, getBrandingById, updateStyleGuide, deleteStyleGuide, markOnboardingCompleted } from './service';
 import {
-  styleGuideErrorCodes,
+  brandingErrorCodes,
 } from './error';
 
 export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
   /**
-   * POST /api/style-guides
+   * POST /api/brandings
    * Creates a new style guide for a user
    *
    * Request body: OnboardingFormData
    */
-  app.post('/api/style-guides', async (c) => {
+  app.post('/api/brandings', async (c) => {
     const auth = getAuth(c);
     if (!auth?.userId) {
       return c.json(
@@ -43,7 +43,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
       return c.json(
         failure(
           400,
-          styleGuideErrorCodes.validationError,
+          brandingErrorCodes.validationError,
           'Invalid request body. Please check your input.',
           parsedBody.error.format(),
         ),
@@ -55,7 +55,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Create new style guide
-    const result = await createStyleGuide(supabase, auth.userId, parsedBody.data);
+    const result = await createBranding(supabase, auth.userId, parsedBody.data);
 
     if (result.ok) {
       logger.info('Style guide created successfully', { userId: auth.userId });
@@ -65,10 +65,10 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
   });
 
   /**
-   * GET /api/style-guides
+   * GET /api/brandings
    * Gets all style guides for a user
    */
-  app.get('/api/style-guides', async (c) => {
+  app.get('/api/brandings', async (c) => {
     const auth = getAuth(c);
     if (!auth?.userId) {
       return c.json(
@@ -95,12 +95,12 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
   });
 
   /**
-   * GET /api/style-guides/:id
+   * GET /api/brandings/:id
    * Gets a single style guide by ID
    *
    * URL params: id (style guide ID)
    */
-  app.get('/api/style-guides/:id', async (c) => {
+  app.get('/api/brandings/:id', async (c) => {
     const auth = getAuth(c);
     if (!auth?.userId) {
       return c.json(
@@ -119,7 +119,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
       return c.json(
         failure(
           400,
-          styleGuideErrorCodes.validationError,
+          brandingErrorCodes.validationError,
           'Style guide ID is required.',
         ),
         400
@@ -130,7 +130,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
     const logger = getLogger(c);
 
     // Get style guide by ID
-    const result = await getStyleGuideById(supabase, guideId, auth.userId);
+    const result = await getBrandingById(supabase, guideId, auth.userId);
 
     if (result.ok) {
       logger.info('Style guide retrieved successfully', { userId: auth.userId, guideId });
@@ -140,13 +140,13 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
   });
 
   /**
-   * PATCH /api/style-guides/:id
+   * PATCH /api/brandings/:id
    * Updates a style guide for a user
    *
    * URL params: id (style guide ID)
    * Request body: OnboardingFormData
    */
-  app.patch('/api/style-guides/:id', async (c) => {
+  app.patch('/api/brandings/:id', async (c) => {
     const auth = getAuth(c);
     if (!auth?.userId) {
       return c.json(
@@ -165,7 +165,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
       return c.json(
         failure(
           400,
-          styleGuideErrorCodes.validationError,
+          brandingErrorCodes.validationError,
           'Style guide ID is required.',
         ),
         400
@@ -180,7 +180,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
       return c.json(
         failure(
           400,
-          styleGuideErrorCodes.validationError,
+          brandingErrorCodes.validationError,
           'Invalid request body. Please check your input.',
           parsedBody.error.format(),
         ),
@@ -202,12 +202,12 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
   });
 
   /**
-   * DELETE /api/style-guides/:id
+   * DELETE /api/brandings/:id
    * Deletes a style guide for a user
    *
    * URL params: id (style guide ID)
    */
-  app.delete('/api/style-guides/:id', async (c) => {
+  app.delete('/api/brandings/:id', async (c) => {
     const auth = getAuth(c);
     if (!auth?.userId) {
       return c.json(
@@ -226,7 +226,7 @@ export const registerOnboardingRoutes = (app: Hono<AppEnv>) => {
       return c.json(
         failure(
           400,
-          styleGuideErrorCodes.validationError,
+          brandingErrorCodes.validationError,
           'Style guide ID is required.',
         ),
         400

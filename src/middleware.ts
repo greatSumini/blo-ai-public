@@ -17,7 +17,7 @@ import { getOnboardingCompletedFromDb } from "@/features/onboarding/backend/onbo
  * - Reverse: Completed onboarding → /dashboard (prevents re-access)
  *
  * STAGE 2: Protected Routes Guard
- * - Routes: /dashboard, /new-article, /style-guide, /account, /editor, /settings
+ * - Routes: /dashboard, /new-article, /branding, /account, /editor, /settings
  * - Requires: User authentication + completed onboarding
  * - Redirect: Unauthenticated users → /sign-in (via auth.protect())
  * - Redirect: Authenticated users without onboarding → /auth/onboarding
@@ -60,7 +60,7 @@ const resolveOnboardingCompleted = async (userId: string): Promise<boolean> => {
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
   "/new-article(.*)",
-  "/style-guide(.*)",
+  "/branding(.*)",
   "/articles(.*)",
   "/account(.*)",
   "/editor(.*)",

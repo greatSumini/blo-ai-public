@@ -42,7 +42,7 @@ const mapArticleRowToResponse = (row: unknown): ArticleResponse => {
     keywords: rowParse.data.keywords,
     description: rowParse.data.description,
     content: rowParse.data.content,
-    styleGuideId: rowParse.data.style_guide_id,
+    brandingId: rowParse.data.style_guide_id,
     tone: rowParse.data.tone,
     contentLength: rowParse.data.content_length,
     readingLevel: rowParse.data.reading_level,
@@ -88,7 +88,7 @@ export const createArticle = async (
     keywords: data.keywords,
     description: data.description || null,
     content: data.content,
-    style_guide_id: data.styleGuideId || null,
+    style_guide_id: data.brandingId || null,
     tone: data.tone || null,
     content_length: data.contentLength || null,
     reading_level: data.readingLevel || null,
@@ -196,8 +196,8 @@ export const updateArticle = async (
   if (data.description !== undefined)
     updateData.description = data.description || null;
   if (data.content !== undefined) updateData.content = data.content;
-  if (data.styleGuideId !== undefined)
-    updateData.style_guide_id = data.styleGuideId || null;
+  if (data.brandingId !== undefined)
+    updateData.style_guide_id = data.brandingId || null;
   if (data.tone !== undefined) updateData.tone = data.tone || null;
   if (data.contentLength !== undefined)
     updateData.content_length = data.contentLength || null;
