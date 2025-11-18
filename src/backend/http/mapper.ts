@@ -36,6 +36,14 @@ const ERROR_STATUS_MAP: Record<string, ContentfulStatusCode> = {
   // 4xx Client Errors - Quota
   'QUOTA_EXCEEDED': 429,
 
+  // 4xx Client Errors - Subscription
+  'SUBSCRIPTION_NOT_FOUND': 404,
+  'ALREADY_PRO_SUBSCRIBER': 409,
+  'ALREADY_CANCELED': 409,
+  'CANNOT_REACTIVATE': 400,
+  'NO_BILLING_KEY': 400,
+  'QUOTA_NOT_FOUND': 404,
+
   // 5xx Server Errors - Database Operations
   'DATABASE_ERROR': 500,
   'KEYWORD_FETCH_ERROR': 500,
@@ -63,6 +71,12 @@ const ERROR_STATUS_MAP: Record<string, ContentfulStatusCode> = {
   'AI_GENERATION_FAILED': 500,
   'QUOTA_CHECK_FAILED': 500,
   'QUOTA_INCREMENT_FAILED': 500,
+  'QUOTA_UPDATE_FAILED': 500,
+
+  // 5xx Server Errors - Payment
+  'PAYMENT_FAILED': 500,
+  'BILLING_KEY_ISSUE_FAILED': 500,
+  'BILLING_KEY_DELETE_FAILED': 500,
 
   // 5xx Server Errors - Cache
   'CACHE_READ_ERROR': 500,

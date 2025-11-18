@@ -30,6 +30,9 @@ export const ROUTES = {
   // 계정 (조직별)
   ACCOUNT: (orgId: string) => `/org/${orgId}/account`,
 
+  // 구독 (조직별)
+  SUBSCRIPTION: (orgId: string) => `/org/${orgId}/subscription`,
+
   // Branding (레거시 - 마이그레이션 필요)
   BRANDING: (orgId: string) => `/org/${orgId}/branding`,
 } as const;

@@ -27,6 +27,13 @@ export type AppConfig = {
   brave: {
     apiKey: string;
   };
+  toss?: {
+    secretKey: string;
+    clientKey?: string;
+  };
+  cron?: {
+    secretToken: string;
+  };
 };
 
 export type AppVariables = {

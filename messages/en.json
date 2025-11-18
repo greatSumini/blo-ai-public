@@ -20,8 +20,12 @@
     "keywords": "Keywords",
     "branding": "Branding Style",
     "brandings": "Branding Library",
+    "subscription": "Subscription",
     "members": "Members",
     "account": "Account Settings",
+    "subscription_status": "Subscription Status",
+    "remaining_articles": "{remaining}/{total} remaining",
+    "next_billing": "Next billing: {date}",
     "group": {
       "content": "Content",
       "branding": "Branding",
@@ -745,7 +749,7 @@
         "period": "/month",
         "description": "Basic plan for individual bloggers",
         "features": {
-          "articles": "5 articles per month",
+          "articles": "First 3 articles (gemini-2.5-flash)",
           "keywords": "Basic keyword management",
           "brandings": "1 branding"
         },
@@ -753,16 +757,16 @@
       },
       "pro": {
         "name": "Pro",
-        "price": "$29",
+        "price": "₩29,900",
         "period": "/month",
         "description": "Plan for professional bloggers and small teams",
         "badge": "Popular",
         "roi": "80% savings vs. outsourcing",
         "features": {
-          "articles": "50 articles per month",
+          "articles": "20 articles per month (gemini-2.5-pro)",
           "keywords": "Advanced keyword analysis",
           "brandings": "Unlimited branding",
-          "priority_support": "Priority support"
+          "priority_support": "Member invitation available"
         },
         "cta": "Start Pro"
       }

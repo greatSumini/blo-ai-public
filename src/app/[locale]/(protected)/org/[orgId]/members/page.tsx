@@ -49,6 +49,9 @@ import {
 } from '@/features/organizations/hooks/use-organizations';
 import type { OrganizationMember } from '@/features/organizations/lib/dto';
 import { toast } from 'sonner';
+import { useSubscription } from '@/features/subscription/hooks/use-subscription';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 interface PageProps {
   params: Promise<{ orgId: string; locale: string }>;
@@ -69,6 +72,7 @@ export default function OrganizationMembersPage({ params }: PageProps) {
   // Queries
   const { data: organization, isLoading: isLoadingOrg } = useOrganization(orgId);
   const { data: membersData, isLoading: isLoadingMembers } = useOrganizationMembers(orgId);
+  const { data: subscriptionData } = useSubscription(orgId);
 
   // Mutations
   const addMemberMutation = useAddMember(orgId);
@@ -78,6 +82,7 @@ export default function OrganizationMembersPage({ params }: PageProps) {
   const members = membersData?.members || [];
   const role = organization?.role;
   const isOwner = role === 'owner';
+  const isFreeUser = subscriptionData?.subscription.plan === 'free';
 
   // Handlers
   const handleAddMember = async (e: React.FormEvent) => {
@@ -169,34 +174,47 @@ export default function OrganizationMembersPage({ params }: PageProps) {
   return (
     <div className="container mx-auto px-4 md:px-6 py-8 md:py-12 max-w-7xl">
       {/* Page Header */}
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-medium leading-tight text-text-primary">
-            {t('title')}
-          </h1>
-          <p className="mt-2 text-base text-text-secondary">{t('description')}</p>
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-medium leading-tight text-text-primary">
+              {t('title')}
+            </h1>
+            <p className="mt-2 text-base text-text-secondary">{t('description')}</p>
+          </div>
+          <div>
+            {isOwner ? (
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => setAddMemberDialogOpen(true)}
+                disabled={isFreeUser}
+              >
+                <UserPlus className="mr-2 h-4 w-4" />
+                {t('addButton')}
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => setLeaveDialogOpen(true)}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                {t('leaveButton')}
+              </Button>
+            )}
+          </div>
         </div>
-        <div>
-          {isOwner ? (
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => setAddMemberDialogOpen(true)}
-            >
-              <UserPlus className="mr-2 h-4 w-4" />
-              {t('addButton')}
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => setLeaveDialogOpen(true)}
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              {t('leaveButton')}
-            </Button>
-          )}
-        </div>
+
+        {/* Free Plan Restriction Alert */}
+        {isOwner && isFreeUser && (
+          <Alert variant="default" className="mt-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              {t('freePlanRestriction')}
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
 
       {/* Members Table */}

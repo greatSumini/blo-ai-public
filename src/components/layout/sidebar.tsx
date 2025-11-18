@@ -9,6 +9,7 @@ import {
   Tag,
   Palette,
   Users,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,10 @@ import Image from "next/image";
 import { useCurrentOrganization } from "@/contexts/organization-context";
 import { ROUTES } from "@/lib/routes";
 import { OrganizationSelector } from "./organization-selector";
+import { useSubscription } from "@/features/subscription/hooks/use-subscription";
+import { SubscriptionStatusBadge } from "@/features/subscription/components/subscription-status-badge";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 interface MenuItem {
   icon: any;
@@ -34,6 +39,9 @@ export function Sidebar() {
   const pathname = usePathname();
   const t = useTranslations();
   const { orgId } = useCurrentOrganization();
+
+  // Fetch subscription data
+  const { data: subscriptionData } = useSubscription(orgId || '');
 
   if (!orgId) {
     return null;
@@ -84,6 +92,11 @@ export function Sidebar() {
       label: t("sidebar.group.settings"),
       items: [
         {
+          icon: CreditCard,
+          label: t("sidebar.subscription"),
+          href: ROUTES.SUBSCRIPTION(orgId),
+        },
+        {
           icon: Users,
           label: t("sidebar.members"),
           href: ROUTES.ORG_MEMBERS(orgId),
@@ -112,7 +125,7 @@ export function Sidebar() {
           </h1>
         </div>
         <OrganizationSelector />
-        <nav className="flex flex-col gap-6">
+        <nav className="flex flex-col gap-6 flex-1">
           {menuGroups.map((group, groupIndex) => (
             <div key={groupIndex} className="flex flex-col gap-2">
               {group.label && (
@@ -143,6 +156,37 @@ export function Sidebar() {
             </div>
           ))}
         </nav>
+
+        {/* Subscription Status */}
+        {subscriptionData && (
+          <div className="mt-auto border-t border-border-default pt-4 px-2 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-text-secondary">
+                {t("sidebar.subscription_status")}
+              </span>
+              <SubscriptionStatusBadge plan={subscriptionData.subscription.plan} />
+            </div>
+            <div className="text-xs text-text-tertiary">
+              <p>
+                {t("sidebar.remaining_articles", {
+                  remaining: subscriptionData.quota.remainingCount,
+                  total: subscriptionData.quota.monthlyLimit,
+                })}
+              </p>
+              {subscriptionData.subscription.nextBillingDate && (
+                <p className="mt-1">
+                  {t("sidebar.next_billing", {
+                    date: format(
+                      new Date(subscriptionData.subscription.nextBillingDate),
+                      "yyyy. M. d",
+                      { locale: ko }
+                    ),
+                  })}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

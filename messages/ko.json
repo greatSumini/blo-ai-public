@@ -20,8 +20,12 @@
     "keywords": "키워드 관리",
     "branding": "브랜딩 스타일",
     "brandings": "브랜딩 목록",
+    "subscription": "구독 관리",
     "members": "멤버 관리",
     "account": "계정 설정",
+    "subscription_status": "구독 상태",
+    "remaining_articles": "{remaining}/{total}편 남음",
+    "next_billing": "다음 결제: {date}",
     "group": {
       "content": "콘텐츠",
       "branding": "브랜딩",
@@ -746,7 +750,7 @@
         "period": "/월",
         "description": "개인 블로거를 위한 기본 플랜",
         "features": {
-          "articles": "월 5개 글 생성",
+          "articles": "최초 3회 글 생성 (gemini-2.5-flash)",
           "keywords": "기본 키워드 관리",
           "brandings": "1개 브랜딩"
         },
@@ -754,16 +758,16 @@
       },
       "pro": {
         "name": "프로",
-        "price": "₩29,000",
+        "price": "₩29,900",
         "period": "/월",
         "description": "전문 블로거 및 소규모 팀을 위한 플랜",
         "badge": "인기",
         "roi": "외주 비용 대비 80% 절감",
         "features": {
-          "articles": "월 50개 글 생성",
+          "articles": "월 20회 글 생성 (gemini-2.5-pro)",
           "keywords": "고급 키워드 분석",
           "brandings": "무제한 브랜딩",
-          "priority_support": "우선 지원"
+          "priority_support": "구성원 초대 가능"
         },
         "cta": "프로 시작하기"
       }

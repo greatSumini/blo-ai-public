@@ -12,6 +12,9 @@ const envSchema = z.object({
   NAVER_CLIENT_ID: z.string().min(1),
   NAVER_CLIENT_SECRET: z.string().min(1),
   BRAVE_API_KEY: z.string().min(1),
+  TOSS_SECRET_KEY: z.string().optional(),
+  TOSS_CLIENT_KEY: z.string().optional(),
+  CRON_SECRET_TOKEN: z.string().optional(),
 });
 
 let cachedConfig: AppConfig | null = null;
@@ -32,6 +35,9 @@ export const getAppConfig = (): AppConfig => {
     NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
     NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
     BRAVE_API_KEY: process.env.BRAVE_API_KEY,
+    TOSS_SECRET_KEY: process.env.TOSS_SECRET_KEY,
+    TOSS_CLIENT_KEY: process.env.TOSS_CLIENT_KEY,
+    CRON_SECRET_TOKEN: process.env.CRON_SECRET_TOKEN,
   });
 
   if (!parsed.success) {
@@ -64,6 +70,17 @@ export const getAppConfig = (): AppConfig => {
     brave: {
       apiKey: parsed.data.BRAVE_API_KEY,
     },
+    toss: parsed.data.TOSS_SECRET_KEY
+      ? {
+          secretKey: parsed.data.TOSS_SECRET_KEY,
+          clientKey: parsed.data.TOSS_CLIENT_KEY,
+        }
+      : undefined,
+    cron: parsed.data.CRON_SECRET_TOKEN
+      ? {
+          secretToken: parsed.data.CRON_SECRET_TOKEN,
+        }
+      : undefined,
   } satisfies AppConfig;
 
   return cachedConfig;

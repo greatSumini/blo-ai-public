@@ -42,6 +42,9 @@ import { Badge } from "@/components/ui/badge-v2";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRequiredOrganization } from "@/contexts/organization-context";
 import { ROUTES } from "@/lib/routes";
+import { useSubscription } from "@/features/subscription/hooks/use-subscription";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 type NewArticlePageProps = {
   params: Promise<{ orgId: string }>;
@@ -71,6 +74,9 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   const router = useRouter();
   const { toast } = useToast();
   const { user } = useCurrentUser();
+
+  // Fetch subscription data for quota check
+  const { data: subscriptionData, isLoading: isLoadingSubscription } = useSubscription(orgId);
 
   const [mode, setMode] = useState<"form" | "chat">("form");
   const [generationContext, setGenerationContext] = useState<{
@@ -252,6 +258,16 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   );
 
   const handleGenerateSubmit = async (data: GenerationFormData) => {
+    // Check quota before starting generation
+    if (subscriptionData && subscriptionData.quota.remainingCount <= 0) {
+      toast({
+        title: t("quota.exceeded.title"),
+        description: t("quota.exceeded.description"),
+        variant: "destructive",
+      });
+      return;
+    }
+
     const context = {
       topic: data.topic,
       brandingId: data.brandingId,
@@ -416,13 +432,53 @@ export default function NewArticlePage({ params }: NewArticlePageProps) {
   };
 
   if (mode === "form") {
+    const isQuotaExceeded = subscriptionData && subscriptionData.quota.remainingCount <= 0;
+
     return (
       <div className="min-h-screen">
-        <GenerationForm
-          brandings={brandings}
-          onSubmit={handleGenerateSubmit}
-          isLoading={isLoadingBranding}
-        />
+        <div className="container mx-auto max-w-4xl px-4 md:px-6 py-8">
+          {/* Quota Display */}
+          {subscriptionData && (
+            <Alert
+              variant={isQuotaExceeded ? "destructive" : "default"}
+              className="mb-6"
+            >
+              {isQuotaExceeded ? (
+                <AlertCircle className="h-4 w-4" />
+              ) : null}
+              <AlertTitle>
+                {t("quota.title", {
+                  remaining: subscriptionData.quota.remainingCount,
+                  total: subscriptionData.quota.monthlyLimit,
+                })}
+              </AlertTitle>
+              <AlertDescription>
+                {isQuotaExceeded ? (
+                  <>
+                    {t("quota.exceeded_message")}{" "}
+                    <a
+                      href={ROUTES.SUBSCRIPTION(orgId)}
+                      className="underline font-medium"
+                    >
+                      {t("quota.upgrade_link")}
+                    </a>
+                  </>
+                ) : (
+                  t("quota.description", {
+                    plan: subscriptionData.subscription.plan === "pro" ? "Pro" : "Free",
+                  })
+                )}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          <GenerationForm
+            brandings={brandings}
+            onSubmit={handleGenerateSubmit}
+            isLoading={isLoadingBranding || isLoadingSubscription}
+            disabled={isQuotaExceeded}
+          />
+        </div>
       </div>
     );
   }

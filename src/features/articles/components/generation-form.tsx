@@ -48,12 +48,14 @@ interface GenerationFormProps {
   brandings: Array<{ id: string; name: string }>;
   onSubmit: (data: GenerationFormData) => Promise<void>;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
 export function GenerationForm({
   brandings,
   onSubmit,
   isLoading,
+  disabled,
 }: GenerationFormProps) {
   const t = useTranslations("articles.generationForm");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -176,7 +178,7 @@ export function GenerationForm({
               variant="primary"
               size="lg"
               className="self-end"
-              disabled={isSubmitting || isLoading || !form.formState.isValid}
+              disabled={isSubmitting || isLoading || disabled || !form.formState.isValid}
             >
               {isSubmitting ? (
                 <>
